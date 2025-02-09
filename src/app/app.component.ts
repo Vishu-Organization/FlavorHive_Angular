@@ -10,7 +10,7 @@ import { DummyState } from 'src/store/reducers/dummy.reducer';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title$: Observable<string> = this.store.select((state) => state.title);
+  title$: Observable<string> = this.store.select((state) => state.app.title);
 
   constructor(private store: Store<DummyState>) {}
 

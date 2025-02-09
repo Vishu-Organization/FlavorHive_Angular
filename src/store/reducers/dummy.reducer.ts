@@ -2,10 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import { setTitle } from '../actions/dummy.actions';
 
 export interface DummyState {
-  title: string;
+  app: { title: string };
 }
 
-export const initialState: DummyState = {
+export const initialState = {
   title: 'FlavorHive',
 };
 

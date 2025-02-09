@@ -17,12 +17,7 @@ import { dummyReducer } from 'src/store/reducers/dummy.reducer';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatSlideToggleModule,
-    StoreModule.forRoot(
-      {
-        app: dummyReducer,
-      },
-      {}
-    ),
+    StoreModule.forRoot({ app: dummyReducer }, {}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
