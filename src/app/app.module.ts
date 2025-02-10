@@ -9,10 +9,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { dummyReducer } from 'src/store/reducers/dummy.reducer';
+import { NavigationModule } from './navigation/navigation.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    NavigationModule,
+    AuthModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
