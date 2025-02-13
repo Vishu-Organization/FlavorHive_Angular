@@ -24,7 +24,6 @@ import { HomeComponent } from './home/home/home.component';
   declarations: [AppComponent, HomeComponent],
   imports: [
     NavigationModule,
-    AuthModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
