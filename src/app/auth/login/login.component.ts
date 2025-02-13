@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { of } from 'rxjs';
+import { login } from 'src/store/auth/actions';
+import { AuthState } from 'src/store/auth/reducer';
+import { selectAuthLoading } from 'src/store/auth/selectors';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -14,8 +19,9 @@ interface LoginForm {
 })
 export class LoginComponent {
   loginForm: FormGroup<LoginForm>;
+  isAuthLoading$ = this.store.select(selectAuthLoading);
 
-  constructor() {
+  constructor(private store: Store<AuthState>) {
     this.loginForm = new FormGroup({
       email: new FormControl('', {
         nonNullable: true,
@@ -30,6 +36,9 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log(this.loginForm.value);
+    const { email, password } = this.loginForm.value;
+    email && password && this.store.dispatch(login({ email, password }));
   }
+
+  onLoginWithGoogle() {}
 }

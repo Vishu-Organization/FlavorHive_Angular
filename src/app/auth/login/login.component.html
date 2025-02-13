@@ -45,10 +45,7 @@
 
             <!-- Remember Me & Forgot Password -->
             <section class="grid grid-cols-2 items-center text-sm">
-                <label for="remember-me" class="flex items-center space-x-2">
-                    <mat-checkbox formControlName="rememberMe" id="remember-me"></mat-checkbox>
-                    <span>Remember Me?</span>
-                </label>
+                <mat-checkbox formControlName="rememberMe" id="remember-me">Remember Me?</mat-checkbox>
                 <a data-testid="link-forgot-password" class="justify-self-end text-primary hover:underline"
                     href="/forgot-password" aria-label="Forgot Password">
                     Forgot Password?
@@ -58,8 +55,9 @@
             <!-- Footer Buttons -->
             <section class="space-y-4">
                 <button mat-raised-button class="uppercase w-full" color="primary" type="submit"
-                    [disabled]="!loginForm.valid" aria-label="Login">
-                    Login
+                    [disabled]="!loginForm.valid || (isAuthLoading$ | async)" aria-label="Login">
+                    <span [ngClass]="(isAuthLoading$ | async) ? 'mr-2 inline-block': ''">Login</span>
+                    <mat-spinner *ngIf="(isAuthLoading$ | async)" diameter="20" strokeWidth="2"></mat-spinner>
                 </button>
 
                 <p class="text-center text-sm font-medium" aria-hidden="true">OR</p>
@@ -74,8 +72,9 @@
                 <!-- Google Sign-in Button -->
                 <button mat-raised-button
                     class="w-full !border-gray10 !hover:border-blue10 !hover:bg-blue50 !gap-3 !bg-white" type="button"
-                    aria-label="Sign in with Google">
-                    <img src="../../../assets/google.svg" alt="Google Logo" class="w-5 h-5" /> Sign in with Google
+                    aria-label="Sign in with Google" (click)="onLoginWithGoogle()">
+                    <img src="../../../assets/google.svg" alt="Google Logo" class="w-5 h-5" />
+                    <span>Sign in with Google</span>
                 </button>
             </section>
         </form>
