@@ -10,22 +10,41 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { dummyReducer } from 'src/store/reducers/dummy.reducer';
 import { NavigationModule } from './navigation/navigation.module';
+import { authReducer } from 'src/store/auth/reducer';
+import { AuthEffects } from 'src/store/auth/effects';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from 'src/interceptors/auth/auth.interceptor';
+import { ApikeyInterceptor } from 'src/interceptors/apikey/apikey.interceptor';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthModule } from './auth/auth.module';
+import { HomeComponent } from './home/home/home.component';
+
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     NavigationModule,
     AuthModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatSlideToggleModule,
-    StoreModule.forRoot({ app: dummyReducer }, {}),
-    EffectsModule.forRoot([]),
+    MatSnackBarModule,
+
+    StoreModule.forRoot(
+      {
+        auth: authReducer,
+      },
+      {}
+    ),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApikeyInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

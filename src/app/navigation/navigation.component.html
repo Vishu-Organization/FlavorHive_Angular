@@ -27,31 +27,27 @@
                 </li>
             </ul>
             <ul class="col-span-1 flex items-center justify-self-end md:col-auto">
-                <!-- {session?.user.user_metadata.name || session?.user.email ? (
-                    <span data-testid="text-welcome" class="mr-2 inline-block normal-case">
-                        Welcome {session?.user.user_metadata.name || session?.user.email}!
-                    </span>
-                    ) : ( -->
-                <li>
-                    <a data-testid="link-header-login" routerLink="/login"
-                        class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
-                        Login
-                    </a>
-                </li>
-                <!-- )} -->
-
-                <!-- {!session ? ( -->
-                <li>
-                    <a data-testid="link-header-sign-up" routerLink="/signup"
-                        class="rounded-md border border-orange-600 bg-header-login-link px-2 py-2 font-bold text-white hover:border-orange-500 hover:bg-header-login-link-hover hover:text-white hover:no-underline active:bg-header-login-link-active lg:px-3 lg:py-3">
-                        Sign up
-                    </a>
-                </li>
-                <!-- ) : ( -->
-                <!-- <Button data-testid="btn-logout" type="button" display="flex" variant="icon" onClick={onSignout}>
-                        <Logout />
-                    </Button>
-                    )} -->
+                <ng-container *ngIf="!(isAuthenticated$ | async); else loggedIn">
+                    <li>
+                        <a data-testid="link-header-login" routerLink="auth/login" routerLinkActive="text-primary"
+                            class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
+                            Login
+                        </a>
+                    </li>
+                    <li>
+                        <a data-testid="link-header-sign-up" routerLink="auth/signup"
+                            class="rounded-md border border-orange-600 bg-header-login-link px-2 py-2 font-bold text-white hover:border-orange-500 hover:bg-header-login-link-hover hover:text-white hover:no-underline active:bg-header-login-link-active lg:px-3 lg:py-3">
+                            Sign up
+                        </a>
+                    </li>
+                </ng-container>
+                <ng-template #loggedIn>
+                    <span *ngIf="(user$|async) as user" class="capitalize">Welcome {{user.name || user.email }}!</span>
+                    <button mat-button data-testid="btn-logout" class="ml-4 text-red-400" (click)="onLogout()">
+                        <mat-icon>logout</mat-icon>
+                    </button>
+                
+                </ng-template>
             </ul>
         </section>
     </nav>
