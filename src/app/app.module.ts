@@ -8,9 +8,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
-import { dummyReducer } from 'src/store/reducers/dummy.reducer';
+
 import { NavigationModule } from './navigation/navigation.module';
-import { authReducer } from 'src/store/auth/reducer';
+import { authReducer, signupDataReducer } from 'src/store/auth/reducer';
 import { AuthEffects } from 'src/store/auth/effects';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from 'src/interceptors/auth/auth.interceptor';
@@ -18,7 +18,6 @@ import { ApikeyInterceptor } from 'src/interceptors/apikey/apikey.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthModule } from './auth/auth.module';
 import { HomeComponent } from './home/home/home.component';
-
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -34,6 +33,7 @@ import { HomeComponent } from './home/home/home.component';
     StoreModule.forRoot(
       {
         auth: authReducer,
+        signupData: signupDataReducer,
       },
       {}
     ),

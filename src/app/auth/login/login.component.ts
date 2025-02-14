@@ -20,6 +20,7 @@ interface LoginForm {
 export class LoginComponent {
   loginForm: FormGroup<LoginForm>;
   isAuthLoading$ = this.store.select(selectAuthLoading);
+  data: any;
 
   constructor(private store: Store<AuthState>) {
     this.loginForm = new FormGroup({

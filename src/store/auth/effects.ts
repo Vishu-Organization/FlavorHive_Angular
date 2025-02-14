@@ -1,8 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/services/auth/auth.service';
-import { initialize, login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from './actions';
-import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import {
+  initialize,
+  loadSignupData,
+  loadSignupDataFailure,
+  loadSignupDataSuccess,
+  login,
+  loginFailure,
+  loginSuccess,
+  logout,
+  logoutFailure,
+  logoutSuccess,
+} from './actions';
+import {
+  catchError,
+  filter,
+  forkJoin,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { AuthState } from './reducer';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
@@ -92,15 +112,39 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  logout$ = createEffect(() => this.actions$.pipe(
-    ofType(logout),
-    switchMap(() => this.authService.logOut().pipe(
-      map(() => logoutSuccess()),
-      tap(()=> this.cookieService.delete('REF_TOKEN')),
-      catchError((error) => {
-        console.log(error);
-        return of(logoutFailure(error.error.message));
-      })
-    ))
-  ));
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(logout),
+      switchMap(() =>
+        this.authService.logOut().pipe(
+          map(() => logoutSuccess()),
+          tap(() => this.cookieService.delete('REF_TOKEN')),
+          catchError((error) => {
+            console.log(error);
+            return of(logoutFailure(error.error.message));
+          })
+        )
+      )
+    )
+  );
+
+  loadSignUpData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadSignupData),
+      switchMap(() =>
+        forkJoin([
+          this.authService.loadHowItWorks(),
+          this.authService.loadAdditionalInfo(),
+        ]).pipe(
+          map(([howItWorks, additionalInfo]) =>
+            loadSignupDataSuccess({ howItWorks, additionalInfo })
+          ),
+          catchError((error) => {
+            console.log(error);
+            return of(loadSignupDataFailure({ error: error.msg }));
+          })
+        )
+      )
+    )
+  );
 }

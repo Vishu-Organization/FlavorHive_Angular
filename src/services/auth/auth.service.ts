@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ISignupDataItem } from 'src/store/auth/_interfaces';
 
 const VITE_SUPABASE_URL = 'https://opmliiavikfniknrvlgt.supabase.co';
 const SUPABASE_API_AUTH = `${VITE_SUPABASE_URL}/auth/v1`;
@@ -37,5 +38,35 @@ export class AuthService {
 
   logOut(): Observable<any> {
     return this.http.post(`${SUPABASE_API_AUTH}/logout`, {});
+  }
+
+  loadHowItWorks(): Observable<ISignupDataItem[]> {
+    const headers = new HttpHeaders({
+      'Accept-Profile': 'sign_up',
+      'Content-Profile': 'sign_up',
+    });
+    const params = new HttpParams()
+      .set('select', 'id,name,description')
+      .set('order', 'id.asc');
+
+    return this.http.get<ISignupDataItem[]>(
+      `${VITE_SUPABASE_URL}/rest/v1/how_it_works`,
+      { params, headers }
+    );
+  }
+
+  loadAdditionalInfo(): Observable<ISignupDataItem[]> {
+    const headers = new HttpHeaders({
+      'Accept-Profile': 'sign_up',
+      'Content-Profile': 'sign_up',
+    });
+    const params = new HttpParams()
+      .set('select', 'id,name,description')
+      .set('order', 'id.asc');
+
+    return this.http.get<ISignupDataItem[]>(
+      `${VITE_SUPABASE_URL}/rest/v1/additional_info`,
+      { params, headers }
+    );
   }
 }

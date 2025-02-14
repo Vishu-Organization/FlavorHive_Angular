@@ -1,0 +1,14 @@
+:host ::ng-deep {
+    .mat-mdc-checkbox label {
+        color: var(--toggle-text);
+    }
+
+    .mdc-button__label {
+        display: flex;
+
+        img {
+            margin-right: 0.5rem;
+        }
+    }
+}
+

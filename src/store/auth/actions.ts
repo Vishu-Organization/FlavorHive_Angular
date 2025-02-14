@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ILoginPayload } from './_interfaces';
+import { ILoginPayload, ISignupData } from './_interfaces';
 import { IToken } from 'src/app/types/token';
 
 export const ActionTypes = {
@@ -10,6 +10,9 @@ export const ActionTypes = {
   Logout: '[Auth] Logout',
   LogoutSuccess: '[Auth] Logout Success',
   LogoutFailure: '[Auth] Logout Failure',
+  LoadSignupData: '[Signup] Data Load',
+  LoadSignupDataSuccess: '[Signup] Data Load Success',
+  LoadSignupDataFailure: '[Signup] Data Load Failure',
 };
 
 export type AuthActionType =
@@ -37,5 +40,15 @@ export const logout = createAction(ActionTypes.Logout);
 export const logoutSuccess = createAction(ActionTypes.LogoutSuccess);
 export const logoutFailure = createAction(
   ActionTypes.LogoutFailure,
+  props<{ error: string }>()
+);
+
+export const loadSignupData = createAction(ActionTypes.LoadSignupData);
+export const loadSignupDataSuccess = createAction(
+  ActionTypes.LoadSignupDataSuccess,
+  props<ISignupData>()
+);
+export const loadSignupDataFailure = createAction(
+  ActionTypes.LoadSignupDataFailure,
   props<{ error: string }>()
 );
