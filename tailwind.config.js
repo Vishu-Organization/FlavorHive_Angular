@@ -3,6 +3,12 @@ module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
+      backgroundImage: {
+        "our-vision":
+          "url('https://media.blueapron.com/assets/mission/v2/betterstandards_1.5.png?format=jpg&quality=75')",
+        "sign-up":
+          "url('https://media.blueapron.com/assets/signup/landing/background-landing-signup.jpg?quality=80&width=1440')",
+      },
       colors: {
         blue10: "var(--blue10)",
         blue20: "var(--blue20)",
