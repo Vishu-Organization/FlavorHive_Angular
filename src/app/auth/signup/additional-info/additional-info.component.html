@@ -1,0 +1,18 @@
+<section id="signup-additional-info" class="max-w-[900px] bg-white pb-6 md:mx-auto md:pb-10">
+    <ul *ngIf="(additionalInfo$ | async) as additionalInfo" class="flex list-none flex-col items-center gap-8 md:mx-2 md:flex-row md:items-center md:justify-center">
+     
+        <li *ngFor="let item of additionalInfo; let i=index; trackBy: trackById"class="mx-6 flex min-h-32 max-w-72 flex-col items-center gap-3 text-center md:mx-0">
+            <div [ngClass]="(i===1) ? 'w-10 pt-5 md:pt-0 lg:pt-5' : 'w-[34px]'">
+                <img [src]="svgs[i].path" [alt]="svgs[i].alt"/>
+            </div>
+
+            <h3 class="text-sm font-semibold">
+                {{item.name}}
+            </h3>
+            <p class="text-sm text-header-primary">
+                {{item.description}}
+            </p>
+        </li>
+
+    </ul>
+</section>
