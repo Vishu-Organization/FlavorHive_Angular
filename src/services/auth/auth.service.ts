@@ -13,16 +13,28 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   refreshToken(refreshToken: string): Observable<any> {
+    const params = new HttpParams().set('grant_type', 'refresh_token');
     return this.http.post(
-      `${SUPABASE_API_AUTH}/token?grant_type=refresh_token`,
-      { refresh_token: refreshToken }
+      `${SUPABASE_API_AUTH}/token`,
+      { refresh_token: refreshToken },
+      { params }
     );
   }
 
   signIn(email: string, password: string): Observable<any> {
-    return this.http.post(`${SUPABASE_API_AUTH}/token?grant_type=password`, {
+    const params = new HttpParams().set('grant_type', 'password');
+    return this.http.post(
+      `${SUPABASE_API_AUTH}/token`,
+      { email, password },
+      { params }
+    );
+  }
+
+  signup(email: string, password: string, name: string): Observable<any> {
+    return this.http.post(`${SUPABASE_API_AUTH}/signup`, {
       email,
       password,
+      options: { data: { name } },
     });
   }
 

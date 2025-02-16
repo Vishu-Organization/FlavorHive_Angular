@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { AuthService } from 'src/services/auth/auth.service';
 import { ToastService } from 'src/services/toast/toast.service';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
+import { signup } from 'src/store/auth/actions';
 import { SignupDataState } from 'src/store/auth/reducer';
 import {
-  selectSignupData,
+  selectIsAuthenticated,
   selectSignupDataLoading,
   selectSignupHowItWorks,
 } from 'src/store/auth/selectors';
@@ -29,6 +29,7 @@ export class SignupComponent {
   isContinue = false;
   howItWorksData$: Observable<ISignupDataItem[] | undefined>;
   howItWorksLoading$: Observable<boolean>;
+  isAuthLoading$: Observable<boolean>;
 
   constructor(
     private store: Store<SignupDataState>,
@@ -37,6 +38,7 @@ export class SignupComponent {
     this.buildForm();
     this.howItWorksData$ = this.store.select(selectSignupHowItWorks);
     this.howItWorksLoading$ = this.store.select(selectSignupDataLoading);
+    this.isAuthLoading$ = this.store.select(selectIsAuthenticated);
   }
 
   buildForm() {
@@ -63,6 +65,9 @@ export class SignupComponent {
       return;
     }
 
-    console.log(this.signupForm.value);
+    email &&
+      name &&
+      password &&
+      this.store.dispatch(signup({ email, name, password }));
   }
 }

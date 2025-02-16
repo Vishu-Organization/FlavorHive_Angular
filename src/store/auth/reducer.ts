@@ -9,6 +9,9 @@ import {
   logout,
   logoutFailure,
   logoutSuccess,
+  signup,
+  signupFailure,
+  signupSuccess,
 } from './actions';
 import { IToken } from 'src/app/types/token';
 import { ISignupData } from './_interfaces';
@@ -48,7 +51,22 @@ export const authReducer = createReducer(
   on(loginFailure, (state, { error }) => ({ ...state, error, loading: false })),
   on(logout, (state) => ({ ...state, loading: true, error: null })),
   on(logoutSuccess, () => initialState),
-  on(logoutFailure, (state, { error }) => ({ ...state, error, loading: false }))
+  on(logoutFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(signup, (state) => ({ ...state, loading: true, error: null })),
+  on(signupSuccess, (state, { token }) => ({
+    ...state,
+    token,
+    loading: false,
+  })),
+  on(signupFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  }))
 );
 
 export const signupDataReducer = createReducer(

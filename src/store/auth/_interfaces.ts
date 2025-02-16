@@ -1,6 +1,9 @@
-export interface ILoginPayload {
+export interface IAuthPayload {
   email: string;
   password: string;
+}
+export interface ISignupPayload extends IAuthPayload {
+  name: string;
 }
 
 export interface ISignupDataItem {

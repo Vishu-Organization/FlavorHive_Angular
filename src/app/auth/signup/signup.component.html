@@ -12,8 +12,7 @@
         </div>
         <section class="grid grid-rows-2 gap-8 lg:grid-cols-2 lg:grid-rows-1">
             <div class="order-last -mt-44 lg:order-none lg:mt-0">
-                <app-how-it-works 
-                    [howItWorksData]="(howItWorksData$|async) || []"
+                <app-how-it-works [howItWorksData]="(howItWorksData$|async) || []"
                     [howItWorksLoading]="(howItWorksLoading$|async) || false">
                 </app-how-it-works>
             </div>
@@ -25,7 +24,7 @@
                         <span>Sign in<b class="font-bold">&nbsp;></b></span>
                     </a>
                 </section>
-                <form [formGroup]="signupForm" class="mx-auto max-w-96 space-y-6" (ngSubmit)="onSignup()">
+                <form [formGroup]="signupForm" class="mx-auto max-w-96 space-y-6">
 
                     <!-- Name Field -->
                     <article>
@@ -88,9 +87,12 @@
                         </mat-form-field>
                     </article>
                     <div class="space-y-2 lg:space-y-4">
-                        <button (click)="onSignup()" mat-raised-button type="button" color="primary"
-                            class="w-full uppercase" data-testid="btn-submit">
-                            {{isContinue ? "Sign Up" : "Continue"}}
+                        <button (click)="onSignup()" [disabled]="isContinue && !signupForm.valid" mat-raised-button
+                            [type]="isContinue? 'submit': 'button'" color="primary" class="w-full uppercase" data-testid="btn-submit">
+                            <span [ngClass]="{'inline-block mr-2': (isAuthLoading$|async)}">{{isContinue ? "Sign Up" :
+                                "Continue"}}</span>
+                        
+                            <mat-spinner *ngIf="(isAuthLoading$ | async)" diameter="20" strokeWidth="2"></mat-spinner>
                         </button>
                         <div class="text-center text-sm font-bold tracking-wider text-black10">
                             OR
@@ -99,18 +101,16 @@
                         <button mat-raised-button
                             class="w-full !border-gray10 !hover:border-primary-black !hover:bg-primary-black !bg-black10 !text-white"
                             type="button" aria-label="Sign in with Apple">
-                            <span aria-hidden="true"></span>&nbsp;Sign in with Apple
+                            <span aria-hidden="true"></span>&nbsp;Sign up with Apple
                         </button>
                         <!-- Google Sign-in Button -->
                         <button mat-raised-button
                             class="w-full !border-gray10 !hover:border-blue10 !hover:bg-blue50 !gap-3 !bg-white"
                             type="button" aria-label="Sign in with Google">
                             <img src="../../../assets/google.svg" alt="Google Logo" class="w-5 h-5" />
-                            <span>Sign in with Google</span>
+                            <span>Sign up with Google</span>
                         </button>
                     </div>
-
-
                 </form>
             </div>
         </section>

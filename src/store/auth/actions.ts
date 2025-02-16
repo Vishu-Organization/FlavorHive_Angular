@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ILoginPayload, ISignupData } from './_interfaces';
+import { IAuthPayload, ISignupData, ISignupPayload } from './_interfaces';
 import { IToken } from 'src/app/types/token';
 
 export const ActionTypes = {
@@ -7,6 +7,9 @@ export const ActionTypes = {
   Login: '[Auth] Login',
   LoginSuccess: '[Auth] Login Success',
   LoginFailure: '[Auth] Login Failure',
+  Signup: '[Auth] Signup',
+  SignupSuccess: '[Auth] Signup Success',
+  SignupFailure: '[Auth] Signup Failure',
   Logout: '[Auth] Logout',
   LogoutSuccess: '[Auth] Logout Success',
   LogoutFailure: '[Auth] Logout Failure',
@@ -26,7 +29,7 @@ export type AuthActionType =
 
 export const initialize = createAction(ActionTypes.Initialize);
 
-export const login = createAction(ActionTypes.Login, props<ILoginPayload>());
+export const login = createAction(ActionTypes.Login, props<IAuthPayload>());
 export const loginSuccess = createAction(
   ActionTypes.LoginSuccess,
   props<{ token: IToken }>()
@@ -50,5 +53,15 @@ export const loadSignupDataSuccess = createAction(
 );
 export const loadSignupDataFailure = createAction(
   ActionTypes.LoadSignupDataFailure,
+  props<{ error: string }>()
+);
+
+export const signup = createAction(ActionTypes.Signup, props<ISignupPayload>());
+export const signupSuccess = createAction(
+  ActionTypes.SignupSuccess,
+  props<{ token: IToken }>()
+);
+export const signupFailure = createAction(
+  ActionTypes.SignupFailure,
   props<{ error: string }>()
 );
