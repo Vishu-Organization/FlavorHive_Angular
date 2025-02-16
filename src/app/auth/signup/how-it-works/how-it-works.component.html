@@ -1,11 +1,12 @@
-<div class="flex justify-center items-center mb-2" *ngIf="howItWorksLoading">
-    <mat-spinner  diameter="20" strokeWidth="2"></mat-spinner>
-</div>
 <section class="mx-auto flex max-w-96 flex-col justify-center space-y-7">
     <h3 data-testid=`text-how-it-works-header`
         class="!text-center !text-sm !font-bold uppercase !leading-4 !tracking-wider !lg:text-left">
         how it works
     </h3>
+
+    <div class="flex justify-center items-center my-2" *ngIf="howItWorksLoading && !howItWorksData?.length">
+        <mat-spinner diameter="20" strokeWidth="2"></mat-spinner>
+    </div>
 
     <div class="flex flex-col items-center justify-center gap-10 lg:justify-start">
 

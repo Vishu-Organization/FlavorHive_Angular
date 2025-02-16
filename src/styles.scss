@@ -19,7 +19,6 @@
   --gray40: #f5f6f8;
   --gray50: #424242;
   --gray60: #e4e6eb;
-  
   --blue10: #d2e3fc;
   --blue20: #0f3e84;
   --blue30: #272b6e;
@@ -28,16 +27,14 @@
   --blue60: #0f346c;
   --blue70: #002c9b;
   --blue-info: #00a0df;
-  --checkbox-tick-blue: #2563eb; 
+  --checkbox-tick-blue: #2563eb;
 
   --input-error: #d64148;
-  
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 400;
 
   color-scheme: light dark;
-  
-  
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -45,17 +42,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-a {
-    cursor: pointer;
-}
-.success-snackbar {
-  background-color: #2e7d32 !important; /* Green */
-  color: #fff !important;
+html,
+body {
+  height: 100%;
 }
 
-.error-snackbar {
-  background-color: #d32f2f !important; /* Red */
-  color: #fff !important;
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+a {
+  cursor: pointer;
+}
+.mat-mdc-snack-bar-container {
+  --mat-mdc-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+
+  &.error-snackbar {
+    --mdc-snackbar-container-color: var(--input-error);
+  }
+
+    &.success-snackbar {
+      --mdc-snackbar-container-color: #43a446;
+    }
 }

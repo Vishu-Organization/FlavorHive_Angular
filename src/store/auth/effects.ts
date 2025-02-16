@@ -12,6 +12,9 @@ import {
   logout,
   logoutFailure,
   logoutSuccess,
+  signup,
+  signupFailure,
+  signupSuccess,
 } from './actions';
 import {
   catchError,
@@ -44,17 +47,20 @@ export class AuthEffects {
     private toastService: ToastService
   ) {}
 
-  emitLoginSuccess({
-    access_token,
-    expires_at,
-    expires_in,
-    refresh_token,
-    user: {
-      user_metadata: { email, name },
-      id,
-    },
-  }: ILoginResponse): TypedAction<any> {
-    return loginSuccess({
+  emitAuthSuccess(
+    {
+      access_token,
+      expires_at,
+      expires_in,
+      refresh_token,
+      user: {
+        user_metadata: { email, name },
+        id,
+      },
+    }: ILoginResponse,
+    action?: any
+  ): TypedAction<any> {
+    return action({
       token: {
         token: access_token,
         expiresAt: expires_at,
@@ -73,7 +79,7 @@ export class AuthEffects {
         const refreshToken = this.cookieService.get('REF_TOKEN');
         return this.authService
           .refreshToken(refreshToken)
-          .pipe(map(this.emitLoginSuccess));
+          .pipe(map((data) => this.emitAuthSuccess(data, loginSuccess)));
       }),
       catchError(({ message }) => of(loginFailure({ error: message })))
     )
@@ -86,7 +92,7 @@ export class AuthEffects {
         this.authService.signIn(email, password).pipe(
           map((data) => {
             this.toastService.show('Login successful!', 'success');
-            return this.emitLoginSuccess(data);
+            return this.emitAuthSuccess(data, loginSuccess);
           }),
           catchError(({ error: { msg } }) => {
             this.toastService.show(msg, 'error');
@@ -100,7 +106,7 @@ export class AuthEffects {
   setAuthCookie$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(loginSuccess),
+        ofType(loginSuccess, signupSuccess),
         tap((action) => {
           if (this.cookieService.check('REF_TOKEN')) {
             this.cookieService.delete('REF_TOKEN');
@@ -142,6 +148,24 @@ export class AuthEffects {
           catchError((error) => {
             console.log(error);
             return of(loadSignupDataFailure({ error: error.msg }));
+          })
+        )
+      )
+    )
+  );
+
+  signup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(signup),
+      switchMap(({ email, password, name }) =>
+        this.authService.signup(email, password, name).pipe(
+          map((data) => {
+            this.toastService.show('Signup successful!', 'success');
+            return this.emitAuthSuccess(data, signupSuccess);
+          }),
+          catchError(({ error: { msg } }) => {
+            this.toastService.show(msg, 'error');
+            return of(signupFailure({ error: msg }));
           })
         )
       )
