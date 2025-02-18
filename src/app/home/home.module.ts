@@ -5,6 +5,7 @@ import { HomeHeroComponent } from './home-hero/home-hero.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeBannerComponent } from './home-banner/home-banner.component';
 import { HomeRatingsComponent } from './home-ratings/home-ratings.component';
+import { HomeMealsShippedComponent } from './home-meals-shipped/home-meals-shipped.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { HomeRatingsComponent } from './home-ratings/home-ratings.component';
     HomeHeroComponent,
     HomeBannerComponent,
     HomeRatingsComponent,
+    HomeMealsShippedComponent,
   ],
   imports: [CommonModule, HomeRoutingModule],
   exports: [],

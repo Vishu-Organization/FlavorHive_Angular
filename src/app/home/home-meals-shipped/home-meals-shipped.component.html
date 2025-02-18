@@ -1,0 +1,39 @@
+<section id="meals-shipped" class="flex flex-col items-center gap-6 my-4">
+    <header class="text-center">
+        <h2 data-testid="text-home-meal-shipped-total-meals"
+            class="font-chronicle text-3xl font-bold text-primary lg:text-[40px]">
+            530+ million meals shipped
+        </h2>
+        <p class="max-w-80 text-lg text-black20 lg:max-w-96 lg:text-xl">
+            See why home cooks stick with the original American meal kit.
+        </p>
+    </header>
+
+    <div *ngIf="(mealsShippedData$ | async) as mealsShippedData" class="mx-2 grid gap-8 md:grid-cols-3 md:gap-0">
+        <article *ngFor="let item of mealsShippedData; let i = index; trackBy: trackById"
+            class="mx-6 grid gap-4 text-center text-[15px] leading-snug text-black20">
+            <figure>
+                <img [src]="item.image" [alt]="item.alt" class="rounded-md" />
+                <figcaption class="font-bold mt-3">{{ item.name }}</figcaption>
+            </figure>
+            <div>
+                <p class="!m-0">{{ item.description_primary }}</p>
+                <p>{{ item.description_secondary }}</p>
+            </div>
+        </article>
+
+    </div>
+
+    <footer class="mt-4 text-center">
+        <p class="!mb-6">
+            Get started for as little as
+            <span data-testid="text-home-meal-shipped-price-per-serving" class="!font-bold text-black20">
+                $7.99 per serving
+            </span>
+        </p>
+        <a data-testid="btn-home-meal-shipped-see-plans"
+            class="mt-4 w-40 py-3 px-4 text-center rounded-3xl transition-colors duration-200 ease-in text-sm font-semibold tracking-widest uppercase bg-primary hover:bg-primary-hover text-white hover:border-blue20">
+            See Plans
+        </a>
+    </footer>
+</section>
