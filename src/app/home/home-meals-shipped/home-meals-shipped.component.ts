@@ -12,9 +12,9 @@ import { HomeState } from 'src/store/home/reducer';
   styleUrls: ['./home-meals-shipped.component.scss'],
 })
 export class HomeMealsShippedComponent {
-  mealsShippedData$: Observable<MealsShipped[]>;
+  mealsShippedData$: Observable<MealsShipped[] | null>;
   mealsShippedLoading$: Observable<boolean>;
-  mealsShippedError$: Observable<string| null>;
+  mealsShippedError$: Observable<string | null>;
 
   constructor(
     private homeService: HomeService,
