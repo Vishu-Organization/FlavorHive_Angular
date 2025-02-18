@@ -28,7 +28,7 @@ export class HomeTestimonialsComponent implements OnDestroy {
     this.subs.add(
       this.homeService.testimonialsData$.subscribe((testimonials) => {
         this.testimonials = testimonials || [];
-        if (testimonials?.length) {
+        if (testimonials?.length && !this.intervalId) {
           this.intervalId = setInterval(() => {
             this.currentIndex =
               (this.currentIndex + 1) %
