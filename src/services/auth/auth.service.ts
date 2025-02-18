@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
+import { VITE_SUPABASE_URL } from 'src/store/types/urls';
 
-const VITE_SUPABASE_URL = 'https://opmliiavikfniknrvlgt.supabase.co';
 const SUPABASE_API_AUTH = `${VITE_SUPABASE_URL}/auth/v1`;
 
 @Injectable({

@@ -16,13 +16,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from 'src/interceptors/auth/auth.interceptor';
 import { ApikeyInterceptor } from 'src/interceptors/apikey/apikey.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HomeModule } from './home/home.module';
+import { homeReducer } from 'src/store/home/reducer';
+import { HomeEffects } from 'src/store/home/effects';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     NavigationModule,
-    HomeModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -34,10 +34,11 @@ import { HomeModule } from './home/home.module';
       {
         auth: authReducer,
         signupData: signupDataReducer,
+        home: homeReducer,
       },
       {}
     ),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, HomeEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
