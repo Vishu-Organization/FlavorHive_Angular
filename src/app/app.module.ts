@@ -16,13 +16,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from 'src/interceptors/auth/auth.interceptor';
 import { ApikeyInterceptor } from 'src/interceptors/apikey/apikey.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthModule } from './auth/auth.module';
-import { HomeComponent } from './home/home/home.component';
+import { HomeModule } from './home/home.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
     NavigationModule,
+    HomeModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
