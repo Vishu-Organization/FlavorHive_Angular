@@ -3,7 +3,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home/home.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', component: HomeComponent },
+  {
+    path: '',
+    pathMatch: 'full',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+  },
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),

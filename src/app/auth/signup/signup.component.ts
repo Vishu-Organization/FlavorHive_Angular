@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/services/auth/auth.service';
 import { ToastService } from 'src/services/toast/toast.service';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
 import { signup } from 'src/store/auth/actions';
 import { SignupDataState } from 'src/store/auth/reducer';
 import {
-  selectIsAuthenticated,
+  selectAuthLoading,
   selectSignupDataLoading,
   selectSignupHowItWorks,
 } from 'src/store/auth/selectors';
@@ -38,7 +37,7 @@ export class SignupComponent {
     this.buildForm();
     this.howItWorksData$ = this.store.select(selectSignupHowItWorks);
     this.howItWorksLoading$ = this.store.select(selectSignupDataLoading);
-    this.isAuthLoading$ = this.store.select(selectIsAuthenticated);
+    this.isAuthLoading$ = this.store.select(selectAuthLoading);
   }
 
   buildForm() {

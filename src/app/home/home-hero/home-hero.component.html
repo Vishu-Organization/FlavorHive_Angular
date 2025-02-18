@@ -1,0 +1,26 @@
+<header id="hero" class="relative block h-96 overflow-hidden">
+    <figure>
+        <picture>
+            <!-- Mobile Image -->
+            <source [srcset]="mobileSrcSet" media="(max-width: 768px)">
+            <!-- Desktop Image -->
+            <img data-testid="img-home-hero" alt="A spread of FlavorHive meals and ingredients" decoding="async"
+                class="absolute inset-0 h-full w-full object-cover" sizes="100vw"
+                [src]="'assets/home/hero/desktop/home-header-1920.webp'" [srcset]="desktopSrcSet" />
+        </picture>
+    </figure>
+
+    <div
+        class="absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/3 md:left-[3%] md:top-2/4 md:-translate-y-2/4 md:translate-x-0 flex justify-center flex-col items-center md:block">
+        <h2 data-testid="text-home-hero"
+            class="!max-w-[440px] !text-center !font-chronicle !text-3xl !font-semibold !text-primary !md:text-left !md:text-xl !lg:text-2xl !xl:text-3xl !2xl:text-[40px] !2xl:leading-snug">
+            Easy meal kits. <br />
+            Quality ingredients. <br />
+            Delivered to your door.
+        </h2>
+
+        <a data-testid="link-home-hero-see-plans" aria-label="See meal plans" class="inline-block mx-auto mt-4 px-4 py-2 !md:mx-0 !xl:mt-5 !xl:px-5 !xl:py-3 !2xl:mt-8 !2xl:px-7 !2xl:py-4 !rounded-3xl !uppercase !font-medium !bg-primary !hover:bg-primary-hover !text-white !hover:border-blue20">
+            See Plans
+        </a>
+    </div>
+</header>

@@ -87,12 +87,13 @@
                         </mat-form-field>
                     </article>
                     <div class="space-y-2 lg:space-y-4">
-                        <button (click)="onSignup()" [disabled]="isContinue && !signupForm.valid" mat-raised-button
-                            [type]="isContinue? 'submit': 'button'" color="primary" class="w-full uppercase" data-testid="btn-submit">
-                            <span [ngClass]="{'inline-block mr-2': (isAuthLoading$|async)}">{{isContinue ? "Sign Up" :
+                        <button (click)="onSignup()" [disabled]="(isContinue && !signupForm.valid) || (isAuthLoading$ | async)"
+                            mat-raised-button [type]="isContinue? 'submit': 'button'" color="primary" class="w-full uppercase"
+                            data-testid="btn-submit">
+                            <span [ngClass]="{'inline-block mr-2': (isAuthLoading$ | async)}">{{isContinue ? "Sign Up" :
                                 "Continue"}}</span>
-                        
-                            <mat-spinner *ngIf="(isAuthLoading$ | async)" diameter="20" strokeWidth="2"></mat-spinner>
+
+                            <mat-spinner *ngIf="(isAuthLoading$ | async)" color="accent" diameter="20" strokeWidth="2"></mat-spinner>
                         </button>
                         <div class="text-center text-sm font-bold tracking-wider text-black10">
                             OR
