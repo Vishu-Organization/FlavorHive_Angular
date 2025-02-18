@@ -1,5 +1,5 @@
 export interface MealsShippedState extends Loader {
-  data: MealsShipped[];
+  data: MealsShipped[] | null;
 };
 
 export interface Loader {
@@ -14,4 +14,14 @@ export interface MealsShipped {
   description_primary: string;
   description_secondary: string;
   alt:string
+}
+
+export interface Testimonial {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface TestimonialState extends Loader {
+  data: Testimonial[] | null;
 }

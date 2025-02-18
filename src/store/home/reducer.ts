@@ -1,13 +1,22 @@
 import { createReducer, on } from '@ngrx/store';
-import { MealsShippedState } from './_interfaces';
-import { loadMealsShipped, loadMealsShippedFailure, loadMealsShippedSuccess } from './actions';
+import { MealsShippedState, TestimonialState } from './_interfaces';
+import {
+  loadMealsShipped,
+  loadMealsShippedFailure,
+  loadMealsShippedSuccess,
+  loadTestimonials,
+  loadTestimonialsFailure,
+  loadTestimonialsSuccess,
+} from './actions';
 
 export interface HomeState {
   mealsShipped: MealsShippedState;
+  testimonials: TestimonialState;
 }
 
 const initialState: HomeState = {
   mealsShipped: { loading: false, error: null, data: [] },
+  testimonials: { loading: false, error: null, data: [] },
 };
 
 export const homeReducer = createReducer(
@@ -27,12 +36,37 @@ export const homeReducer = createReducer(
       data: data,
     },
   })),
-  on(loadMealsShippedFailure, (state, {error}) => ({
+  on(loadMealsShippedFailure, (state, { error }) => ({
     ...state,
     mealsShipped: {
       ...state.mealsShipped,
+      data: null,
       loading: false,
-      error
-    }
+      error,
+    },
+  })),
+  on(loadTestimonials, (state) => ({
+    ...state,
+    testimonials: {
+      ...state.testimonials,
+      loading: true,
+    },
+  })),
+  on(loadTestimonialsSuccess, (state, { data }) => ({
+    ...state,
+    testimonials: {
+      data,
+      loading: false,
+      error: null,
+    },
+  })),
+  on(loadTestimonialsFailure, (state, { error }) => ({
+    ...state,
+    testimonials: {
+      ...state.testimonials,
+      data: null,
+      loading: false,
+      error,
+    },
   }))
 );
