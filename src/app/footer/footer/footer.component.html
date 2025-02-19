@@ -1,0 +1,17 @@
+<footer
+    class="mt-auto grid grid-cols-[100px_120px_120px_1fr_1fr] bg-blue60 p-[2%] text-xs text-footer-primary md:grid-cols-5 md:p-[3%] lg:p-[4%] xl:px-[8%] xl:text-sm">
+    <!-- {productLinks.map(({ links, title }, id) => ( -->
+    <section *ngFor="let item of (footerLinks$|async) as footerLinks" class="space-y-2">
+        <span class="md:text-gray-50" [innerHTML]="item.title" ></span>
+        <!-- {title && (
+        )}
+        {links?.map(({ id, name, to, type, test_id }) => (
+        < title={name} to={to} type={type} testId={test_id}></>
+        ))} -->
+        <ng-container *ngFor="let link of item.links">
+            <app-footer-link [title]="link.name" [to]="link.to" [type]="link.type" ></app-footer-link>
+
+        </ng-container>
+    </section>
+    <!-- ))} -->
+</footer>
