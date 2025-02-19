@@ -36,3 +36,20 @@ export const selectTestimonialsError = createSelector(
   selectTestimonials,
   (state) => state.error
 );
+
+export const selectHomeRecipes = createSelector(
+  selectHomeState,
+  (state) => state.recipes
+);
+export const selectHomeRecipesData = createSelector(
+  selectHomeRecipes,
+  (state) => state.data
+);
+export const selectHomeRecipesLoading = createSelector(
+  selectHomeRecipes,
+  (state) => state.loading
+);
+export const selectHomeRecipesError = createSelector(
+  selectHomeRecipes,
+  (state) => state.error
+);

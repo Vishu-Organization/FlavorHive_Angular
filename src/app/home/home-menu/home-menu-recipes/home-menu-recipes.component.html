@@ -1,0 +1,25 @@
+<section class="py-8 px-4 xl:px-10">
+    <mat-spinner *ngIf="(homeMenuRecipesLoading$ | async)" diameter="40" strokeWidth="3"></mat-spinner>
+    <ul *ngIf="(homeMenuRecipes$ | async) as homeMenuRecipes"
+        class="grid max-w-full grid-cols-custom-10 gap-x-4 gap-y-10 overflow-x-auto lg:grid-cols-5 lg:gap-x-6 xl:gap-x-8">
+        <li *ngFor="let item of homeMenuRecipes | keyvalue; trackBy: trackByKey"
+            class="flex shrink-0 flex-col gap-4">
+            <article class="flex flex-col items-center gap-2">
+                <a routerLink='/on-the-menu' [queryParams]="generateQueryParam(item.value.selector, item.key)" aria-label="View menu">
+                    <img [src]="item.value.recipe?.image" [attr.srcset]="generateSrcSet(item.value.recipe?.images)"
+                        [alt]="item.value.recipe?.label" class="h-48 w-full rounded-md xl:h-auto" />
+                </a>
+
+                <div class="space-y-2 text-center">
+                    <span class="text-[13px] font-bold uppercase tracking-[1.3px] text-blue70 lg:text-sm">
+                        {{ item.key }}
+                    </span>
+                    <p class="text-sm font-medium leading-tight text-primary-info lg:text-base">
+                        {{ item.value.recipe?.label }}
+                    </p>
+                </div>
+            </article>
+        </li>
+    </ul>
+    <p *ngIf="(homeMenuRecipesError$ | async) as homeMenuRecipesError">{{homeMenuRecipesError}}</p>
+</section>
