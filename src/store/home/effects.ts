@@ -1,5 +1,8 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  loadHomeMenuRecipes,
+  loadHomeMenuRecipesFailure,
+  loadHomeMenuRecipesSuccess,
   loadMealsShipped,
   loadMealsShippedFailure,
   loadMealsShippedSuccess,
@@ -39,6 +42,24 @@ export class HomeEffects {
           catchError(({ error: { msg } }) =>
             of(loadMealsShippedFailure({ error: msg }))
           )
+        )
+      )
+    )
+  );
+
+  loadHomeMenuRecipes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadHomeMenuRecipes),
+      mergeMap(() =>
+        this.homeService.getHomeMenuRecipes().pipe(
+          map((data) => loadHomeMenuRecipesSuccess({ data })),
+          catchError(({ error: { message }, ok, status }) => {
+            if (status === 401) {
+              message =
+                'You are not authorized to view the recipes. Please contact the support team!';
+            }
+            return of(loadHomeMenuRecipesFailure({ error: message }));
+          })
         )
       )
     )

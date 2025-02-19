@@ -1,0 +1,17 @@
+<section id="home-menu" class="mt-4 flex flex-col items-center justify-center text-center">
+    <header>
+        <h2 data-testid="text-home-menu-choose"
+            class="text-2xl font-semibold tracking-[5.4px] text-primary uppercase lg:text-4xl">
+            Choose from
+            <span data-testid="text-home-menu-weekly-options"
+                class="block mt-2 font-chronicle text-4xl font-semibold text-blue-info lg:text-5xl">
+                100+ weekly options
+            </span>
+        </h2>
+    </header>
+    <app-home-menu-recipes></app-home-menu-recipes>
+    <a routerLink="/on-the-menu" data-testid="link-home-menu-browse-menu"
+        class="w-64 rounded-3xl border-2 border-primary py-3 uppercase tracking-[2.5px] text-primary hover:no-underline">
+        Browse our menus
+    </a>
+</section>

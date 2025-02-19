@@ -1,6 +1,14 @@
 import { createReducer, on } from '@ngrx/store';
-import { MealsShippedState, TestimonialState } from './_interfaces';
 import {
+  HomeMenu,
+  HomeRecipesState,
+  MealsShippedState,
+  TestimonialState,
+} from './_interfaces';
+import {
+  loadHomeMenuRecipes,
+  loadHomeMenuRecipesFailure,
+  loadHomeMenuRecipesSuccess,
   loadMealsShipped,
   loadMealsShippedFailure,
   loadMealsShippedSuccess,
@@ -12,11 +20,13 @@ import {
 export interface HomeState {
   mealsShipped: MealsShippedState;
   testimonials: TestimonialState;
+  recipes: HomeRecipesState;
 }
 
 const initialState: HomeState = {
   mealsShipped: { loading: false, error: null, data: [] },
   testimonials: { loading: false, error: null, data: [] },
+  recipes: { loading: false, error: null, data: {} as HomeMenu },
 };
 
 export const homeReducer = createReducer(
@@ -67,6 +77,26 @@ export const homeReducer = createReducer(
       data: null,
       loading: false,
       error,
+    },
+  })),
+  on(loadHomeMenuRecipes, (state) => ({
+    ...state,
+    recipes: { ...state.recipes, loading: true, error: null },
+  })),
+  on(loadHomeMenuRecipesSuccess, (state, { data }) => ({
+    ...state,
+    recipes: {
+      data,
+      error: null,
+      loading: false,
+    },
+  })),
+  on(loadHomeMenuRecipesFailure, (state, { error }) => ({
+    ...state,
+    recipes: {
+      data: null,
+      error,
+      loading: false,
     },
   }))
 );

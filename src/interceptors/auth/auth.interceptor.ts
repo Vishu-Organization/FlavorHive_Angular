@@ -24,7 +24,15 @@ export class AuthInterceptor implements HttpInterceptor {
         if (accessToken) {
           headers['Authorization'] = `Bearer ${accessToken}`
         }
-        const clonedRequest = request.clone({setHeaders: headers})
+
+        let clonedRequest;
+
+        if (!request.url.includes('edamam')) {
+          clonedRequest = request.clone({ setHeaders: headers });
+        } else {
+          clonedRequest = request.clone({});
+        }
+
         return next.handle(clonedRequest);
 
        }

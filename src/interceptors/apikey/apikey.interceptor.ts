@@ -16,6 +16,15 @@ export class ApikeyInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const headers: { [key: string]: string } = { apikey: VITE_SUPABASE_KEY };
-    return next.handle(request.clone({ setHeaders: headers }));
+
+     let clonedRequest;
+
+     if (!request.url.includes('edamam')) {
+       clonedRequest = request.clone({ setHeaders: headers });
+     } else {
+       clonedRequest = request.clone({});
+     }
+
+     return next.handle(request.clone(clonedRequest));
   }
 }
