@@ -22,7 +22,6 @@ export class HomeMenuRecipesComponent {
     private homeService: HomeService
   ) {
     this.store.dispatch(loadHomeMenuRecipes());
-
     this.homeMenuRecipes$ = this.homeService.homeReciepesData$;
     this.homeMenuRecipesLoading$ = this.homeService.homeReciepesLoading$;
     this.homeMenuRecipesError$ = this.homeService.homeReciepesError$;

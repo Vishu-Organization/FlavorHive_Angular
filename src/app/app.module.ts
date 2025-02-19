@@ -18,9 +18,13 @@ import { ApikeyInterceptor } from 'src/interceptors/apikey/apikey.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { homeReducer } from 'src/store/home/reducer';
 import { HomeEffects } from 'src/store/home/effects';
+import { FooterComponent } from './footer/footer/footer.component';
+import { footerReducer } from 'src/store/footer/reducer';
+import { FooterLinkComponent } from './footer/footer/footer-link/footer-link.component';
+import { FooterEffects } from 'src/store/footer/effects';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, FooterComponent, FooterLinkComponent],
   imports: [
     NavigationModule,
     BrowserModule,
@@ -35,10 +39,11 @@ import { HomeEffects } from 'src/store/home/effects';
         auth: authReducer,
         signupData: signupDataReducer,
         home: homeReducer,
+        footer: footerReducer,
       },
       {}
     ),
-    EffectsModule.forRoot([AuthEffects, HomeEffects]),
+    EffectsModule.forRoot([AuthEffects, HomeEffects, FooterEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
