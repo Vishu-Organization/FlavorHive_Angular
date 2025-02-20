@@ -44,7 +44,7 @@
                 <ng-template #loggedIn>
                     <span *ngIf="(user$|async) as user" [ngClass]="user.name ? 'capitalize': 'normal-case'">Welcome {{user.name ||
                         user.email }}!</span>
-                    <button mat-button data-testid="btn-logout" class="ml-4 text-red-400" (click)="onLogout()">
+                    <button mat-button data-testid="btn-logout" class="ml-4 !text-red-400" (click)="onLogout()">
                         <mat-icon>logout</mat-icon>
                     </button>
                 

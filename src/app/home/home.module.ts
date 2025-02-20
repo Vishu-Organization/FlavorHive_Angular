@@ -11,6 +11,7 @@ import { HomeTestimonialsComponent } from './home-testimonials/home-testimonials
 import { HomeMenuComponent } from './home-menu/home-menu.component';
 import { HomeMenuRecipesComponent } from './home-menu/home-menu-recipes/home-menu-recipes.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../shared/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HomeMenuComponent,
     HomeMenuRecipesComponent,
   ],
-  imports: [CommonModule, HomeRoutingModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    HomeRoutingModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+  ],
   exports: [],
 })
 export class HomeModule {}

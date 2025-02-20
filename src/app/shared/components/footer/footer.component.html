@@ -1,0 +1,8 @@
+<footer
+    class="mt-auto grid grid-cols-[100px_120px_120px_1fr_1fr] bg-blue60 p-[2%] text-xs text-footer-primary md:grid-cols-5 md:p-[3%] lg:p-[4%] xl:px-[8%] xl:text-sm">
+    <section *ngFor="let item of (footerLinks$|async) as footerLinks" class="space-y-2">
+        <span *ngIf="item.title" class="md:text-gray-50 py-1 inline-block" [innerHTML]="item.title"></span>
+        <app-footer-link *ngFor="let link of item.links" [title]="link.name" [to]="link.to"
+            [type]="link.type"></app-footer-link>
+    </section>
+</footer>

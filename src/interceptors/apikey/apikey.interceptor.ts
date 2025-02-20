@@ -19,7 +19,7 @@ export class ApikeyInterceptor implements HttpInterceptor {
 
      let clonedRequest;
 
-     if (!request.url.includes('edamam')) {
+     if (request.url.includes('supabase')) {
        clonedRequest = request.clone({ setHeaders: headers });
      } else {
        clonedRequest = request.clone({});
