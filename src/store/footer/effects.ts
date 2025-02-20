@@ -7,7 +7,7 @@ import {
 } from './actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { FooterService } from 'src/services/footer/footer.service';
-import { loginSuccess, logoutSuccess } from '../auth/actions';
+import { loginSuccess, logoutSuccess, signupSuccess } from '../auth/actions';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,7 @@ export class FooterEffects {
 
   loadFooterLinks$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadFooterLinks, loginSuccess, logoutSuccess),
+      ofType(loadFooterLinks, loginSuccess, logoutSuccess, signupSuccess),
       mergeMap(() =>
         this.footerService.getFooterLinks().pipe(
           map((data) => loadFooterLinksSuccess({ data })),

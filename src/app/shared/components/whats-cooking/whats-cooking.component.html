@@ -1,0 +1,72 @@
+<section id="whats-cooking" class="bg-gray30 pb-4 shadow-inner lg:grid lg:grid-flow-col lg:justify-evenly">
+    <div id="follow-us" class="p-5 lg:border-r-2 lg:border-gray-200">
+        <h3 data-testid="text-follow-us"
+            class="hidden text-center text-sm font-medium uppercase tracking-widest text-black10 md:block">
+            Follow Us
+        </h3>
+        <ul class="grid list-none grid-flow-col justify-center">
+            <li *ngFor="let icon of icons"
+                class="mx-4 my-3 rounded-lg py-2 transition-all duration-200 ease-in md:p-1 md:hover:bg-gray-200">
+                <a [attr.aria-label]="icon.name" [href]="icon.to" target="_blank" class="flex size-8 justify-center">
+                    <fa-icon [icon]="icon.icon" class="text-2xl" [ngClass]="icon.classes"></fa-icon>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="newsletter-signup" class="mx-auto max-w-80 text-center md:space-y-4 lg:max-w-96 lg:p-5">
+        <h3 data-testid="text-discover-whats-cookin"
+            class="hidden text-center text-sm font-medium uppercase tracking-widest text-black10 md:block">
+            Discover what's cookin'
+        </h3>
+
+        <form [formGroup]="emailForm" class="grid grid-flow-col grid-cols-[80%,1fr]" (ngSubmit)="onSignUp()"
+            aria-labelledby="login-header">
+
+            <!-- Email Field -->
+            <article>
+                <mat-form-field appearance="fill" floatLabel="always" class="w-full">
+                    <mat-label for="email">Email</mat-label>
+                    <input id="email" matInput type="email" formControlName="email" aria-required="true"
+                        aria-describedby="email-error" autocomplete="email" />
+                    <mat-error *ngIf="emailForm.controls.email.hasError('required') " id="email-error">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="emailForm.controls.email.hasError('email')">
+                        Invalid email format
+                    </mat-error>
+                </mat-form-field>
+            </article>
+            <button mat-raised-button class="!h-14 !rounded-none !rounded-r !text-white uppercase" color="primary"
+                type="submit" [disabled]="!emailForm.valid" aria-label="Go">Go</button>
+        </form>
+
+        <aside data-testid="info-offers"
+            class="mt-4 align-baseline text-sm font-normal leading-relaxed text-header-primary md:mt-0">
+            Sign up for offers, recipes, news, & more (subscribers to the
+            FlavorHive recipe newsletter agree to our Privacy Policy)
+        </aside>
+    </div>
+    <div id="blog-preview" class="hidden space-y-4 p-5 md:block lg:border-l-2 lg:border-gray-200 justify-self-center">
+        <h3 data-testid="text-from-the-blog"
+            class="text-center text-sm font-medium uppercase tracking-widest text-black10 md:block">
+            From the blog
+        </h3>
+        <mat-spinner class="mx-auto" *ngIf="(blogLoading$|async)" diameter="30" strokeWidth="2"></mat-spinner>
+
+        <div *ngIf="(blog$|async) as blog" class="flex items-center justify-center gap-5">
+            <div class="relative overflow-hidden rounded-lg">
+                <div class="group">
+                    <img data-testid="img-blog-item" [src]="blog.image" [alt]="blog.title"
+                        class="size-24 w-full rounded-md transition-transform duration-300 group-hover:scale-110" />
+                </div>
+            </div>
+            <span class="w-40 text-sm leading-tight text-black10">
+                <a aria-label={recipe.title} data-testid="link-external-blog-item" [href]="blog.sourceUrl"
+                    target="_blank" class="cursor-pointer">
+                    {{blog.title}}
+                </a>
+            </span>
+        </div>
+        <span *ngIf="(blogError$|async) as blogError">{{blogError}}</span>
+    </div>
+</section>

@@ -18,13 +18,17 @@ import { ApikeyInterceptor } from 'src/interceptors/apikey/apikey.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { homeReducer } from 'src/store/home/reducer';
 import { HomeEffects } from 'src/store/home/effects';
-import { FooterComponent } from './footer/footer/footer.component';
+
 import { footerReducer } from 'src/store/footer/reducer';
-import { FooterLinkComponent } from './footer/footer/footer-link/footer-link.component';
+
 import { FooterEffects } from 'src/store/footer/effects';
+import { WhatsCookingComponent } from './shared/components/whats-cooking/whats-cooking.component';
+import { SharedModule } from './shared/shared/shared.module';
+import { sharedReducer } from 'src/store/shared/reducer';
+import { SharedEffects } from 'src/store/shared/effects';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, FooterLinkComponent],
+  declarations: [AppComponent],
   imports: [
     NavigationModule,
     BrowserModule,
@@ -40,16 +44,24 @@ import { FooterEffects } from 'src/store/footer/effects';
         signupData: signupDataReducer,
         home: homeReducer,
         footer: footerReducer,
+        shared: sharedReducer,
       },
       {}
     ),
-    EffectsModule.forRoot([AuthEffects, HomeEffects, FooterEffects]),
+    EffectsModule.forRoot([
+      AuthEffects,
+      HomeEffects,
+      FooterEffects,
+      SharedEffects,
+    ]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    SharedModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ApikeyInterceptor, multi: true },
   ],
+  exports: [WhatsCookingComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

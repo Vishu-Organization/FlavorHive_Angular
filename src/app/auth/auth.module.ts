@@ -12,18 +12,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SignupComponent } from './signup/signup.component';
 import { HowItWorksComponent } from './signup/how-it-works/how-it-works.component';
 import { AdditionalInfoComponent } from './signup/additional-info/additional-info.component';
+import { SharedModule } from '../shared/shared/shared.module';
 
 @NgModule({
-  declarations: [LoginComponent, SignupComponent, HowItWorksComponent, AdditionalInfoComponent],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatCheckboxModule,
+  declarations: [
+    LoginComponent,
+    SignupComponent,
+    HowItWorksComponent,
+    AdditionalInfoComponent,
   ],
+  imports: [CommonModule, AuthRoutingModule, SharedModule],
 })
 export class AuthModule {}
