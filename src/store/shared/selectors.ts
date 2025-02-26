@@ -1,7 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SharedState } from './_interfaces';
 
-const selectSharedState = createFeatureSelector<SharedState>('shared');
+const selectSharedState =
+  createFeatureSelector<Readonly<SharedState>>('shared');
 
 const selectBlogState = createSelector(selectSharedState, ({ blog }) => blog);
 const selectEmailSignupState = createSelector(

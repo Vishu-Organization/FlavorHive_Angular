@@ -1,30 +1,30 @@
-export interface MealsShippedState extends Loader {
-  data: MealsShipped[] | null;
-};
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface Loader {
-    error: null | string;
-    loading: boolean;
+  error: null | string;
+  loading: boolean;
 }
-
 export interface MealsShipped {
   id: number;
   image: string;
   name: string;
   description_primary: string;
   description_secondary: string;
-  alt:string
+  alt: string;
 }
+export interface MealsShippedState extends EntityState<MealsShipped>, Loader {}
 
+export const mealsShippedAdapter: EntityAdapter<MealsShipped> =
+  createEntityAdapter<MealsShipped>();
 export interface Testimonial {
   id: number;
   name: string;
   description: string;
 }
+export interface TestimonialState extends EntityState<Testimonial>, Loader {}
 
-export interface TestimonialState extends Loader {
-  data: Testimonial[] | null;
-}
+export const testimonialsAdapter: EntityAdapter<Testimonial> =
+  createEntityAdapter<Testimonial>();
 
 export interface HomeRecipesState extends Loader {
   data: null | HomeMenu;

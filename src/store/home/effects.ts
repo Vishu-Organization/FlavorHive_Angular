@@ -1,13 +1,8 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  loadHomeMenuRecipes,
-  loadHomeMenuRecipesFailure,
-  loadHomeMenuRecipesSuccess,
-  loadMealsShipped,
-  loadMealsShippedFailure,
-  loadMealsShippedSuccess,
-  loadTestimonials,
-  loadTestimonialsSuccess,
+  HomeMenuActions,
+  MealsShippedActions,
+  TestimonialsActions,
 } from './actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
@@ -21,12 +16,12 @@ export class HomeEffects {
 
   loadMealsShipped$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadMealsShipped),
+      ofType(MealsShippedActions.load),
       mergeMap(() => {
         return this.homeService.getMealsShippedData().pipe(
-          map((data) => loadMealsShippedSuccess({ data })),
+          map((data) => MealsShippedActions.loadSuccess({ data })),
           catchError(({ error: { msg } }) =>
-            of(loadMealsShippedFailure({ error: msg }))
+            of(MealsShippedActions.loadFailure({ error: msg }))
           )
         );
       })
@@ -35,12 +30,12 @@ export class HomeEffects {
 
   loadTestimonials$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadTestimonials),
+      ofType(TestimonialsActions.load),
       mergeMap(() =>
         this.homeService.getTestimonials().pipe(
-          map((data) => loadTestimonialsSuccess({ data })),
+          map((data) => TestimonialsActions.loadSuccess({ data })),
           catchError(({ error: { msg } }) =>
-            of(loadMealsShippedFailure({ error: msg }))
+            of(TestimonialsActions.loadFailure({ error: msg }))
           )
         )
       )
@@ -49,16 +44,16 @@ export class HomeEffects {
 
   loadHomeMenuRecipes$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadHomeMenuRecipes),
+      ofType(HomeMenuActions.load),
       mergeMap(() =>
         this.homeService.getHomeMenuRecipes().pipe(
-          map((data) => loadHomeMenuRecipesSuccess({ data })),
+          map((data) => HomeMenuActions.loadSuccess({ data })),
           catchError(({ error: { message }, ok, status }) => {
             if (status === 401) {
               message =
                 'You are not authorized to view the recipes. Please contact the support team!';
             }
-            return of(loadHomeMenuRecipesFailure({ error: message }));
+            return of(HomeMenuActions.loadFailure({ error: message }));
           })
         )
       )

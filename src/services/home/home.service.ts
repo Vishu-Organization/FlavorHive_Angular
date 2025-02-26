@@ -28,12 +28,14 @@ import {
   selectHomeRecipesData,
   selectHomeRecipesError,
   selectHomeRecipesLoading,
-  selectMealsShippedData,
+  selectMealsShippedState,
   selectMealsShippedError,
   selectMealsShippedLoading,
-  selectTestimonialsData,
+  selectTestimonialsState,
   selectTestimonialsError,
   selectTestimonialsLoading,
+  selectAllMealsShipped,
+  selectAllTestimonials,
 } from 'src/store/home/selectors';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
 
@@ -65,11 +67,11 @@ export class HomeService {
   });
 
   constructor(private http: HttpClient, private store: Store<HomeState>) {
-    this.mealsShippedData$ = this.store.select(selectMealsShippedData);
+    this.mealsShippedData$ = this.store.select(selectAllMealsShipped);
     this.mealsShippedLoading$ = this.store.select(selectMealsShippedLoading);
     this.mealsShippedError$ = this.store.select(selectMealsShippedError);
 
-    this.testimonialsData$ = this.store.select(selectTestimonialsData);
+    this.testimonialsData$ = this.store.select(selectAllTestimonials);
     this.testimonialsLoading$ = this.store.select(selectTestimonialsLoading);
     this.testimonialsError$ = this.store.select(selectTestimonialsError);
 

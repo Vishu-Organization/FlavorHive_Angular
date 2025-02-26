@@ -9,8 +9,9 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SharedService } from 'src/services/shared/shared.service';
+import { ToastService } from 'src/services/toast/toast.service';
 import { BlogRecipe, SharedState } from 'src/store/shared/_interfaces';
-import { emailSignup, loadBlog } from 'src/store/shared/actions';
+import { BlogActions, EmailSignupActions } from 'src/store/shared/actions';
 
 type EmailForm = {
   email: FormControl<string | null>;
@@ -69,12 +70,12 @@ export class WhatsCookingComponent {
     this.isEmailAdded$ = this.sharedService.isEmailAdded$;
 
     this.blog$.subscribe(
-      (data) => !data && this.store.dispatch(loadBlog({ number: 1 }))
+      (data) => !data && this.store.dispatch(BlogActions.load({ number: 1 }))
     );
 
     this.isEmailAdded$.subscribe((isAdded) => {
       if (isAdded) {
-        this.emailForm.reset();
+      this.emailForm.reset();
         this.emailForm.controls.email.setErrors(null);
       }
     });
@@ -82,6 +83,6 @@ export class WhatsCookingComponent {
 
   onSignUp() {
     const { email } = this.emailForm.value;
-    email && this.store.dispatch(emailSignup({ email }));
+    email && this.store.dispatch(EmailSignupActions.signup({ email }));
   }
 }

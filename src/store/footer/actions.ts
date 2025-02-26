@@ -1,18 +1,16 @@
-import { createAction, props } from '@ngrx/store';
+import {
+  createAction,
+  createActionGroup,
+  emptyProps,
+  props,
+} from '@ngrx/store';
 import { FooterLinkItem } from './_interfaces';
 
-const FooterActionTypes = {
-  LoadFooterLinks: '[Footer] Load Links',
-  LoadFooterLinksSuccess: '[Footer] Load Links Success',
-  LoadFooterLinksFailure: '[Footer] Load Links Failure',
-};
-
-export const loadFooterLinks = createAction(FooterActionTypes.LoadFooterLinks);
-export const loadFooterLinksSuccess = createAction(
-    FooterActionTypes.LoadFooterLinksSuccess,
-    props<{data: FooterLinkItem[]}>()
-);
-export const loadFooterLinksFailure = createAction(
-    FooterActionTypes.LoadFooterLinksFailure,
-    props<{error: string}>()
-);
+export const FooterActions = createActionGroup({
+  source: 'Footer',
+  events: {
+    Load: emptyProps(),
+    'Load Success': props<{ data: FooterLinkItem[] }>(),
+    'Load Failure': props<{ error: string }>(),
+  },
+});

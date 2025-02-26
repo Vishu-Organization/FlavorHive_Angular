@@ -1,55 +1,65 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { HomeState } from './reducer';
+import { mealsShippedAdapter, testimonialsAdapter } from './_interfaces';
 
 export const selectHomeState = createFeatureSelector<HomeState>('home');
 
-export const selectMealsShipped = createSelector(
+export const selectMealsShippedState = createSelector(
   selectHomeState,
-  (state) => state.mealsShipped
-);
-export const selectMealsShippedData = createSelector(
-  selectMealsShipped,
-  (state) => state.data
-);
-export const selectMealsShippedLoading = createSelector(
-  selectMealsShipped,
-  (state) => state.loading
-);
-export const selectMealsShippedError = createSelector(
-  selectMealsShipped,
-  (state) => state.error
+  ({ mealsShipped }) => mealsShipped
 );
 
-export const selectTestimonials = createSelector(
+// Get Built-in Entity Selectors for Meals Shipped
+export const {
+  selectAll: selectAllMealsShipped,
+  selectEntities: selectMealsShippedEntities,
+  selectIds: selectMealsShippedIds,
+  selectTotal: selectMealsShippedTotal,
+} = mealsShippedAdapter.getSelectors(selectMealsShippedState);
+
+export const selectMealsShippedLoading = createSelector(
+  selectMealsShippedState,
+  ({ loading }) => loading
+);
+export const selectMealsShippedError = createSelector(
+  selectMealsShippedState,
+  ({ error }) => error
+);
+export const selectTestimonialsState = createSelector(
   selectHomeState,
-  (state) => state.testimonials
+  ({ testimonials }) => testimonials
 );
-export const selectTestimonialsData = createSelector(
-  selectTestimonials,
-  (state) => state.data
-);
+
+// Get Built-in Entity Selectors for Testimonials
+export const {
+  selectAll: selectAllTestimonials,
+  selectEntities: selectTestimonialEntities,
+  selectIds: selectTestimonialIds,
+  selectTotal: selectTestimonialTotal,
+} = testimonialsAdapter.getSelectors(selectTestimonialsState);
+
 export const selectTestimonialsLoading = createSelector(
-  selectTestimonials,
-  (state) => state.loading
+  selectTestimonialsState,
+  ({ loading }) => loading
 );
 export const selectTestimonialsError = createSelector(
-  selectTestimonials,
-  (state) => state.error
+  selectTestimonialsState,
+  ({ error }) => error
 );
 
 export const selectHomeRecipes = createSelector(
   selectHomeState,
-  (state) => state.recipes
+  ({ recipes }) => recipes
 );
 export const selectHomeRecipesData = createSelector(
   selectHomeRecipes,
-  (state) => state.data
+  ({ data }) => data
 );
 export const selectHomeRecipesLoading = createSelector(
   selectHomeRecipes,
-  (state) => state.loading
+  ({ loading }) => loading
 );
 export const selectHomeRecipesError = createSelector(
   selectHomeRecipes,
-  (state) => state.error
+  ({ error }) => error
 );

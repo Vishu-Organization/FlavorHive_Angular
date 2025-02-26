@@ -10,7 +10,7 @@ import { VITE_SUPABASE_URL } from 'src/store/types/urls';
   providedIn: 'root',
 })
 export class FooterService {
-  footerLinksData$: Observable<FooterLinkItem[] | null>;
+  footerLinks$: Observable<FooterLinkItem[] | null>;
   footerLinksLoading$: Observable<boolean>;
   footerLinksError$: Observable<string | null>;
 
@@ -20,10 +20,9 @@ export class FooterService {
   });
 
   constructor(private http: HttpClient, private store: Store<FooterState>) {
-    this.footerLinksData$ = this.store.select(selectFooterLinksData);
+    this.footerLinks$ = this.store.select(selectFooterLinksData);
     this.footerLinksLoading$ = this.store.select(selectFooterLinksLoading);
     this.footerLinksError$ = this.store.select(selectFooterLinksError);
-
   }
 
   getFooterLinks(): Observable<FooterLinkItem[]> {

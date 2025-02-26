@@ -1,18 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  loadSignupData,
-  loadSignupDataFailure,
-  loadSignupDataSuccess,
-  login,
-  loginFailure,
-  loginSuccess,
-  logout,
-  logoutFailure,
-  logoutSuccess,
-  signup,
-  signupFailure,
-  signupSuccess,
-} from './actions';
+import { AuthActions, AuthDataActions } from './actions';
 import { IToken } from 'src/app/types/token';
 import { ISignupData } from './_interfaces';
 
@@ -42,27 +29,31 @@ const initialSignupDataState: SignupDataState = {
 
 export const authReducer = createReducer(
   initialState,
-  on(login, (state) => ({ ...state, loading: true, error: null })),
-  on(loginSuccess, (state, { token }) => ({
+  on(AuthActions.login, (state) => ({ ...state, loading: true, error: null })),
+  on(AuthActions.loginSuccess, (state, { token }) => ({
     ...state,
     token,
     loading: false,
   })),
-  on(loginFailure, (state, { error }) => ({ ...state, error, loading: false })),
-  on(logout, (state) => ({ ...state, loading: true, error: null })),
-  on(logoutSuccess, () => initialState),
-  on(logoutFailure, (state, { error }) => ({
+  on(AuthActions.loginFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false,
   })),
-  on(signup, (state) => ({ ...state, loading: true, error: null })),
-  on(signupSuccess, (state, { token }) => ({
+  on(AuthActions.logout, (state) => ({ ...state, loading: true, error: null })),
+  on(AuthActions.logoutSuccess, () => initialState),
+  on(AuthActions.logoutFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(AuthActions.signup, (state) => ({ ...state, loading: true, error: null })),
+  on(AuthActions.signupSuccess, (state, { token }) => ({
     ...state,
     token,
     loading: false,
   })),
-  on(signupFailure, (state, { error }) => ({
+  on(AuthActions.signupFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false,
@@ -71,13 +62,17 @@ export const authReducer = createReducer(
 
 export const signupDataReducer = createReducer(
   initialSignupDataState,
-  on(loadSignupData, (state) => ({ ...state, loading: true, error: null })),
-  on(loadSignupDataSuccess, (state, data) => ({
+  on(AuthDataActions.load, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(AuthDataActions.loadSuccess, (state, data) => ({
     ...state,
     data,
     loading: false,
   })),
-  on(loadSignupDataFailure, (state, { error }) => ({
+  on(AuthDataActions.loadFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false,

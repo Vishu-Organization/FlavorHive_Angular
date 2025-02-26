@@ -1,26 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import { SharedState } from './_interfaces';
-import {
-  emailSignup,
-  emailSignupFailure,
-  emailSignupSuccess,
-  loadBlog,
-  loadBlogFailure,
-  loadBlogSuccess,
-} from './actions';
+import { BlogActions, EmailSignupActions } from './actions';
 
-const initialState: SharedState = {
+const initialState: Readonly<SharedState> = {
   blog: { data: null, loading: false, error: null },
   emailSignup: { data: null, loading: false, error: null },
 };
 
 export const sharedReducer = createReducer(
   initialState,
-  on(loadBlog, (state) => ({
+  on(BlogActions.load, (state) => ({
     ...state,
     blog: { ...state.blog, loading: true, error: null },
   })),
-  on(loadBlogSuccess, (state, { data }) => ({
+  on(BlogActions.loadSuccess, (state, { data }) => ({
     ...state,
     blog: {
       loading: false,
@@ -28,19 +21,19 @@ export const sharedReducer = createReducer(
       data,
     },
   })),
-  on(loadBlogFailure, (state, { error }) => ({
+  on(BlogActions.loadFailure, (state, { error }) => ({
     ...state,
     blog: { ...state.blog, loading: false, error },
   })),
-  on(emailSignup, (state) => ({
+  on(EmailSignupActions.signup, (state) => ({
     ...state,
-    emailSignup: { loading: true, data:null, error: null },
+    emailSignup: { loading: true, data: null, error: null },
   })),
-  on(emailSignupSuccess, (state, { isAdded }) => ({
+  on(EmailSignupActions.signupSuccess, (state, { isAdded }) => ({
     ...state,
     emailSignup: { data: isAdded, loading: false, error: null },
   })),
-  on(emailSignupFailure, (state, { error }) => ({
+  on(EmailSignupActions.signupFailure, (state, { error }) => ({
     ...state,
     emailSignup: { data: null, loading: false, error },
   }))

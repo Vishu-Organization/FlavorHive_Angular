@@ -1,10 +1,15 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ToastService } from 'src/services/toast/toast.service';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
-import { signup } from 'src/store/auth/actions';
+import { AuthActions } from 'src/store/auth/actions';
 import { SignupDataState } from 'src/store/auth/reducer';
 import {
   selectAuthLoading,
@@ -67,6 +72,6 @@ export class SignupComponent {
     email &&
       name &&
       password &&
-      this.store.dispatch(signup({ email, name, password }));
+      this.store.dispatch(AuthActions.signup({ email, name, password }));
   }
 }

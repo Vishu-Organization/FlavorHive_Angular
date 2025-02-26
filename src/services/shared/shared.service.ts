@@ -22,7 +22,7 @@ export class SharedService {
   SPOONACULAR_API_KEY = '0ad73f1850d44208bf7af88a748ec9fd';
   SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes/random';
 
-  blog$: Observable<BlogRecipe | null>;
+  blog$: Observable<Readonly<BlogRecipe | null>>;
   blogLoading$: Observable<boolean>;
   blogError$: Observable<string | null>;
   isEmailAdded$: Observable<boolean | null>;

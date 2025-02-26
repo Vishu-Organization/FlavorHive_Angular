@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { SharedService } from 'src/services/shared/shared.service';
-import {
-  emailSignup,
-  emailSignupFailure,
-  emailSignupSuccess,
-  loadBlog,
-  loadBlogFailure,
-  loadBlogSuccess,
-} from './actions';
+import { BlogActions, EmailSignupActions } from './actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { BlogRecipe } from './_interfaces';
 import { ToastService } from 'src/services/toast/toast.service';
@@ -17,11 +10,11 @@ import { ToastService } from 'src/services/toast/toast.service';
 export class SharedEffects {
   loadBlog$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadBlog),
+      ofType(BlogActions.load),
       mergeMap(({ number }) =>
         this.sharedService.getFoodBlogs(number).pipe(
-          map((data) => loadBlogSuccess({ data: data as BlogRecipe })),
-          catchError((error) => of(loadBlogFailure({ error })))
+          map((data) => BlogActions.loadSuccess({ data: data as BlogRecipe })),
+          catchError((error) => of(BlogActions.loadFailure({ error })))
         )
       )
     )
@@ -29,10 +22,15 @@ export class SharedEffects {
 
   emailSignup = createEffect(() =>
     this.actions$.pipe(
-      ofType(emailSignup),
+      ofType(EmailSignupActions.signup),
       mergeMap(({ email }) =>
         this.sharedService.onEmailSignUp(email).pipe(
-          map(() => emailSignupSuccess({ isAdded: !!email })),
+          map(() => {
+            this.toastService.show(
+              'Successfully added the email to subscribers list'
+            );
+            return EmailSignupActions.signupSuccess({ isAdded: !!email });
+          }),
           catchError(({ status }) => {
             let error = '';
             if (status === 409) {
@@ -43,7 +41,7 @@ export class SharedEffects {
                 'An error occurred while signing up, please try again later!!',
               'error'
             );
-            return of(emailSignupFailure({ error }));
+            return of(EmailSignupActions.signupFailure({ error }));
           })
         )
       )
