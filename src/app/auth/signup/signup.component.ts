@@ -8,12 +8,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ToastService } from 'src/services/toast/toast.service';
-import { ISignupDataItem } from 'src/store/auth/_interfaces';
+import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
 import { AuthActions } from 'src/store/auth/actions';
-import { SignupDataState } from 'src/store/auth/reducer';
 import {
   selectAuthLoading,
-  selectSignupDataLoading,
+  selectSignupHowItWorksLoading,
   selectSignupHowItWorks,
 } from 'src/store/auth/selectors';
 
@@ -31,7 +30,7 @@ interface SignupForm {
 export class SignupComponent {
   signupForm!: FormGroup<SignupForm>;
   isContinue = false;
-  howItWorksData$: Observable<ISignupDataItem[] | undefined>;
+  howItWorksData$: Observable<ISignupDataItem[] | null>;
   howItWorksLoading$: Observable<boolean>;
   isAuthLoading$: Observable<boolean>;
 
@@ -41,7 +40,7 @@ export class SignupComponent {
   ) {
     this.buildForm();
     this.howItWorksData$ = this.store.select(selectSignupHowItWorks);
-    this.howItWorksLoading$ = this.store.select(selectSignupDataLoading);
+    this.howItWorksLoading$ = this.store.select(selectSignupHowItWorksLoading);
     this.isAuthLoading$ = this.store.select(selectAuthLoading);
   }
 

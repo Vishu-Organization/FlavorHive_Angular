@@ -12,8 +12,6 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { AuthState } from './reducer';
-import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { TypedAction } from '@ngrx/store/src/models';
@@ -27,7 +25,6 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private store: Store<AuthState>,
     private cookieService: CookieService,
     private router: Router,
     private toastService: ToastService

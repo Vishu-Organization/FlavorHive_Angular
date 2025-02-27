@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ISignupDataItem } from 'src/store/auth/_interfaces';
-import { SignupDataState } from 'src/store/auth/reducer';
+import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
 import { selectSignupAdditionalInfo } from 'src/store/auth/selectors';
 
 @Component({

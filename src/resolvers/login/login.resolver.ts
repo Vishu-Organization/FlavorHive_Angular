@@ -5,8 +5,9 @@ import {
   ActivatedRouteSnapshot,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { SignupDataState } from 'src/store/auth/_interfaces';
 import { AuthDataActions } from 'src/store/auth/actions';
-import { SignupDataState } from 'src/store/auth/reducer';
+
 
 @Injectable({
   providedIn: 'root',

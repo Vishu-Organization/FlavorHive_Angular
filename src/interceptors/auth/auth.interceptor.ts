@@ -7,8 +7,8 @@ import {
 } from '@angular/common/http';
 import { first, Observable, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AuthState } from 'src/store/auth/reducer';
 import { selectAccessToken } from 'src/store/auth/selectors';
+import { AuthState } from 'src/store/auth/_interfaces';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
