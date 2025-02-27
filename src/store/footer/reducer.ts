@@ -1,9 +1,19 @@
-import { createReducer, on } from "@ngrx/store";
+import { createReducer, on } from '@ngrx/store';
 import { FooterActions } from './actions';
-import { FooterState } from './_interfaces';
+import { footerLinkAdapter, FooterLinkState, FooterState } from './_interfaces';
+
+// const initialState: FooterState = {
+//   links: { links: [], error: null, loading: false },
+// };
+
+const initialFooterLinkState: FooterLinkState =
+  footerLinkAdapter.getInitialState({
+    loading: false,
+    error: null,
+  });
 
 const initialState: FooterState = {
-  links: { data: [], error: null, loading: false },
+  links: initialFooterLinkState,
 };
 
 export const footerReducer = createReducer(
@@ -17,11 +27,11 @@ export const footerReducer = createReducer(
   })),
   on(FooterActions.loadSuccess, (state, { data }) => ({
     ...state,
-    links: {
+    links: footerLinkAdapter.setAll(data, {
       ...state.links,
-      data,
       loading: false,
-    },
+      error: null,
+    }),
   })),
   on(FooterActions.loadFailure, (state, { error }) => ({
     ...state,
