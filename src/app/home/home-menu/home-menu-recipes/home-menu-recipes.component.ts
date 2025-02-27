@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
 import { HomeMenu, RecipeImages } from 'src/store/home/_interfaces';
-import { loadHomeMenuRecipes } from 'src/store/home/actions';
+import { HomeMenuActions } from 'src/store/home/actions';
 import { HomeState } from 'src/store/home/reducer';
 
 @Component({
@@ -21,7 +21,7 @@ export class HomeMenuRecipesComponent {
     private store: Store<HomeState>,
     private homeService: HomeService
   ) {
-    // this.store.dispatch(loadHomeMenuRecipes());
+    // this.store.dispatch(HomeMenuActions.load());
     this.homeMenuRecipes$ = this.homeService.homeReciepesData$;
     this.homeMenuRecipesLoading$ = this.homeService.homeReciepesLoading$;
     this.homeMenuRecipesError$ = this.homeService.homeReciepesError$;

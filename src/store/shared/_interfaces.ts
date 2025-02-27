@@ -1,16 +1,12 @@
 import { Loader } from '../home/_interfaces';
 
 export interface SharedState {
-  blog: BlogState;
-  emailSignup: EmailSignupState;
+  blog: FeatureState<BlogRecipe>;
+  emailSignup: FeatureState<boolean>;
 }
 
-export interface BlogState extends Loader {
-  data: BlogRecipe | null;
-}
-
-export interface EmailSignupState extends Loader {
-  data: boolean| null;
+export interface FeatureState<T> extends Loader {
+  data: T | null;
 }
 
 export type BlogResponse = {

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
 import { Testimonial } from 'src/store/home/_interfaces';
-import { loadTestimonials } from 'src/store/home/actions';
+import { TestimonialsActions } from 'src/store/home/actions';
 import { HomeState } from 'src/store/home/reducer';
 
 @Component({
@@ -24,7 +24,7 @@ export class HomeTestimonialsComponent implements OnDestroy {
     private homeService: HomeService,
     private store: Store<HomeState>
   ) {
-    this.store.dispatch(loadTestimonials());
+    this.store.dispatch(TestimonialsActions.load());
     this.subs.add(
       this.homeService.testimonialsData$.subscribe((testimonials) => {
         this.testimonials = testimonials || [];

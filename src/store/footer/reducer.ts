@@ -1,34 +1,40 @@
-import { createReducer, on } from "@ngrx/store";
-import { loadFooterLinks, loadFooterLinksFailure, loadFooterLinksSuccess } from "./actions";
-import { FooterState } from "./_interfaces";
+import { createReducer, on } from '@ngrx/store';
+import { FooterActions } from './actions';
+import { footerLinkAdapter, FooterLinkState, FooterState } from './_interfaces';
+
+const initialFooterLinkState: FooterLinkState =
+  footerLinkAdapter.getInitialState({
+    loading: false,
+    error: null,
+  });
 
 const initialState: FooterState = {
-    links: {data: [], error: null, loading: false}
-}
+  links: initialFooterLinkState,
+};
 
-export const footerReducer = createReducer(initialState,
-    on(loadFooterLinks, (state) => ({
-        ...state,
-        links: {
-            ...state.links,
-            loading: true
-        }
-    })),
-    on(loadFooterLinksSuccess, (state, {data}) => ({
-        ...state,
-        links: {
-            ...state.links,
-            data,
-            loading: false
-        }
-    })),
-    on(loadFooterLinksFailure, (state, {error }) => ({
-        ...state,
-        links: {
-            ...state.links,
-            loading: false,
-            error,
-            
-        }
-    }))
-)
+export const footerReducer = createReducer(
+  initialState,
+  on(FooterActions.load, (state) => ({
+    ...state,
+    links: {
+      ...state.links,
+      loading: true,
+    },
+  })),
+  on(FooterActions.loadSuccess, (state, { data }) => ({
+    ...state,
+    links: footerLinkAdapter.setAll(data, {
+      ...state.links,
+      loading: false,
+      error: null,
+    }),
+  })),
+  on(FooterActions.loadFailure, (state, { error }) => ({
+    ...state,
+    links: {
+      ...state.links,
+      loading: false,
+      error,
+    },
+  }))
+);

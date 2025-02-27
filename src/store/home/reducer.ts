@@ -2,19 +2,13 @@ import { createReducer, on } from '@ngrx/store';
 import {
   HomeMenu,
   HomeRecipesState,
+  mealsShippedAdapter,
   MealsShippedState,
+  testimonialsAdapter,
   TestimonialState,
 } from './_interfaces';
 import {
-  loadHomeMenuRecipes,
-  loadHomeMenuRecipesFailure,
-  loadHomeMenuRecipesSuccess,
-  loadMealsShipped,
-  loadMealsShippedFailure,
-  loadMealsShippedSuccess,
-  loadTestimonials,
-  loadTestimonialsFailure,
-  loadTestimonialsSuccess,
+  HomeMenuActions, TestimonialsActions, MealsShippedActions,
 } from './actions';
 
 export interface HomeState {
@@ -23,67 +17,86 @@ export interface HomeState {
   recipes: HomeRecipesState;
 }
 
+const initialMealsShippedState: MealsShippedState =
+  mealsShippedAdapter.getInitialState({
+    loading: false,
+    error: null,
+  });
+
+const initialTestimonialsState: TestimonialState =
+  testimonialsAdapter.getInitialState({
+    loading: false,
+    error: null,
+  });
+
+const initialRecipesState: HomeRecipesState = {
+  loading: false,
+  error: null,
+  data: null,
+};
+
 const initialState: HomeState = {
-  mealsShipped: { loading: false, error: null, data: [] },
-  testimonials: { loading: false, error: null, data: [] },
-  recipes: { loading: false, error: null, data: {} as HomeMenu },
+  mealsShipped: initialMealsShippedState,
+  testimonials: initialTestimonialsState,
+  recipes: initialRecipesState,
 };
 
 export const homeReducer = createReducer(
   initialState,
-  on(loadMealsShipped, (state) => ({
+  on(MealsShippedActions.load, (state) => ({
     ...state,
     mealsShipped: {
       ...state.mealsShipped,
       loading: true,
+      error: null,
     },
   })),
-  on(loadMealsShippedSuccess, (state, { data }) => ({
+  on(MealsShippedActions.loadSuccess, (state, { data: meals }) => ({
     ...state,
-    mealsShipped: {
+    mealsShipped: mealsShippedAdapter.setAll(meals, {
+      ...state.mealsShipped,
       loading: false,
       error: null,
-      data: data,
-    },
+    }),
   })),
-  on(loadMealsShippedFailure, (state, { error }) => ({
+  on(MealsShippedActions.loadFailure, (state, { error }) => ({
     ...state,
     mealsShipped: {
       ...state.mealsShipped,
-      data: null,
       loading: false,
       error,
     },
   })),
-  on(loadTestimonials, (state) => ({
+  // testimonials reducers
+  on(TestimonialsActions.load, (state) => ({
     ...state,
     testimonials: {
       ...state.testimonials,
       loading: true,
-    },
-  })),
-  on(loadTestimonialsSuccess, (state, { data }) => ({
-    ...state,
-    testimonials: {
-      data,
-      loading: false,
       error: null,
     },
   })),
-  on(loadTestimonialsFailure, (state, { error }) => ({
+  on(TestimonialsActions.loadSuccess, (state, { data }) => ({
+    ...state,
+    testimonials: testimonialsAdapter.setAll(data, {
+      ...state.testimonials,
+      loading: false,
+      error: null,
+    }),
+  })),
+  on(TestimonialsActions.loadFailure, (state, { error }) => ({
     ...state,
     testimonials: {
       ...state.testimonials,
-      data: null,
       loading: false,
       error,
     },
   })),
-  on(loadHomeMenuRecipes, (state) => ({
+  on(HomeMenuActions.load, (state) => ({
     ...state,
-    recipes: { ...state.recipes, loading: true, error: null },
+    recipes: { ...state.recipes, loading: true },
   })),
-  on(loadHomeMenuRecipesSuccess, (state, { data }) => ({
+  on(HomeMenuActions.loadSuccess, (state, { data }) => ({
     ...state,
     recipes: {
       data,
@@ -91,7 +104,7 @@ export const homeReducer = createReducer(
       loading: false,
     },
   })),
-  on(loadHomeMenuRecipesFailure, (state, { error }) => ({
+  on(HomeMenuActions.loadFailure, (state, { error }) => ({
     ...state,
     recipes: {
       data: null,

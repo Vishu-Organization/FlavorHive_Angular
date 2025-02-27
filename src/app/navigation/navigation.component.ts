@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, shareReplay } from 'rxjs';
-import { logout } from 'src/store/auth/actions';
+import { AuthActions } from 'src/store/auth/actions';
 import { selectIsAuthenticated, selectUser } from 'src/store/auth/selectors';
 import { IUser } from '../types/token';
 
@@ -19,6 +19,6 @@ export class NavigationComponent {
   constructor(private store: Store) {}
 
   onLogout() {
-    this.store.dispatch(logout());
+    this.store.dispatch(AuthActions.logout());
   }
 }

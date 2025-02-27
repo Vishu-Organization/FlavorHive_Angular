@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  loadFooterLinks,
-  loadFooterLinksFailure,
-  loadFooterLinksSuccess,
-} from './actions';
+import { FooterActions } from './actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { FooterService } from 'src/services/footer/footer.service';
-import { loginSuccess, logoutSuccess, signupSuccess } from '../auth/actions';
+import { AuthActions } from '../auth/actions';
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +16,16 @@ export class FooterEffects {
 
   loadFooterLinks$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadFooterLinks, loginSuccess, logoutSuccess, signupSuccess),
+      ofType(
+        FooterActions.load,
+        AuthActions.loginSuccess,
+        AuthActions.logoutSuccess,
+        AuthActions.signupSuccess
+      ),
       mergeMap(() =>
         this.footerService.getFooterLinks().pipe(
-          map((data) => loadFooterLinksSuccess({ data })),
-          catchError(({ error }) => of(loadFooterLinksFailure({ error })))
+          map((data) => FooterActions.loadSuccess({ data })),
+          catchError(({ error }) => of(FooterActions.loadFailure({ error })))
         )
       )
     )

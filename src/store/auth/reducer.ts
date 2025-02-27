@@ -1,32 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
+import { AuthActions, AuthDataActions } from './actions';
 import {
-  loadSignupData,
-  loadSignupDataFailure,
-  loadSignupDataSuccess,
-  login,
-  loginFailure,
-  loginSuccess,
-  logout,
-  logoutFailure,
-  logoutSuccess,
-  signup,
-  signupFailure,
-  signupSuccess,
-} from './actions';
-import { IToken } from 'src/app/types/token';
-import { ISignupData } from './_interfaces';
-
-export interface AuthState {
-  token: IToken | null;
-  error: string | null;
-  loading: boolean;
-}
-
-export interface SignupDataState {
-  data: ISignupData | null;
-  error: string | null;
-  loading: boolean;
-}
+  AuthState,
+  ISignupDataItem,
+  ISignupDataItemState,
+  signupDataAdapter,
+  SignupDataState,
+} from './_interfaces';
 
 export const initialState: AuthState = {
   token: null,
@@ -34,35 +14,44 @@ export const initialState: AuthState = {
   loading: false,
 };
 
+const initialSignUpDataItemState: ISignupDataItemState =
+  signupDataAdapter.getInitialState({
+    loading: false,
+    error: null,
+  });
+
 const initialSignupDataState: SignupDataState = {
-  data: null,
-  loading: false,
-  error: null,
+  howItWorks: initialSignUpDataItemState,
+  additionalInfo: initialSignUpDataItemState,
 };
 
 export const authReducer = createReducer(
   initialState,
-  on(login, (state) => ({ ...state, loading: true, error: null })),
-  on(loginSuccess, (state, { token }) => ({
+  on(AuthActions.login, (state) => ({ ...state, loading: true, error: null })),
+  on(AuthActions.loginSuccess, (state, { token }) => ({
     ...state,
     token,
     loading: false,
   })),
-  on(loginFailure, (state, { error }) => ({ ...state, error, loading: false })),
-  on(logout, (state) => ({ ...state, loading: true, error: null })),
-  on(logoutSuccess, () => initialState),
-  on(logoutFailure, (state, { error }) => ({
+  on(AuthActions.loginFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false,
   })),
-  on(signup, (state) => ({ ...state, loading: true, error: null })),
-  on(signupSuccess, (state, { token }) => ({
+  on(AuthActions.logout, (state) => ({ ...state, loading: true, error: null })),
+  on(AuthActions.logoutSuccess, () => initialState),
+  on(AuthActions.logoutFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+  on(AuthActions.signup, (state) => ({ ...state, loading: true, error: null })),
+  on(AuthActions.signupSuccess, (state, { token }) => ({
     ...state,
     token,
     loading: false,
   })),
-  on(signupFailure, (state, { error }) => ({
+  on(AuthActions.signupFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false,
@@ -71,15 +60,27 @@ export const authReducer = createReducer(
 
 export const signupDataReducer = createReducer(
   initialSignupDataState,
-  on(loadSignupData, (state) => ({ ...state, loading: true, error: null })),
-  on(loadSignupDataSuccess, (state, data) => ({
+  on(AuthDataActions.load, (state) => ({
     ...state,
-    data,
-    loading: false,
+    additionalInfo: { ...state.additionalInfo, loading: true },
+    howItWorks: { ...state.howItWorks, loading: true },
   })),
-  on(loadSignupDataFailure, (state, { error }) => ({
+  on(AuthDataActions.loadSuccess, (state, { additionalInfo, howItWorks }) => ({
     ...state,
-    error,
-    loading: false,
+    additionalInfo: signupDataAdapter.setAll(additionalInfo, {
+      ...state.additionalInfo,
+      loading: false,
+      error: null,
+    }),
+    howItWorks: signupDataAdapter.setAll(howItWorks, {
+      ...state.howItWorks,
+      loading: false,
+      error: null,
+    }),
+  })),
+  on(AuthDataActions.loadFailure, (state, { error }) => ({
+    ...state,
+    additionalInfo: { ...state.additionalInfo, loading: false, error },
+    howItWorks: { ...state.howItWorks, loading: false, error },
   }))
 );

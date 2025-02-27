@@ -1,15 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ToastService } from 'src/services/toast/toast.service';
-import { ISignupDataItem } from 'src/store/auth/_interfaces';
-import { signup } from 'src/store/auth/actions';
-import { SignupDataState } from 'src/store/auth/reducer';
+import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
+import { AuthActions } from 'src/store/auth/actions';
 import {
   selectAuthLoading,
-  selectSignupDataLoading,
-  selectSignupHowItWorks,
+  selectSignupHowItWorksLoading,
+  selectSignupHowItWorksData,
 } from 'src/store/auth/selectors';
 
 interface SignupForm {
@@ -26,7 +27,7 @@ interface SignupForm {
 export class SignupComponent {
   signupForm!: FormGroup<SignupForm>;
   isContinue = false;
-  howItWorksData$: Observable<ISignupDataItem[] | undefined>;
+  howItWorksData$: Observable<ISignupDataItem[] | null>;
   howItWorksLoading$: Observable<boolean>;
   isAuthLoading$: Observable<boolean>;
 
@@ -35,8 +36,8 @@ export class SignupComponent {
     private toastService: ToastService
   ) {
     this.buildForm();
-    this.howItWorksData$ = this.store.select(selectSignupHowItWorks);
-    this.howItWorksLoading$ = this.store.select(selectSignupDataLoading);
+    this.howItWorksData$ = this.store.select(selectSignupHowItWorksData);
+    this.howItWorksLoading$ = this.store.select(selectSignupHowItWorksLoading);
     this.isAuthLoading$ = this.store.select(selectAuthLoading);
   }
 
@@ -67,6 +68,6 @@ export class SignupComponent {
     email &&
       name &&
       password &&
-      this.store.dispatch(signup({ email, name, password }));
+      this.store.dispatch(AuthActions.signup({ email, name, password }));
   }
 }

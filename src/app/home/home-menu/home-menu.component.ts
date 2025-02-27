@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-home-menu',
   templateUrl: './home-menu.component.html',
-  styleUrls: ['./home-menu.component.scss']
+  styleUrls: ['./home-menu.component.scss'],
 })
-export class HomeMenuComponent {
-
-}
+export class HomeMenuComponent {}

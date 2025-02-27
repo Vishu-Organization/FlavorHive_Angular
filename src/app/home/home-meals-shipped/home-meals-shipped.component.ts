@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
 import { MealsShipped } from 'src/store/home/_interfaces';
-import { loadMealsShipped } from 'src/store/home/actions';
+import { MealsShippedActions } from 'src/store/home/actions';
 import { HomeState } from 'src/store/home/reducer';
 
 @Component({
@@ -20,7 +20,7 @@ export class HomeMealsShippedComponent {
     private homeService: HomeService,
     private store: Store<HomeState>
   ) {
-    this.store.dispatch(loadMealsShipped());
+    this.store.dispatch(MealsShippedActions.load());
     this.mealsShippedData$ = this.homeService.mealsShippedData$;
     this.mealsShippedLoading$ = this.homeService.mealsShippedLoading$;
     this.mealsShippedError$ = this.homeService.mealsShippedError$;
