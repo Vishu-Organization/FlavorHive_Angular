@@ -1,6 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import { AuthActions, AuthDataActions } from './actions';
-import { AuthState, SignupDataState } from './_interfaces';
+import {
+  AuthState,
+  ISignupDataItem,
+  ISignupDataItemState,
+  signupDataAdapter,
+  SignupDataState,
+} from './_interfaces';
 
 export const initialState: AuthState = {
   token: null,
@@ -8,9 +14,15 @@ export const initialState: AuthState = {
   loading: false,
 };
 
+const initialSignUpDataItemState: ISignupDataItemState =
+  signupDataAdapter.getInitialState({
+    loading: false,
+    error: null,
+  });
+
 const initialSignupDataState: SignupDataState = {
-  howItWorks: { data: null, loading: false, error: null },
-  additionalInfo: { data: null, loading: false, error: null },
+  howItWorks: initialSignUpDataItemState,
+  additionalInfo: initialSignUpDataItemState,
 };
 
 export const authReducer = createReducer(
@@ -55,12 +67,20 @@ export const signupDataReducer = createReducer(
   })),
   on(AuthDataActions.loadSuccess, (state, { additionalInfo, howItWorks }) => ({
     ...state,
-    additionalInfo: { data: additionalInfo, loading: false, error: null },
-    howItWorks: { data: howItWorks, loading: false, error: null },
+    additionalInfo: signupDataAdapter.setAll(additionalInfo, {
+      ...state.additionalInfo,
+      loading: false,
+      error: null,
+    }),
+    howItWorks: signupDataAdapter.setAll(howItWorks, {
+      ...state.howItWorks,
+      loading: false,
+      error: null,
+    }),
   })),
   on(AuthDataActions.loadFailure, (state, { error }) => ({
     ...state,
-    error,
-    loading: false,
+    additionalInfo: { ...state.additionalInfo, loading: false, error },
+    howItWorks: { ...state.howItWorks, loading: false, error },
   }))
 );

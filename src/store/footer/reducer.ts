@@ -2,10 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import { FooterActions } from './actions';
 import { footerLinkAdapter, FooterLinkState, FooterState } from './_interfaces';
 
-// const initialState: FooterState = {
-//   links: { links: [], error: null, loading: false },
-// };
-
 const initialFooterLinkState: FooterLinkState =
   footerLinkAdapter.getInitialState({
     loading: false,

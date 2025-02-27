@@ -1,5 +1,6 @@
 import { IToken } from 'src/app/types/token';
 import { Loader } from '../home/_interfaces';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface AuthState {
   token: IToken | null;
@@ -26,10 +27,11 @@ export interface ISignupDataItem {
   description: string;
 }
 
-export interface ISignupDataItemState extends Loader {
-  data: ISignupDataItem[] | null;
-}
-
+export interface ISignupDataItemState
+  extends EntityState<ISignupDataItem>,
+    Loader {}
+export const signupDataAdapter: EntityAdapter<ISignupDataItem> =
+  createEntityAdapter<ISignupDataItem>();
 export interface ISignupData {
   howItWorks: ISignupDataItem[];
   additionalInfo: ISignupDataItem[];

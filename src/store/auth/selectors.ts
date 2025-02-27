@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { AuthState, SignupDataState } from './_interfaces';
+import { AuthState, signupDataAdapter, SignupDataState } from './_interfaces';
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
 
@@ -23,27 +23,36 @@ export const selectAuthLoading = createSelector(
 export const selectSignupState =
   createFeatureSelector<SignupDataState>('signupData');
 
-export const selectSignupHowItWorks = createSelector(
+const selectSignupHowItWorks = createSelector(
   selectSignupState,
-  (signUpData) => signUpData?.howItWorks.data
+  ({ howItWorks }) => howItWorks
 );
+
 export const selectSignupHowItWorksLoading = createSelector(
-  selectSignupState,
-  (signUpData) => signUpData?.howItWorks.loading
+  selectSignupHowItWorks,
+  ({ loading }) => loading
 );
 export const selectSignupHowItWorksError = createSelector(
-  selectSignupState,
-  (signUpData) => signUpData?.howItWorks.error
+  selectSignupHowItWorks,
+  ({ error }) => error
 );
-export const selectSignupAdditionalInfo = createSelector(
+
+export const { selectAll: selectSignupHowItWorksData } =
+  signupDataAdapter.getSelectors(selectSignupHowItWorks);
+
+const selectSignupAdditionalInfo = createSelector(
   selectSignupState,
-  (signUpData) => signUpData?.additionalInfo.data
+  ({ additionalInfo }) => additionalInfo
 );
+
+export const { selectAll: selectSignupAdditionalInfoData } =
+  signupDataAdapter.getSelectors(selectSignupAdditionalInfo);
+
 export const selectSignupAdditionalInfoLoading = createSelector(
-  selectSignupState,
-  (signUpData) => signUpData?.additionalInfo.loading
+  selectSignupAdditionalInfo,
+  ({ loading }) => loading
 );
 export const selectSignupAdditionalInfoError = createSelector(
-  selectSignupState,
-  (signUpData) => signUpData?.additionalInfo.error
+  selectSignupAdditionalInfo,
+  ({ error }) => error
 );

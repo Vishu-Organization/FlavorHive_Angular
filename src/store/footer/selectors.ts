@@ -6,7 +6,6 @@ export const selectFooterLinks = createSelector(
   selectFooterState,
   (state) => state.links
 );
-// export const selectFooterLinksData = createSelector(selectFooterLinks, (state) => state.data);
 export const { selectAll: selectFooterLinksData } =
   footerLinkAdapter.getSelectors(selectFooterLinks);
 

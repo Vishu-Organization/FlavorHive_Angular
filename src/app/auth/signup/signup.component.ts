@@ -1,8 +1,5 @@
 import {
   Component,
-  ElementRef,
-  ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -13,7 +10,7 @@ import { AuthActions } from 'src/store/auth/actions';
 import {
   selectAuthLoading,
   selectSignupHowItWorksLoading,
-  selectSignupHowItWorks,
+  selectSignupHowItWorksData,
 } from 'src/store/auth/selectors';
 
 interface SignupForm {
@@ -39,7 +36,7 @@ export class SignupComponent {
     private toastService: ToastService
   ) {
     this.buildForm();
-    this.howItWorksData$ = this.store.select(selectSignupHowItWorks);
+    this.howItWorksData$ = this.store.select(selectSignupHowItWorksData);
     this.howItWorksLoading$ = this.store.select(selectSignupHowItWorksLoading);
     this.isAuthLoading$ = this.store.select(selectAuthLoading);
   }

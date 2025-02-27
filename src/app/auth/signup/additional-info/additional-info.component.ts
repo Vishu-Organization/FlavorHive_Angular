@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
-import { selectSignupAdditionalInfo } from 'src/store/auth/selectors';
+import { selectSignupAdditionalInfoData } from 'src/store/auth/selectors';
 
 @Component({
   selector: 'app-additional-info',
@@ -9,7 +9,7 @@ import { selectSignupAdditionalInfo } from 'src/store/auth/selectors';
   styleUrls: ['./additional-info.component.scss'],
 })
 export class AdditionalInfoComponent {
-  additionalInfo$ = this.store.select(selectSignupAdditionalInfo);
+  additionalInfo$ = this.store.select(selectSignupAdditionalInfoData);
 
   svgs = [
     {
