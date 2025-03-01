@@ -1,12 +1,16 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
 
 // import svg1
 
 @Component({
+  standalone: true,
   selector: 'app-how-it-works',
   templateUrl: './how-it-works.component.html',
   styleUrls: ['./how-it-works.component.scss'],
+  imports: [NgFor, NgIf, MatProgressSpinnerModule],
 })
 export class HowItWorksComponent {
   @Input() howItWorksData: ISignupDataItem[] = [];

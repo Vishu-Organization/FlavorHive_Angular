@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   faFacebook,
   faInstagram,
@@ -9,18 +14,36 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SharedService } from 'src/services/shared/shared.service';
-import { ToastService } from 'src/services/toast/toast.service';
 import { BlogRecipe, SharedState } from 'src/store/shared/_interfaces';
 import { BlogActions, EmailSignupActions } from 'src/store/shared/actions';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 type EmailForm = {
   email: FormControl<string | null>;
 };
 
 @Component({
+  standalone: true,
   selector: 'app-whats-cooking',
   templateUrl: './whats-cooking.component.html',
   styleUrls: ['./whats-cooking.component.scss'],
+  imports: [
+    MatProgressSpinnerModule,
+    NgFor,
+    NgIf,
+    NgClass,
+    ReactiveFormsModule,
+    AsyncPipe,
+    MatFormFieldModule,
+    MatInputModule,
+    FontAwesomeModule,
+    MatButtonModule,
+  ],
 })
 export class WhatsCookingComponent {
   icons = [
@@ -75,7 +98,7 @@ export class WhatsCookingComponent {
 
     this.isEmailAdded$.subscribe((isAdded) => {
       if (isAdded) {
-      this.emailForm.reset();
+        this.emailForm.reset();
         this.emailForm.controls.email.setErrors(null);
       }
     });

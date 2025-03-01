@@ -1,12 +1,15 @@
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
 import { selectSignupAdditionalInfoData } from 'src/store/auth/selectors';
 
 @Component({
+  standalone: true,
   selector: 'app-additional-info',
   templateUrl: './additional-info.component.html',
   styleUrls: ['./additional-info.component.scss'],
+  imports: [NgClass, NgFor, NgIf, AsyncPipe],
 })
 export class AdditionalInfoComponent {
   additionalInfo$ = this.store.select(selectSignupAdditionalInfoData);

@@ -1,18 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  catchError,
-  combineLatest,
-  concatMap,
-  delay,
-  forkJoin,
-  from,
-  map,
-  Observable,
-  of,
-  toArray,
-} from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import {
   HomeMenu,
   HomeMenuSelector,
@@ -28,10 +17,8 @@ import {
   selectHomeRecipesData,
   selectHomeRecipesError,
   selectHomeRecipesLoading,
-  selectMealsShippedState,
   selectMealsShippedError,
   selectMealsShippedLoading,
-  selectTestimonialsState,
   selectTestimonialsError,
   selectTestimonialsLoading,
   selectAllMealsShipped,
