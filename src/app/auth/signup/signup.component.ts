@@ -1,7 +1,11 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { Component } from '@angular/core';
 import {
-  Component,
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ToastService } from 'src/services/toast/toast.service';
@@ -12,6 +16,12 @@ import {
   selectSignupHowItWorksLoading,
   selectSignupHowItWorksData,
 } from 'src/store/auth/selectors';
+import { AdditionalInfoComponent } from './additional-info/additional-info.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { HowItWorksComponent } from './how-it-works/how-it-works.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 interface SignupForm {
   name: FormControl<string | null>;
@@ -20,9 +30,22 @@ interface SignupForm {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
+  imports: [
+    NgIf,
+    NgClass,
+    AsyncPipe,
+    MatFormFieldModule,
+    AdditionalInfoComponent,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    HowItWorksComponent,
+  ],
 })
 export class SignupComponent {
   signupForm!: FormGroup<SignupForm>;

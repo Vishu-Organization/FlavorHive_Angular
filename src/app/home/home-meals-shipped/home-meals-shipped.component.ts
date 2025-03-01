@@ -1,3 +1,4 @@
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -7,9 +8,11 @@ import { MealsShippedActions } from 'src/store/home/actions';
 import { HomeState } from 'src/store/home/reducer';
 
 @Component({
+  standalone: true,
   selector: 'app-home-meals-shipped',
   templateUrl: './home-meals-shipped.component.html',
   styleUrls: ['./home-meals-shipped.component.scss'],
+  imports: [NgIf, NgFor, AsyncPipe],
 })
 export class HomeMealsShippedComponent {
   mealsShippedData$: Observable<MealsShipped[] | null>;

@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -7,9 +8,11 @@ import { TestimonialsActions } from 'src/store/home/actions';
 import { HomeState } from 'src/store/home/reducer';
 
 @Component({
+  standalone: true,
   selector: 'app-home-testimonials',
   templateUrl: './home-testimonials.component.html',
   styleUrls: ['./home-testimonials.component.scss'],
+  imports: [NgIf],
 })
 export class HomeTestimonialsComponent implements OnDestroy {
   testimonials: Testimonial[] = [];

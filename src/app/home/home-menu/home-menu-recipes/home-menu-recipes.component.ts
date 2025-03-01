@@ -1,16 +1,26 @@
+import { AsyncPipe, KeyValuePipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { Params } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Params, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
 import { HomeMenu, RecipeImages } from 'src/store/home/_interfaces';
-import { HomeMenuActions } from 'src/store/home/actions';
 import { HomeState } from 'src/store/home/reducer';
 
 @Component({
+  standalone: true,
   selector: 'app-home-menu-recipes',
   templateUrl: './home-menu-recipes.component.html',
   styleUrls: ['./home-menu-recipes.component.scss'],
+  imports: [
+    NgIf,
+    AsyncPipe,
+    RouterModule,
+    MatProgressSpinnerModule,
+    NgFor,
+    KeyValuePipe,
+  ],
 })
 export class HomeMenuRecipesComponent {
   homeMenuRecipes$: Observable<HomeMenu | null>;

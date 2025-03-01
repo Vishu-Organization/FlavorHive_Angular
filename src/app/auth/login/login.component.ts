@@ -1,9 +1,21 @@
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Store } from '@ngrx/store';
+import { WhatsCookingComponent } from 'src/app/shared/components/whats-cooking/whats-cooking.component';
 import { AuthState } from 'src/store/auth/_interfaces';
 import { AuthActions } from 'src/store/auth/actions';
 import { selectAuthLoading } from 'src/store/auth/selectors';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -12,9 +24,22 @@ interface LoginForm {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  imports: [
+    WhatsCookingComponent,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    NgClass,
+    NgIf,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    AsyncPipe,
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup<LoginForm>;

@@ -1,23 +1,7 @@
 import { Component } from '@angular/core';
 
-// import heroImg640 from '../../../assets/home/hero/desktop/home-header-640.webp';
-// import heroImg750 from '../../../assets/home/hero/desktop/home-header-750.webp';
-// import heroImg828 from '../../../assets/home/hero/desktop/home-header-828.webp';
-// import heroImg1080 from '../../../assets/home/hero/desktop/home-header-1080.webp';
-// import heroImg1200 from '../../../assets/home/hero/desktop/home-header-1200.webp';
-// import heroImg1920 from '../../../assets/home/hero/desktop/home-header-1920.webp';
-// import heroImg2048 from '../../../assets/home/hero/desktop/home-header-2048.webp';
-// import heroImg3840 from '../../../assets/home/hero/desktop/home-header-3840.webp';
-
-// import heroImgMobile640 from '../../../assets/home/hero/mobile/home-hero-mobile-640.webp';
-// import heroImgMobile750 from '../../../assets/home/hero/mobile/home-hero-mobile-750.webp';
-// import heroImgMobile828 from '../../../assets/home/hero/mobile/home-hero-mobile-828.webp';
-// import heroImgMobile1080 from '../../../assets/home/hero/mobile/home-hero-mobile-1080.webp';
-// import heroImgMobile1200 from '../../../assets/home/hero/mobile/home-hero-mobile-1200.webp';
-// import heroImgMobile1920 from '../../../assets/home/hero/mobile/home-hero-mobile-1920.webp';
-
-
 @Component({
+  standalone: true,
   selector: 'app-home-hero',
   templateUrl: './home-hero.component.html',
   styleUrls: ['./home-hero.component.scss'],
