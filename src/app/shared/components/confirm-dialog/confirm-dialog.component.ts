@@ -13,13 +13,13 @@ import { MatButtonModule } from '@angular/material/button';
 export class ConfirmDialogComponent {
   constructor(
     private dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string, btnText: string }
-  ) { }
-  
+    @Inject(MAT_DIALOG_DATA) public data: { message: string; btnText: string }
+  ) {}
+
   onConfirm(): void {
     this.dialogRef.close(true);
   }
-  
+
   onCancel(): void {
     this.dialogRef.close(false);
   }
