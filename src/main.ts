@@ -19,8 +19,9 @@ import { isDevMode } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { apikeyInterceptor } from './interceptors/apikey/apikey.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { storeConfig } from './store/types/urls';
+import { reducers } from './store/types/urls';
 import { authInterceptor } from './interceptors/auth/auth.interceptor';
+import { provideRouterStore } from '@ngrx/router-store';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -30,8 +31,9 @@ bootstrapApplication(AppComponent, {
       withRouterConfig({ onSameUrlNavigation: 'ignore' })
     ),
     provideHttpClient(withInterceptors([apikeyInterceptor, authInterceptor])),
-    provideStore(storeConfig),
+    provideStore(reducers),
     provideEffects([AuthEffects, HomeEffects, FooterEffects, SharedEffects]),
+    provideRouterStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     MatSnackBar,
     provideAnimations(),
