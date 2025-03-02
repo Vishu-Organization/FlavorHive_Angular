@@ -16,4 +16,8 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./blog.routes').then((r) => r.BLOG_ROUTES),
     canActivate: [AuthGuard],
   },
+  {
+    path: '**',
+    redirectTo: 'auth/login',
+  },
 ];

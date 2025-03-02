@@ -15,13 +15,14 @@ import { AuthEffects } from './store/auth/effects';
 import { HomeEffects } from './store/home/effects';
 import { FooterEffects } from './store/footer/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { isDevMode } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { importProvidersFrom, isDevMode } from '@angular/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { apikeyInterceptor } from './interceptors/apikey/apikey.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { reducers } from './store/types/urls';
 import { authInterceptor } from './interceptors/auth/auth.interceptor';
 import { provideRouterStore } from '@ngrx/router-store';
+import { MatDialogModule } from '@angular/material/dialog';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -35,7 +36,7 @@ bootstrapApplication(AppComponent, {
     provideEffects([AuthEffects, HomeEffects, FooterEffects, SharedEffects]),
     provideRouterStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    MatSnackBar,
     provideAnimations(),
+    importProvidersFrom([MatDialogModule, MatSnackBarModule]),
   ],
 }).catch((err) => console.error(err));

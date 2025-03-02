@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ToastService } from 'src/services/toast/toast.service';
 import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
 import { AuthActions } from 'src/store/auth/actions';
@@ -22,6 +22,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CanComponentDeactivate } from 'src/app/_guards/can-signup-deactivate.guard';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { RouterModule } from '@angular/router';
 
 interface SignupForm {
   name: FormControl<string | null>;
@@ -45,23 +49,41 @@ interface SignupForm {
     MatButtonModule,
     ReactiveFormsModule,
     HowItWorksComponent,
+    RouterModule,
   ],
 })
-export class SignupComponent {
+export class SignupComponent implements CanComponentDeactivate {
   signupForm!: FormGroup<SignupForm>;
   isContinue = false;
   howItWorksData$: Observable<ISignupDataItem[] | null>;
   howItWorksLoading$: Observable<boolean>;
   isAuthLoading$: Observable<boolean>;
+  isFormSubmitted = false;
 
   constructor(
     private store: Store<SignupDataState>,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private dialog: MatDialog
   ) {
     this.buildForm();
     this.howItWorksData$ = this.store.select(selectSignupHowItWorksData);
     this.howItWorksLoading$ = this.store.select(selectSignupHowItWorksLoading);
     this.isAuthLoading$ = this.store.select(selectAuthLoading);
+  }
+  canDeactivate(): boolean | Observable<boolean> {
+    if (this.signupForm.pristine) {
+      return true;
+    } else if (this.isFormSubmitted) {
+      return true;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        message: 'You have unsaved changes. Do you really want to leave?',
+      },
+    });
+
+    return dialogRef.afterClosed().pipe(map((result) => !!result));
   }
 
   buildForm() {
@@ -92,5 +114,6 @@ export class SignupComponent {
       name &&
       password &&
       this.store.dispatch(AuthActions.signup({ email, name, password }));
+    this.isFormSubmitted = true;
   }
 }
