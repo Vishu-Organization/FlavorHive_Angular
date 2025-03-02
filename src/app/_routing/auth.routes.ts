@@ -6,12 +6,12 @@ export const AUTH_ROUTES: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./login/login.component').then((m) => m.LoginComponent),
+      import('../auth/login/login.component').then((m) => m.LoginComponent),
   },
   {
     path: 'sign-up',
     loadComponent: () =>
-      import('./signup/signup.component').then((m) => m.SignupComponent),
+      import('../auth/signup/signup.component').then((m) => m.SignupComponent),
     resolve: { data: loginResolver },
   },
 ];

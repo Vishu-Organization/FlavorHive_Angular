@@ -7,7 +7,7 @@ import {
   withRouterConfig,
 } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { APP_ROUTES } from './app/app.routes';
+import { APP_ROUTES } from './app/_routing/app.routes';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { SharedEffects } from './store/shared/effects';
