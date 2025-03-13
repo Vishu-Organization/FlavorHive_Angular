@@ -1,1 +1,10 @@
-<p class="min-h-screen">blog works!</p>
+<section class="blog-container">
+    <mat-card class="blog-container__card" *ngFor="let blog of (blogs$ | async) as blogs; trackBy: trackByIndex">
+        <figure>
+            <div class="blog-image-container">
+                <img class="blog-image" [src]="blog.image" [alt]="blog.title" />
+            </div>
+            <figcaption class="blog-figcaption">{{blog.title}}</figcaption>
+        </figure>
+    </mat-card>
+</section>
