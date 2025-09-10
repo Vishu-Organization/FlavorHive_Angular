@@ -1,0 +1,71 @@
+name: Angular Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Where to deploy (dev or qa)"
+        required: true
+        default: "dev"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Angular App
+        run: npm run build -- --configuration production
+
+      # 🔑 Assume your new IAM Role with OIDC
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.DEV_ACCOUNT_ID }}:role/FlavorHive_Angular_Dev_Deploy_Role  
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3 + Invalidate CloudFront
+        run: |
+          # Detect from push or manual trigger
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              BUCKET="flavorhive-dev"
+              DIST_ID="${{ secrets.CLOUDFRONT_DEV_DIST_ID }}"
+            elif [[ "${{ github.ref }}" == refs/heads/release/* ]]; then
+              BUCKET="flavorhive-qa"
+              DIST_ID="${{ secrets.CLOUDFRONT_QA_DIST_ID }}"
+            else
+              echo "No matching environment for push"
+              exit 1
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            if [[ "${{ github.event.inputs.environment }}" == "dev" ]]; then
+              BUCKET="flavorhive-dev"
+              DIST_ID="${{ secrets.CLOUDFRONT_DEV_DIST_ID }}"
+            elif [[ "${{ github.event.inputs.environment }}" == "qa" ]]; then
+              BUCKET="flavorhive-qa"
+              DIST_ID="${{ secrets.CLOUDFRONT_QA_DIST_ID }}"
+            else
+              echo "Invalid environment: ${{ github.event.inputs.environment }}"
+              exit 1
+            fi
+          fi
+
+          echo "Deploying to $BUCKET"
+          aws s3 sync dist/flavor-hive-angular s3://$BUCKET --delete
+          aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
