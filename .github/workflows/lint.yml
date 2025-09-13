@@ -1,0 +1,40 @@
+name: Lint PR for Unused Imports
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout the PR code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Run ESLint only on changed files
+      - name: Lint changed files
+        run: |
+          # Get changed TS/HTML files in this PR
+          FILES=$(git diff --name-only origin/main...HEAD -- '*.ts' '*.html')
+          
+          if [ -n "$FILES" ]; then
+            echo "Linting changed files:"
+            echo "$FILES"
+            npx eslint $FILES --max-warnings=0
+          else
+            echo "✅ No changed TS/HTML files to lint"
+          fi
