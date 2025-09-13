@@ -50,7 +50,6 @@ interface SignupForm {
     ReactiveFormsModule,
     HowItWorksComponent,
     RouterModule,
-    MatDialogModule,
   ],
 })
 export class SignupComponent implements CanComponentDeactivate {

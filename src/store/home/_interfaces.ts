@@ -69,7 +69,7 @@ export type RecipeImages = {
   THUMBNAIL: ImageContent;
 };
 
-type ImageContent = {
+export type ImageContent = {
   height: number;
   url: string;
   width: number;
