@@ -35,7 +35,7 @@ bootstrapApplication(AppComponent, {
     provideStore(reducers),
     provideEffects([AuthEffects, HomeEffects, FooterEffects, SharedEffects]),
     provideRouterStore(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true}),
     provideAnimations(),
     importProvidersFrom([MatDialogModule, MatSnackBarModule]),
   ],
