@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
 
-const SUPABASE_API_AUTH = `${VITE_SUPABASE_URL}/auth/v1`;
+export const SUPABASE_API_AUTH = `${VITE_SUPABASE_URL}/auth/v1`;
 
 @Injectable({
   providedIn: 'root',
