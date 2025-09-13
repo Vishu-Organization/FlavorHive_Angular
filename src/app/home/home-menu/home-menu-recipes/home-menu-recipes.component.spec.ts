@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HomeMenuRecipesComponent } from './home-menu-recipes.component';
+import { Store } from '@ngrx/store';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('HomeMenuRecipesComponent', () => {
   let component: HomeMenuRecipesComponent;
@@ -8,9 +10,14 @@ describe('HomeMenuRecipesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeMenuRecipesComponent ]
-    })
-    .compileComponents();
+      imports: [HomeMenuRecipesComponent, HttpClientTestingModule],
+      providers: [
+        {
+          provide: Store,
+          useValue: jasmine.createSpyObj('Store', ['select', 'dispatch']),
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HomeMenuRecipesComponent);
     component = fixture.componentInstance;

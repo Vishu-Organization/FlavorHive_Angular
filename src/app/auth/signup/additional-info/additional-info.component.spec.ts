@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdditionalInfoComponent } from './additional-info.component';
+import { Store } from '@ngrx/store';
 
 describe('AdditionalInfoComponent', () => {
   let component: AdditionalInfoComponent;
@@ -8,9 +9,14 @@ describe('AdditionalInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdditionalInfoComponent ]
-    })
-    .compileComponents();
+      imports: [AdditionalInfoComponent],
+      providers: [
+        {
+          provide: Store,
+          useValue: jasmine.createSpyObj('Store', ['select', 'dispatch']),
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AdditionalInfoComponent);
     component = fixture.componentInstance;

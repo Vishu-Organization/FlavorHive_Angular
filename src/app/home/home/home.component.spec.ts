@@ -1,16 +1,37 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HomeComponent } from './home.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Store } from '@ngrx/store';
+import { HomeService } from 'src/services/home/home.service';
+import { of } from 'rxjs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let storeSpy: jasmine.SpyObj<Store<any>>;
 
   beforeEach(async () => {
+    storeSpy = jasmine.createSpyObj('Store', ['select', 'dispatch']);
+    storeSpy.select.and.returnValue(of(null));
+
     await TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
-    })
-    .compileComponents();
+      imports: [HomeComponent, HttpClientTestingModule, NoopAnimationsModule],
+      providers: [
+        {
+          provide: Store,
+          useValue: storeSpy,
+        },
+        {
+          provide: HomeService,
+          useValue: {
+            testimonialsData$: of([]),
+            testimonialsLoading$: of(false),
+            testimonialsError$: of(null),
+          },
+        },
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
