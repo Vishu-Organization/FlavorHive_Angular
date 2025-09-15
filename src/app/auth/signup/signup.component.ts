@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -23,15 +23,15 @@ import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CanComponentDeactivate } from 'src/app/_guards/can-signup-deactivate.guard';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
 import { RouterModule } from '@angular/router';
 
-interface SignupForm {
+type SignupForm = {
   name: FormControl<string | null>;
   email: FormControl<string | null>;
   password: FormControl<string | null>;
-}
+};
 
 @Component({
   standalone: true,
@@ -53,22 +53,22 @@ interface SignupForm {
   ],
 })
 export class SignupComponent implements CanComponentDeactivate {
+  private store = inject<Store<SignupDataState>>(Store);
+  private toastService = inject(ToastService);
+  private dialog = inject(MatDialog);
   signupForm!: FormGroup<SignupForm>;
   isContinue = false;
-  howItWorksData$: Observable<ISignupDataItem[] | null>;
-  howItWorksLoading$: Observable<boolean>;
-  isAuthLoading$: Observable<boolean>;
+  howItWorksData$: Observable<ISignupDataItem[] | null> = this.store.select(
+    selectSignupHowItWorksData
+  );
+  howItWorksLoading$: Observable<boolean> = this.store.select(
+    selectSignupHowItWorksLoading
+  );
+  isAuthLoading$: Observable<boolean> = this.store.select(selectAuthLoading);
   isFormSubmitted = false;
 
-  constructor(
-    private store: Store<SignupDataState>,
-    private toastService: ToastService,
-    private dialog: MatDialog
-  ) {
+  constructor() {
     this.buildForm();
-    this.howItWorksData$ = this.store.select(selectSignupHowItWorksData);
-    this.howItWorksLoading$ = this.store.select(selectSignupHowItWorksLoading);
-    this.isAuthLoading$ = this.store.select(selectAuthLoading);
   }
   canDeactivate(): boolean | Observable<boolean> {
     if (this.signupForm.pristine) {

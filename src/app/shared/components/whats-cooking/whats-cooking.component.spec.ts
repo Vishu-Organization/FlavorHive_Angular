@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WhatsCookingComponent } from './whats-cooking.component';
 import { Store } from '@ngrx/store';
-import { of, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { SharedService } from 'src/services/shared/shared.service';
-import { BlogActions, EmailSignupActions } from 'src/store/shared/actions';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('WhatsCookingComponent', () => {

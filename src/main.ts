@@ -16,7 +16,7 @@ import { HomeEffects } from './store/home/effects';
 import { FooterEffects } from './store/footer/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { importProvidersFrom, isDevMode } from '@angular/core';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { apikeyInterceptor } from './interceptors/apikey/apikey.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { reducers } from './store/types/urls';

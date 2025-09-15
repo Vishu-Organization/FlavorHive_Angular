@@ -38,7 +38,7 @@ module.exports = tseslint.config(
       // 🚨 Fail PRs with unused imports
       "unused-imports/no-unused-imports": "error",
 
-      // Warn for unused variables (but allow "_" prefix as ignore convention)
+      // ⚠️ Warn for unused variables (allow "_" prefix)
       "unused-imports/no-unused-vars": [
         "warn",
         {
@@ -48,6 +48,21 @@ module.exports = tseslint.config(
           argsIgnorePattern: "^_",
         },
       ],
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+        },
+      ],
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    },
+  },
+  {
+    files: ["**/*.spec.ts"],
+    rules: {
+      // ✅ Allow "any" in spec files
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   {

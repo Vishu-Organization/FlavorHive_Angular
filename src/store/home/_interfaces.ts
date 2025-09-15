@@ -1,34 +1,34 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface Loader {
+export type Loader = {
   error: null | string;
   loading: boolean;
-}
-export interface MealsShipped {
+};
+export type MealsShipped = {
   id: number;
   image: string;
   name: string;
   description_primary: string;
   description_secondary: string;
   alt: string;
-}
-export interface MealsShippedState extends EntityState<MealsShipped>, Loader {}
+};
+export type MealsShippedState = EntityState<MealsShipped> & Loader;
 
 export const mealsShippedAdapter: EntityAdapter<MealsShipped> =
   createEntityAdapter<MealsShipped>();
-export interface Testimonial {
+export type Testimonial = {
   id: number;
   name: string;
   description: string;
-}
-export interface TestimonialState extends EntityState<Testimonial>, Loader {}
+};
+export type TestimonialState = EntityState<Testimonial> & Loader; 
 
 export const testimonialsAdapter: EntityAdapter<Testimonial> =
   createEntityAdapter<Testimonial>();
 
-export interface HomeRecipesState extends Loader {
+export type HomeRecipesState = Loader & {
   data: null | HomeMenu;
-}
+};
 
 export type HomeMenu = {
   mediterranean: HomeMenuItem;

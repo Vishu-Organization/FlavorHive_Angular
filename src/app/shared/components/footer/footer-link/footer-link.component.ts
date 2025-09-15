@@ -10,8 +10,8 @@ import { LinkType } from 'src/store/footer/_interfaces';
   imports: [NgClass],
 })
 export class FooterLinkComponent {
-  @Input() title: string = '';
-  @Input() to: string = '';
+  @Input() title = '';
+  @Input() to = '';
   @Input() type: number | null = null;
 
   linkType = LinkType;

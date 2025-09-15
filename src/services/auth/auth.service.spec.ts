@@ -5,10 +5,25 @@ import {
 } from '@angular/common/http/testing';
 import { AuthService, SUPABASE_API_AUTH } from './auth.service';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
+import { IAuthResponse } from 'src/app/types/token';
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
+
+  const mockAuthResponse: IAuthResponse = {
+    access_token: 'token123',
+    expires_in: 3600,
+    expires_at: Date.now() + 3600 * 1000,
+    refresh_token: 'refresh123',
+    user: {
+      id: '1',
+      user_metadata: {
+        email: 'test@example.com',
+        name: 'Vishu',
+      },
+    },
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,10 +44,9 @@ describe('AuthService', () => {
   describe('refreshToken', () => {
     it('should post refresh token', () => {
       const token = 'refresh123';
-      const mockResponse = { access_token: 'newToken' };
 
       service.refreshToken(token).subscribe((res) => {
-        expect(res).toEqual(mockResponse);
+        expect(res).toEqual(mockAuthResponse);
       });
 
       const req = httpMock.expectOne(
@@ -42,7 +56,7 @@ describe('AuthService', () => {
       );
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual({ refresh_token: token });
-      req.flush(mockResponse);
+      req.flush(mockAuthResponse);
     });
   });
 
@@ -50,10 +64,9 @@ describe('AuthService', () => {
     it('should post email and password', () => {
       const email = 'test@example.com';
       const password = '123456';
-      const mockResponse = { access_token: 'token' };
 
       service.signIn(email, password).subscribe((res) => {
-        expect(res).toEqual(mockResponse);
+        expect(res.access_token).toBe(mockAuthResponse.access_token);
       });
 
       const req = httpMock.expectOne(
@@ -63,7 +76,7 @@ describe('AuthService', () => {
       );
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual({ email, password });
-      req.flush(mockResponse);
+      req.flush(mockAuthResponse);
     });
   });
 
@@ -72,30 +85,31 @@ describe('AuthService', () => {
       const email = 'new@example.com';
       const password = '123456';
       const name = 'Vishu';
+
       service.signup(email, password, name).subscribe((res) => {
-        expect(res).toEqual({ id: 1 });
+        expect(res.user.user_metadata.name).toEqual(name);
       });
 
-      const req = httpMock.expectOne(`${VITE_SUPABASE_URL}/auth/v1/signup`);
+      const req = httpMock.expectOne(`${SUPABASE_API_AUTH}/signup`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual({
         email,
         password,
         options: { data: { name } },
       });
-      req.flush({ id: 1 });
+      req.flush(mockAuthResponse);
     });
   });
 
   describe('signInWithGoogle', () => {
     it('should call authorize endpoint', () => {
+      const redirectUrl = `${SUPABASE_API_AUTH}/authorize?provider=google&redirect_to=${window.location.origin}`;
+
       service.signInWithGoogle().subscribe((res) => {
         expect(res.url).toBe('http://redirect.url');
       });
 
-      const req = httpMock.expectOne(
-        `${VITE_SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${window.location.origin}`
-      );
+      const req = httpMock.expectOne(redirectUrl);
       expect(req.request.method).toBe('GET');
       req.flush({ url: 'http://redirect.url' });
     });
@@ -104,12 +118,12 @@ describe('AuthService', () => {
   describe('logOut', () => {
     it('should call logout endpoint', () => {
       service.logOut().subscribe((res) => {
-        expect(res).toEqual({ success: true });
+        expect(res).toBeNull();
       });
 
-      const req = httpMock.expectOne(`${VITE_SUPABASE_URL}/auth/v1/logout`);
+      const req = httpMock.expectOne(`${SUPABASE_API_AUTH}/logout`);
       expect(req.request.method).toBe('POST');
-      req.flush({ success: true });
+      req.flush(null);
     });
   });
 

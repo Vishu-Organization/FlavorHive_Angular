@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -79,10 +79,10 @@ export class WhatsCookingComponent {
   blogError$: Observable<string | null>;
   isEmailAdded$: Observable<boolean | null>;
 
-  constructor(
-    private sharedService: SharedService,
-    private store: Store<SharedState>
-  ) {
+  private sharedService = inject(SharedService);
+  private store = inject(Store<SharedState>);
+
+  constructor() {
     this.emailForm = new FormGroup<EmailForm>({
       email: new FormControl('', [Validators.email, Validators.required]),
     });

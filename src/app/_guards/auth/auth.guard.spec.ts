@@ -1,5 +1,4 @@
 import { of } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { AuthGuard } from './auth.guard';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -32,24 +31,20 @@ describe('AuthGuard', () => {
   it('should allow activation when authenticated', (done) => {
     storeSpy.select.and.returnValue(of(true));
 
-    (guard.canActivate({} as any, {} as any) as any).subscribe(
-      (result: any) => {
-        expect(result).toBeTrue();
-        done();
-      }
-    );
+    guard.canActivate().subscribe((result: any) => {
+      expect(result).toBeTrue();
+      done();
+    });
   });
 
   it('should redirect to login when not authenticated', (done) => {
     storeSpy.select.and.returnValue(of(false));
     routerSpy.createUrlTree.and.returnValue('/auth/login' as any);
 
-    (guard.canActivate({} as any, {} as any) as any).subscribe(
-      (result: any) => {
-        expect(routerSpy.createUrlTree).toHaveBeenCalledWith(['auth/login']);
-        expect(result).toBe('/auth/login' as any);
-        done();
-      }
-    );
+    guard.canActivate().subscribe((result: any) => {
+      expect(routerSpy.createUrlTree).toHaveBeenCalledWith(['auth/login']);
+      expect(result).toBe('/auth/login' as any);
+      done();
+    });
   });
 });

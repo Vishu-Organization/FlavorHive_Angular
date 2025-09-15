@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatDialogRef,
@@ -15,10 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent {
-  constructor(
-    private dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string; btnText: string }
-  ) {}
+  private dialogRef = inject(MatDialogRef<ConfirmDialogComponent>);
+  data = inject<{ message: string; btnText: string }>(MAT_DIALOG_DATA);
 
   onConfirm(): void {
     this.dialogRef.close(true);

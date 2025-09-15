@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ISignupDataItem } from 'src/store/auth/_interfaces';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
+import { IAuthResponse } from 'src/app/types/token';
 
 export const SUPABASE_API_AUTH = `${VITE_SUPABASE_URL}/auth/v1`;
 
@@ -10,28 +11,32 @@ export const SUPABASE_API_AUTH = `${VITE_SUPABASE_URL}/auth/v1`;
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
-  refreshToken(refreshToken: string): Observable<any> {
+  refreshToken(refreshToken: string): Observable<IAuthResponse> {
     const params = new HttpParams().set('grant_type', 'refresh_token');
-    return this.http.post(
+    return this.http.post<IAuthResponse>(
       `${SUPABASE_API_AUTH}/token`,
       { refresh_token: refreshToken },
       { params }
     );
   }
 
-  signIn(email: string, password: string): Observable<any> {
+  signIn(email: string, password: string): Observable<IAuthResponse> {
     const params = new HttpParams().set('grant_type', 'password');
-    return this.http.post(
+    return this.http.post<IAuthResponse>(
       `${SUPABASE_API_AUTH}/token`,
       { email, password },
       { params }
     );
   }
 
-  signup(email: string, password: string, name: string): Observable<any> {
-    return this.http.post(`${SUPABASE_API_AUTH}/signup`, {
+  signup(
+    email: string,
+    password: string,
+    name: string
+  ): Observable<IAuthResponse> {
+    return this.http.post<IAuthResponse>(`${SUPABASE_API_AUTH}/signup`, {
       email,
       password,
       options: { data: { name } },
@@ -48,8 +53,8 @@ export class AuthService {
     );
   }
 
-  logOut(): Observable<any> {
-    return this.http.post(`${SUPABASE_API_AUTH}/logout`, {});
+  logOut(): Observable<void> {
+    return this.http.post<void>(`${SUPABASE_API_AUTH}/logout`, {});
   }
 
   loadHowItWorks(): Observable<ISignupDataItem[]> {

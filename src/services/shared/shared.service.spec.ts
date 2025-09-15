@@ -7,7 +7,6 @@ import { SharedService } from './shared.service';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
-import { BlogActions } from 'src/store/shared/actions';
 
 describe('SharedService', () => {
   let service: SharedService;

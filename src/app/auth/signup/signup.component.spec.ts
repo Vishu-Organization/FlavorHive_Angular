@@ -3,7 +3,7 @@ import { SignupComponent } from './signup.component';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Subject } from 'rxjs';
+import { of } from 'rxjs';
 import { ToastService } from 'src/services/toast/toast.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthActions } from 'src/store/auth/actions';
