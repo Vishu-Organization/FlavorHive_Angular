@@ -16,7 +16,7 @@ import { HomeEffects } from './store/home/effects';
 import { FooterEffects } from './store/footer/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { importProvidersFrom, isDevMode } from '@angular/core';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { apikeyInterceptor } from './interceptors/apikey/apikey.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { reducers } from './store/types/urls';
@@ -35,7 +35,7 @@ bootstrapApplication(AppComponent, {
     provideStore(reducers),
     provideEffects([AuthEffects, HomeEffects, FooterEffects, SharedEffects]),
     provideRouterStore(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true}),
     provideAnimations(),
     importProvidersFrom([MatDialogModule, MatSnackBarModule]),
   ],

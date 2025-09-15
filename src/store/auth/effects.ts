@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/services/auth/auth.service';
 import { AuthActions, AuthDataActions, initialize } from './actions';
@@ -14,21 +14,19 @@ import {
 } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { TypedAction } from '@ngrx/store/src/models';
+import { ActionCreator, TypedAction } from '@ngrx/store/src/models';
 import { ToastService } from 'src/services/toast/toast.service';
-import { ILoginResponse } from 'src/app/types/token';
+import { IAuthResponse, IToken } from 'src/app/types/token';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthEffects {
-  constructor(
-    private actions$: Actions,
-    private authService: AuthService,
-    private cookieService: CookieService,
-    private router: Router,
-    private toastService: ToastService
-  ) {}
+  private actions$ = inject(Actions);
+  private authService = inject(AuthService);
+  private cookieService = inject(CookieService);
+  private router = inject(Router);
+  private toastService = inject(ToastService);
 
   emitAuthSuccess(
     {
@@ -40,9 +38,12 @@ export class AuthEffects {
         user_metadata: { email, name },
         id,
       },
-    }: ILoginResponse,
-    action?: any
-  ): TypedAction<any> {
+    }: IAuthResponse,
+    action: ActionCreator<
+      string,
+      (props: { token: IToken }) => TypedAction<string>
+    >
+  ): TypedAction<string> {
     return action({
       token: {
         token: access_token,

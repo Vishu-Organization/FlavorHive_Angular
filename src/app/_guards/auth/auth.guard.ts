@@ -1,11 +1,5 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable, take } from 'rxjs';
 import { selectIsAuthenticated } from 'src/store/auth/selectors';
@@ -14,12 +8,10 @@ import { selectIsAuthenticated } from 'src/store/auth/selectors';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private store: Store, private router: Router) {}
+  private store = inject(Store);
+  private router = inject(Router);
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> {
+  canActivate(): Observable<boolean | UrlTree> {
     return this.store.select(selectIsAuthenticated).pipe(
       take(1),
       map((isAuthenticated) =>

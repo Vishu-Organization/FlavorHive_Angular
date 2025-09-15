@@ -2,37 +2,35 @@ import { IToken } from 'src/app/types/token';
 import { Loader } from '../home/_interfaces';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface AuthState {
+export type AuthState = {
   token: IToken | null;
   error: string | null;
   loading: boolean;
-}
+};
 
-export interface SignupDataState {
+export type SignupDataState = {
   howItWorks: ISignupDataItemState;
   additionalInfo: ISignupDataItemState;
-}
+};
 
-export interface IAuthPayload {
+export type IAuthPayload = {
   email: string;
   password: string;
-}
-export interface ISignupPayload extends IAuthPayload {
+};
+export type ISignupPayload = IAuthPayload & {
   name: string;
-}
+};
 
-export interface ISignupDataItem {
+export type ISignupDataItem = {
   id: number;
   name: string;
   description: string;
-}
+};
 
-export interface ISignupDataItemState
-  extends EntityState<ISignupDataItem>,
-    Loader {}
+export type ISignupDataItemState = EntityState<ISignupDataItem> & Loader;
 export const signupDataAdapter: EntityAdapter<ISignupDataItem> =
   createEntityAdapter<ISignupDataItem>();
-export interface ISignupData {
+export type ISignupData = {
   howItWorks: ISignupDataItem[];
   additionalInfo: ISignupDataItem[];
-}
+};

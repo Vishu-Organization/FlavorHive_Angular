@@ -1,17 +1,50 @@
+import { of } from 'rxjs';
+import { AuthGuard } from './auth.guard';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
 
-import { authGuard } from './auth.guard';
-
-describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+describe('AuthGuard', () => {
+  let guard: AuthGuard;
+  let storeSpy: jasmine.SpyObj<Store<any>>;
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    storeSpy = jasmine.createSpyObj('Store', ['select']);
+    routerSpy = jasmine.createSpyObj('Router', ['createUrlTree']);
+
+    TestBed.configureTestingModule({
+      providers: [
+        AuthGuard,
+        { provide: Store, useValue: storeSpy },
+        { provide: Router, useValue: routerSpy },
+      ],
+    });
+
+    guard = TestBed.inject(AuthGuard);
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(guard).toBeTruthy();
+  });
+
+  it('should allow activation when authenticated', (done) => {
+    storeSpy.select.and.returnValue(of(true));
+
+    guard.canActivate().subscribe((result: any) => {
+      expect(result).toBeTrue();
+      done();
+    });
+  });
+
+  it('should redirect to login when not authenticated', (done) => {
+    storeSpy.select.and.returnValue(of(false));
+    routerSpy.createUrlTree.and.returnValue('/auth/login' as any);
+
+    guard.canActivate().subscribe((result: any) => {
+      expect(routerSpy.createUrlTree).toHaveBeenCalledWith(['auth/login']);
+      expect(result).toBe('/auth/login' as any);
+      done();
+    });
   });
 });

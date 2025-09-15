@@ -10,16 +10,15 @@ import { LinkType } from 'src/store/footer/_interfaces';
   imports: [NgClass],
 })
 export class FooterLinkComponent {
-  @Input() title: string = '';
-  @Input() to: string = '';
+  @Input() title = '';
+  @Input() to = '';
   @Input() type: number | null = null;
 
   linkType = LinkType;
 
-  navigation =
-    !this.type || this.type === LinkType.Link
-      ? `/${this.to}`
-      : this.type === LinkType.Email
-      ? `mailto:${this.title}`
-      : `tel:${this.title}`;
+  get navigation(): string {
+    if (!this.type || this.type === LinkType.Link) return `/${this.to}`;
+    if (this.type === LinkType.Email) return `mailto:${this.title}`;
+    return `tel:${this.title}`;
+  }
 }
