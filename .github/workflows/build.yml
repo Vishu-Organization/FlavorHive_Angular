@@ -44,7 +44,7 @@ jobs:
       - name: Run all tests with coverage
         run: |
           # Force CI mode for Karma to run headless
-          CI=true npx ng test --configuration coverage --watch=false
+          CI=true npx ng test
 
       - name: Upload coverage summary
         run: |
