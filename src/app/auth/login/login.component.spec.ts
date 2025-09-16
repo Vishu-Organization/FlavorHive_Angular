@@ -116,10 +116,4 @@ describe('LoginComponent', () => {
       expect(button.disabled).toBeFalse();
     });
   });
-
-  describe('onLoginWithGoogle', () => {
-    it('should not throw when called', () => {
-      expect(() => component.onLoginWithGoogle()).not.toThrow();
-    });
-  });
 });

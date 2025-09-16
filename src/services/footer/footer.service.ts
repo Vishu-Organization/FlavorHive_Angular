@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { forkJoin, map, Observable } from 'rxjs';
 import {
@@ -27,7 +27,10 @@ export class FooterService {
     'Content-Profile': 'footer_navigation',
   });
 
-  constructor(private http: HttpClient, private store: Store<FooterState>) {
+  private http = inject(HttpClient);
+  private store = inject(Store<FooterState>);
+
+  constructor() {
     this.footerLinks$ = this.store.select(selectFooterLinksData);
     this.footerLinksLoading$ = this.store.select(selectFooterLinksLoading);
     this.footerLinksError$ = this.store.select(selectFooterLinksError);

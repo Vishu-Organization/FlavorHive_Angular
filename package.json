@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
-    "lint:changed": "FILES=$(git diff --name-only $(git merge-base HEAD main)...HEAD -- '*.ts' '*.html') && [ -n \"$FILES\" ] && npx eslint $FILES --max-warnings=0 || echo '✅ No changed files to lint'"
+    "lint:changed:local": "FILES=$(git diff --name-only HEAD -- '*.ts' '*.html') && [ -n \"$FILES\" ] && npx eslint $FILES --max-warnings=0 || echo '✅ No changed files to lint'",
+    "lint:changed:ci": "FILES=$(git diff --name-only origin/main...HEAD -- '*.ts' '*.html') && [ -n \"$FILES\" ] && npx eslint $FILES --max-warnings=0 || echo '✅ No changed files to lint'"
   },
   "private": true,
   "dependencies": {
