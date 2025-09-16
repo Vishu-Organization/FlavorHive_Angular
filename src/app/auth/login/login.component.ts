@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -17,11 +17,11 @@ import { AuthActions } from 'src/store/auth/actions';
 import { selectAuthLoading } from 'src/store/auth/selectors';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-interface LoginForm {
+type LoginForm = {
   email: FormControl<string>;
   password: FormControl<string>;
   rememberMe: FormControl<boolean>;
-}
+};
 
 @Component({
   standalone: true,
@@ -43,10 +43,10 @@ interface LoginForm {
 })
 export class LoginComponent {
   loginForm: FormGroup<LoginForm>;
+  private store = inject(Store<AuthState>);
   isAuthLoading$ = this.store.select(selectAuthLoading);
-  data: any;
 
-  constructor(private store: Store<AuthState>) {
+  constructor() {
     this.loginForm = new FormGroup({
       email: new FormControl('', {
         nonNullable: true,
@@ -66,6 +66,4 @@ export class LoginComponent {
       password &&
       this.store.dispatch(AuthActions.login({ email, password }));
   }
-
-  onLoginWithGoogle() {}
 }
