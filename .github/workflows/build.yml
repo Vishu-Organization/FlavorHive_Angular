@@ -49,4 +49,4 @@ jobs:
       - name: Upload coverage summary
         run: |
           echo "## Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          grep -A 4 "All files" coverage/flavor-hive-angular/lcov-report/index.html | tail -n 4 >> $GITHUB_STEP_SUMMARY
+          grep -A 4 "All files" coverage/flavor-hive-angular/index.html | tail -n 4 >> $GITHUB_STEP_SUMMARY
