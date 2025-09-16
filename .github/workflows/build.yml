@@ -44,9 +44,13 @@ jobs:
       - name: Run all tests with coverage
         run: |
           # Force CI mode for Karma to run headless
-          CI=true npx ng test
+          CI=true npx ng test --watch=false --browsers=ChromeHeadless
 
       - name: Upload coverage summary
         run: |
           echo "## Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          grep -A 4 "All files" coverage/flavor-hive-angular/index.html | tail -n 4 >> $GITHUB_STEP_SUMMARY
+          if [ -f coverage/flavor-hive-angular/index.html ]; then
+            grep -A 4 "All files" coverage/flavor-hive-angular/index.html | tail -n 4 >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Coverage file not found!" >> $GITHUB_STEP_SUMMARY
+          fi
