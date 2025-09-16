@@ -1,4 +1,4 @@
-name: PR Build Check
+name: PR Build & Test Check
 
 on:
   pull_request:
@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,7 +27,6 @@ jobs:
   pr-tests:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,14 +41,21 @@ jobs:
 
       - name: Run all tests with coverage
         run: |
-          # Force CI mode for Karma to run headless
-          CI=true npx ng test --watch=false --browsers=ChromeHeadless
+          # Run Karma in CI/headless mode
+          CI=true npx ng test --watch=false --browsers=ChromeHeadless --code-coverage
 
-      - name: Upload coverage summary
+      - name: Show coverage summary in PR
         run: |
           echo "## Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          if [ -f coverage/flavor-hive-angular/index.html ]; then
-            grep -A 4 "All files" coverage/flavor-hive-angular/index.html | tail -n 4 >> $GITHUB_STEP_SUMMARY
+          COVERAGE_FILE="coverage/flavor-hive-angular/index.html"
+          if [ -f "$COVERAGE_FILE" ]; then
+            grep -A 4 "All files" "$COVERAGE_FILE" | tail -n 4 >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ Coverage file not found!" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Upload full coverage report as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/flavor-hive-angular
