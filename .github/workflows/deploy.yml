@@ -38,7 +38,7 @@ jobs:
 
       # 🔑 Assume your new IAM Role with OIDC
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/FlavorHive_Angular_Dev_Deploy_Role  
           aws-region: ${{ secrets.AWS_REGION }}
