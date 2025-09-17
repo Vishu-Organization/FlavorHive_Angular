@@ -13,7 +13,7 @@ updates:
         open-pull-requests-limit: 10
         ignore:
         - dependency-name: "@angular/*"
-          update-types: ["version-update:semver-major"]
+          versions: [">=18.0.0"]
 
     # GitHub Actions (CI/CD pipelines, AWS deploys, etc.)
     - package-ecosystem: "github-actions"
