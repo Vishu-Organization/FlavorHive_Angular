@@ -5,18 +5,18 @@
 
 version: 2
 updates:
-  # Angular & npm dependencies
-    - package-ecosystem: "npm"
-      directory: "/" # Root of Angular project
-      schedule:
-        interval: "weekly"
-        open-pull-requests-limit: 10
-        ignore:
-        - dependency-name: "@angular/*"
-          versions: [">=18.0.0"]
+  - package-ecosystem: "npm"
+    directory: "/" # Root of Angular project
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "@angular/*"
+        versions: [">=18.0.0"]
 
-    # GitHub Actions (CI/CD pipelines, AWS deploys, etc.)
-    - package-ecosystem: "github-actions"
-      directory: "/" # Looks inside .github/workflows/
-      schedule:
-        interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/" # Looks inside .github/workflows/
+    schedule:
+      interval: "weekly"
+
+
