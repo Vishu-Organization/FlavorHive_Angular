@@ -46,7 +46,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
-  codeql-nightly-scan:
+  codeql-nightly:
     name: "CodeQL Nightly Scan"
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
