@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { initialize } from 'src/store/auth/actions';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -13,7 +13,9 @@ import { RouterModule } from '@angular/router';
   imports: [FooterComponent, NavigationComponent, RouterModule],
 })
 export class AppComponent {
-  constructor(private store: Store) {
+  private store = inject(Store);
+
+  constructor() {
     this.store.dispatch(initialize());
   }
 }
