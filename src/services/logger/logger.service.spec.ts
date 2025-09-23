@@ -1,10 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { LoggerService } from './logger.service';
 import { ErrorPayload, LogResponse } from 'src/app/types/logger';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LoggerService', () => {
   let service: LoggerService;
@@ -14,9 +12,9 @@ describe('LoggerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [LoggerService],
-    });
+    imports: [],
+    providers: [LoggerService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     service = TestBed.inject(LoggerService);
     httpMock = TestBed.inject(HttpTestingController);

@@ -1,9 +1,5 @@
 import { inject } from '@angular/core';
-import {
-  HttpRequest,
-  HttpInterceptorFn,
-  HttpHandlerFn,
-} from '@angular/common/http';
+import { HttpRequest, HttpInterceptorFn, HttpHandlerFn } from '@angular/common/http';
 import { first, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from 'src/store/auth/selectors';

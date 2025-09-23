@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { Store } from '@ngrx/store';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AuthActions } from 'src/store/auth/actions';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -18,14 +19,11 @@ describe('LoginComponent', () => {
     storeSpy.select.and.returnValue(of(false)); // 👈 stub auth loading
 
     await TestBed.configureTestingModule({
-      imports: [
-        LoginComponent,
-        HttpClientTestingModule,
+    imports: [LoginComponent,
         NoopAnimationsModule,
-        ReactiveFormsModule,
-      ],
-      providers: [{ provide: Store, useValue: storeSpy }],
-    }).compileComponents();
+        ReactiveFormsModule],
+    providers: [{ provide: Store, useValue: storeSpy }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+}).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

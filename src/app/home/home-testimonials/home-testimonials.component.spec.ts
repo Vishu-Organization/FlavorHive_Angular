@@ -5,12 +5,13 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { HomeTestimonialsComponent } from './home-testimonials.component';
 import { Store } from '@ngrx/store';
 import { HomeService } from 'src/services/home/home.service';
 import { of, Subject } from 'rxjs';
 import { Testimonial } from 'src/store/home/_interfaces';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HomeTestimonialsComponent', () => {
   let component: HomeTestimonialsComponent;
@@ -30,12 +31,14 @@ describe('HomeTestimonialsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [HomeTestimonialsComponent, HttpClientTestingModule],
-      providers: [
+    imports: [HomeTestimonialsComponent],
+    providers: [
         { provide: Store, useValue: storeMock },
         { provide: HomeService, useValue: homeServiceMock },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(HomeTestimonialsComponent);
     component = fixture.componentInstance;

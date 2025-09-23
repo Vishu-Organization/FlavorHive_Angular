@@ -1,13 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { HomeService } from './home.service';
 import { Store } from '@ngrx/store';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
 import { of } from 'rxjs';
 import { MealsShipped, Recipe } from 'src/store/home/_interfaces';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HomeService', () => {
   let service: HomeService;
@@ -19,9 +17,9 @@ describe('HomeService', () => {
     storeSpy.select.and.returnValue(of(null));
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: Store, useValue: storeSpy }],
-    });
+    imports: [],
+    providers: [{ provide: Store, useValue: storeSpy }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     service = TestBed.inject(HomeService);
     httpMock = TestBed.inject(HttpTestingController);

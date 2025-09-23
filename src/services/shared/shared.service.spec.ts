@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { SharedService } from './shared.service';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SharedService', () => {
   let service: SharedService;
@@ -18,9 +16,9 @@ describe('SharedService', () => {
     storeSpy.select.and.returnValue(of(null));
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: Store, useValue: storeSpy }],
-    });
+    imports: [],
+    providers: [{ provide: Store, useValue: storeSpy }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
 
     service = TestBed.inject(SharedService);
     httpMock = TestBed.inject(HttpTestingController);

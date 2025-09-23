@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { HomeMealsShippedComponent } from './home-meals-shipped.component';
 import { Store } from '@ngrx/store';
 import { MealsShippedActions } from 'src/store/home/actions';
 import { of } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HomeMealsShippedComponent', () => {
   let component: HomeMealsShippedComponent;
@@ -20,12 +21,14 @@ describe('HomeMealsShippedComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [HomeMealsShippedComponent, HttpClientTestingModule],
-      providers: [
+    imports: [HomeMealsShippedComponent],
+    providers: [
         { provide: Store, useValue: storeMock },
         { provide: HomeService, useValue: homeServiceMock },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(HomeMealsShippedComponent);
     component = fixture.componentInstance;

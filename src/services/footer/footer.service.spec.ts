@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { FooterService } from './footer.service';
 import { Store } from '@ngrx/store';
 import { VITE_SUPABASE_URL } from 'src/store/types/urls';
 import { FooterLink } from 'src/store/footer/_interfaces';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FooterService', () => {
   let service: FooterService;
@@ -14,14 +12,16 @@ describe('FooterService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
+    imports: [],
+    providers: [
         {
-          provide: Store,
-          useValue: jasmine.createSpyObj('Store', ['select', 'dispatch']),
+            provide: Store,
+            useValue: jasmine.createSpyObj('Store', ['select', 'dispatch']),
         },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+});
     service = TestBed.inject(FooterService);
     httpMock = TestBed.inject(HttpTestingController);
   });
