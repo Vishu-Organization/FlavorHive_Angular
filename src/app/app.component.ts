@@ -6,8 +6,8 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  standalone: true,
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   imports: [FooterComponent, NavigationComponent, RouterModule],
