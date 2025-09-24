@@ -14,7 +14,8 @@ import {
 } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { ActionCreator, TypedAction } from '@ngrx/store/src/models';
+import { ActionCreator } from '@ngrx/store/src/models';
+import { Action } from '@ngrx/store';
 import { ToastService } from 'src/services/toast/toast.service';
 import { IAuthResponse, IToken } from 'src/app/types/token';
 
@@ -41,9 +42,9 @@ export class AuthEffects {
     }: IAuthResponse,
     action: ActionCreator<
       string,
-      (props: { token: IToken }) => TypedAction<string>
+      (props: { token: IToken }) => Action<string>
     >
-  ): TypedAction<string> {
+  ): Action<string> {
     return action({
       token: {
         token: access_token,

@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 import { HomeService } from 'src/services/home/home.service';
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -16,22 +17,24 @@ describe('HomeComponent', () => {
     storeSpy.select.and.returnValue(of(null));
 
     await TestBed.configureTestingModule({
-      imports: [HomeComponent, HttpClientTestingModule, NoopAnimationsModule],
-      providers: [
+    imports: [HomeComponent, NoopAnimationsModule],
+    providers: [
         {
-          provide: Store,
-          useValue: storeSpy,
+            provide: Store,
+            useValue: storeSpy,
         },
         {
-          provide: HomeService,
-          useValue: {
-            testimonialsData$: of([]),
-            testimonialsLoading$: of(false),
-            testimonialsError$: of(null),
-          },
+            provide: HomeService,
+            useValue: {
+                testimonialsData$: of([]),
+                testimonialsLoading$: of(false),
+                testimonialsError$: of(null),
+            },
         },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;

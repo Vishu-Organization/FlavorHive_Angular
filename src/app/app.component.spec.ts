@@ -3,7 +3,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -11,14 +12,16 @@ describe('AppComponent', () => {
     storeSpy.select.and.returnValue(of(null));
 
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, AppComponent, HttpClientTestingModule],
-      providers: [
+    imports: [RouterTestingModule, AppComponent],
+    providers: [
         {
-          provide: Store,
-          useValue: storeSpy,
+            provide: Store,
+            useValue: storeSpy,
         },
-      ],
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
   });
 
   it('should create the app', () => {
