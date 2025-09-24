@@ -71,5 +71,5 @@ jobs:
           fi
 
           echo "Deploying to $BUCKET"
-          aws s3 sync dist/flavor-hive-angular s3://$BUCKET --delete
+          aws s3 sync dist/flavor-hive-angular/browser s3://$BUCKET --delete
           aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
