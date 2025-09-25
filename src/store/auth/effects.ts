@@ -15,7 +15,6 @@ import {
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { ActionCreator } from '@ngrx/store/src/models';
-import { Action } from '@ngrx/store';
 import { ToastService } from 'src/services/toast/toast.service';
 import { IAuthResponse, IToken } from 'src/app/types/token';
 
@@ -40,11 +39,10 @@ export class AuthEffects {
         id,
       },
     }: IAuthResponse,
-    action: ActionCreator<
-      string,
-      (props: { token: IToken }) => Action<string>
-    >
-  ): Action<string> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    action: ActionCreator<string, (props: { token: IToken }) => any>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): any {
     return action({
       token: {
         token: access_token,
