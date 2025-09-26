@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li>
-                    <a routerLinkActive="text-primary" routerLink="/our-vision" data-testid="header-our-vision"
+                    <a routerLinkActive="text-primary" routerLink="/pages/vision" data-testid="header-our-vision"
                         class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
                         our vision
                     </a>
@@ -27,7 +27,7 @@
                 </li>
             </ul>
             <ul class="col-span-1 flex items-center justify-self-end md:col-auto">
-                <ng-container *ngIf="!(isAuthenticated$ | async); else loggedIn">
+                <ng-container *ngIf="(isAuthenticated$ | async) === false; else loggedIn">
                     <li>
                         <a data-testid="link-header-login" routerLink="auth/login" routerLinkActive="text-primary"
                             class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
