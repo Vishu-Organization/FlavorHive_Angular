@@ -1,16 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterModule } from "@angular/router";
-import { Observable } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { WhatsCookingComponent } from '../shared/components/whats-cooking/whats-cooking.component';
 
 @Component({
   selector: 'app-page',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, WhatsCookingComponent],
   templateUrl: './page.component.html',
-  styleUrl: './page.component.scss'
+  styleUrl: './page.component.scss',
 })
-export class PageComponent {
-
-  // vision$: Observable<>
-
-}
+export class PageComponent {}
