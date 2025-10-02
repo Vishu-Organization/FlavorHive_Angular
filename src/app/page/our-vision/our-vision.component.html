@@ -1,0 +1,37 @@
+<section class="container grid mx-auto text-center space-y-10 mb-4">
+    @if(vision(); as vision) {
+
+    <!-- Video section -->
+    <section>
+        <iframe [style.height.px]="iframeHeight < 550 ? iframeHeight : 550" [src]="vision.videoUrl" frameborder="0"
+            width="100%"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen [title]="vision.video_title">
+        </iframe>
+    </section>
+
+    <!-- How food is grown description -->
+    <section class="text-balance font-chronicle text-base leading-8 text-primary lg:text-[20px]">
+        {{ vision.how_food_grown }}
+    </section>
+
+    <!-- Hero image / banner -->
+    <section
+        class="relative h-96 w-full bg-our-vision bg-cover bg-center bg-no-repeat text-2xl transition-all duration-200 ease-in hover:scale-[1.01] md:h-[500px] md:text-4xl lg:h-screen lg:text-5xl">
+        <div class="absolute inset-0 bg-black opacity-25"></div>
+        <div class="relative top-1/2 z-10 mx-auto w-3/4 -translate-y-3/4 p-4 font-bold leading-tight text-white">
+            We're developing better standards for higher quality ingredients.
+        </div>
+    </section>
+
+    <!-- Quality description -->
+    <section class="mx-auto w-5/6 text-base text-primary-black lg:text-lg">
+        {{ vision.quality_description }}
+    </section>
+
+    <!-- Our vision images + descriptions -->
+
+    <app-our-vision-images [images]="images" [imageDescriptions]="imageDescriptions"></app-our-vision-images>
+
+    }
+    </section>
