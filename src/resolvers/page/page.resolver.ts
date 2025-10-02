@@ -5,15 +5,12 @@ import { PageService } from 'src/services/page/page.service';
 import { VisionRouteData } from 'src/store/page/_types';
 
 export const pageResolver: ResolveFn<VisionRouteData | null> = (_, { url }) => {
-
   const pageService = inject(PageService);
+  const urlSegment = url.split('/').filter(Boolean).pop(); // handle trailing slash
 
-  const urlSegment = url.split('/').pop();
-
-  switch (urlSegment) {
-    case 'vision':
-      return pageService.getVisionPageData();
-    default:
-      return of(null)
+  if (urlSegment === 'vision') {
+    return pageService.getVisionPageData(); // Observable<VisionRouteData>
   }
+
+  return of(null); // Observable<null>
 };

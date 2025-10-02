@@ -14,14 +14,6 @@ export class PageService {
   });
   private http = inject(HttpClient);
 
-  // getVisionPageData(): Observable<VisionRouteData> {
-  //   return forkJoin([this.getYoutubeVideoLink()]).pipe(
-  //     map(([youtube]) => ({
-  //       video: youtube,
-  //     }))
-  //   );
-  // }
-
   getVisionPageData(): Observable<VisionRouteData> {
     const params = new HttpParams().set('order', 'id.asc');
     return this.http
