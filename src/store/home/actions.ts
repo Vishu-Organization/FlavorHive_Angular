@@ -1,10 +1,5 @@
-import {
-  createAction,
-  createActionGroup,
-  emptyProps,
-  props,
-} from '@ngrx/store';
-import { HomeMenu, MealsShipped, Testimonial } from './_interfaces';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { HomeRecipe, MealsShipped, Testimonial } from './_interfaces';
 
 export const MealsShippedActions = createActionGroup({
   source: 'Meals Shipped',
@@ -28,7 +23,7 @@ export const HomeMenuActions = createActionGroup({
   source: 'Home Menu',
   events: {
     Load: emptyProps(),
-    'Load Success': props<{ data: HomeMenu }>(),
+    'Load Success': props<{ data: HomeRecipe }>(),
     'Load Failure': props<{ error: string }>(),
   },
 });

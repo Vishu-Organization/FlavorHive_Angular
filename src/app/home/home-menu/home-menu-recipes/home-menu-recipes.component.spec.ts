@@ -1,96 +1,100 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HomeMenuRecipesComponent } from './home-menu-recipes.component';
-import { Store } from '@ngrx/store';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
+import { HomeMenuRecipesComponent } from './home-menu-recipes.component';
 import { HomeService } from 'src/services/home/home.service';
-import { RecipeImages, ImageContent } from 'src/store/home/_interfaces';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HomeMenuActions } from 'src/store/home/actions';
+import { DummyRecipe, HomeRecipe } from 'src/store/home/_interfaces';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { provideRouter } from '@angular/router';
 
 describe('HomeMenuRecipesComponent', () => {
   let component: HomeMenuRecipesComponent;
   let fixture: ComponentFixture<HomeMenuRecipesComponent>;
-  let mockStore: jasmine.SpyObj<Store<any>>;
-  let mockHomeService: jasmine.SpyObj<HomeService>;
+  let store: MockStore;
+  let homeServiceSpy: Partial<HomeService>; // plain object with getters
+
+  const initialState = {};
+
+  const mockRecipe: HomeRecipe = {
+    vegetarian: { name: 'Veggie Delight' } as DummyRecipe,
+    mediterranean: { name: 'Mediterranean Salad' } as DummyRecipe,
+    salad: { name: 'Caesar Salad' } as DummyRecipe,
+    indian: { name: 'Butter Chicken' } as DummyRecipe,
+    mexican: { name: 'Tacos' } as DummyRecipe,
+    thai: { name: 'Pad Thai' } as DummyRecipe,
+    breakfast: { name: 'Pancakes' } as DummyRecipe,
+    snack: { name: 'Nachos' } as DummyRecipe,
+    lunch: { name: 'Burger' } as DummyRecipe,
+    dinner: { name: 'Spaghetti' } as DummyRecipe,
+  };
 
   beforeEach(async () => {
-    mockStore = jasmine.createSpyObj('Store', ['select', 'dispatch']);
-    mockHomeService = jasmine.createSpyObj('HomeService', [], {
-      homeReciepesData$: of(null),
-      homeReciepesLoading$: of(false),
-      homeReciepesError$: of(null),
-    });
+    // Plain object with getters returning observables
+    homeServiceSpy = {
+      get homeReciepesData$() {
+        return of(mockRecipe);
+      },
+      get homeReciepesLoading$() {
+        return of(false);
+      },
+      get homeReciepesError$() {
+        return of(null);
+      },
+    };
 
     await TestBed.configureTestingModule({
-    imports: [HomeMenuRecipesComponent],
-    providers: [
-        { provide: Store, useValue: mockStore },
-        { provide: HomeService, useValue: mockHomeService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-    ]
-}).compileComponents();
+      imports: [HomeMenuRecipesComponent],
+      providers: [
+        provideRouter([]),
+        provideMockStore({ initialState }),
+        { provide: HomeService, useValue: homeServiceSpy },
+      ],
+    }).compileComponents();
 
+    store = TestBed.inject(MockStore);
     fixture = TestBed.createComponent(HomeMenuRecipesComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  describe('Component Creation', () => {
-    it('should create', () => {
+  describe('Initialization', () => {
+    it('should create the component', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should expose observables from HomeService', () => {
-      expect(component.homeMenuRecipes$).toBeDefined();
-      expect(component.homeMenuRecipesLoading$).toBeDefined();
-      expect(component.homeMenuRecipesError$).toBeDefined();
+    it('should dispatch HomeMenuActions.load() on init', () => {
+      const dispatchSpy = spyOn(store, 'dispatch');
+      fixture.detectChanges();
+      expect(dispatchSpy).toHaveBeenCalledWith(HomeMenuActions.load());
     });
   });
 
-  describe('generateSrcSet', () => {
-    it('should return empty string when no images provided', () => {
-      expect(component.generateSrcSet(undefined)).toBe('');
-    });
+  describe('Service streams', () => {
+    it('should expose observables from HomeService', (done) => {
+      fixture.detectChanges();
 
-    it('should generate correct srcset with SMALL, REGULAR, and LARGE', () => {
-      const images: RecipeImages = {
-        SMALL: { url: 'small.jpg' } as ImageContent,
-        REGULAR: { url: 'regular.jpg' } as ImageContent,
-        LARGE: { url: 'large.jpg' } as ImageContent,
-        THUMBNAIL: { url: 'thumbnail.jpg' } as ImageContent,
-      };
+      component.homeMenuRecipes$.subscribe((val) => {
+        expect(val).toEqual(mockRecipe);
+        done();
+      });
 
-      const result = component.generateSrcSet(images);
-      expect(result).toBe('small.jpg 640w, regular.jpg 1024w, large.jpg 1280w');
-    });
+      component.homeMenuRecipesLoading$.subscribe((val) => {
+        expect(val).toBeFalse();
+      });
 
-    it('should fallback to REGULAR if LARGE is missing', () => {
-      const images: RecipeImages = {
-        SMALL: { url: 'small.jpg' } as ImageContent,
-        REGULAR: { url: 'regular.jpg' } as ImageContent,
-        LARGE: undefined,
-        THUMBNAIL: { url: 'thumbnail.jpg' } as ImageContent,
-      };
-
-      const result = component.generateSrcSet(images);
-      expect(result).toBe(
-        'small.jpg 640w, regular.jpg 1024w, regular.jpg 1280w'
-      );
+      component.homeMenuRecipesError$.subscribe((val) => {
+        expect(val).toBeNull();
+      });
     });
   });
 
-  describe('trackByKey', () => {
-    it('should return the key of the item', () => {
-      const item = { key: '123' };
-      expect(component.trackByKey(0, item)).toBe('123');
-    });
-  });
-
-  describe('generateQueryParam', () => {
+  describe('Helper methods', () => {
     it('should generate query params correctly', () => {
-      const result = component.generateQueryParam('category', 'dessert');
-      expect(result).toEqual({ category: 'dessert' });
+      const params = component.generateQueryParam('type', 'veg');
+      expect(params).toEqual({ type: 'veg' });
+    });
+
+    it('should have skeleton array of length 10', () => {
+      expect(component.skeletonArray.length).toBe(10);
     });
   });
 });

@@ -27,25 +27,7 @@ export const testimonialsAdapter: EntityAdapter<Testimonial> =
   createEntityAdapter<Testimonial>();
 
 export type HomeRecipesState = Loader & {
-  data: null | HomeMenu;
-};
-
-export type HomeMenu = {
-  mediterranean: HomeMenuItem;
-  breakFast: HomeMenuItem;
-  vegetarian: HomeMenuItem;
-  french: HomeMenuItem;
-  indian: HomeMenuItem;
-  starter: HomeMenuItem;
-  snack: HomeMenuItem;
-  mexican: HomeMenuItem;
-  pancake: HomeMenuItem;
-  salad: HomeMenuItem;
-};
-
-type HomeMenuItem = {
-  recipe: Recipe | null;
-  selector: HomeMenuSelector;
+  data: null | HomeRecipe;
 };
 
 export type Recipe = {
@@ -114,4 +96,45 @@ export type RecipeResponse = {
   count: number;
   _links: SelfNextLinks;
   hits: RecipeHit[];
+};
+
+export type HomeRecipe = {
+  vegetarian: DummyRecipe;
+  mediterranean: DummyRecipe;
+  salad: DummyRecipe;
+  indian: DummyRecipe;
+  mexican: DummyRecipe;
+  thai: DummyRecipe;
+  breakfast: DummyRecipe;
+  snack: DummyRecipe;
+  lunch: DummyRecipe;
+  dinner: DummyRecipe;
+};
+
+export type DummyHomeRecipeResponse = {
+  recipes: DummyRecipe[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
+export type DummyRecipeDifficulty = 'Easy' | 'Meduim';
+
+export type DummyRecipe = {
+  id: number;
+  name: string;
+  ingredients: string[];
+  instruction: string[];
+  prepTimeMinutes: number;
+  cookTimeMinutes: number;
+  servings: number;
+  difficulty: DummyRecipeDifficulty;
+  cuisine: string;
+  caloriesPerServing: number;
+  tags: string[];
+  userId: number;
+  image: string;
+  rating: number;
+  reviewCount: number;
+  mealType: string[];
 };
