@@ -1,6 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-  HomeMenu,
   HomeRecipesState,
   mealsShippedAdapter,
   MealsShippedState,
@@ -8,14 +7,16 @@ import {
   TestimonialState,
 } from './_interfaces';
 import {
-  HomeMenuActions, TestimonialsActions, MealsShippedActions,
+  HomeMenuActions,
+  TestimonialsActions,
+  MealsShippedActions,
 } from './actions';
 
-export interface HomeState {
+export type HomeState = {
   mealsShipped: MealsShippedState;
   testimonials: TestimonialState;
   recipes: HomeRecipesState;
-}
+};
 
 const initialMealsShippedState: MealsShippedState =
   mealsShippedAdapter.getInitialState({

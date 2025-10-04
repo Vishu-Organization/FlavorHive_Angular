@@ -4,15 +4,17 @@ import {
   MealsShippedActions,
   TestimonialsActions,
 } from './actions';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, from, map, mergeMap, of } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HomeRecipe } from './_interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HomeEffects {
-  constructor(private actions$: Actions, private homeService: HomeService) {}
+  private actions$ = inject(Actions);
+  private homeService = inject(HomeService);
 
   loadMealsShipped$ = createEffect(() =>
     this.actions$.pipe(
@@ -46,9 +48,10 @@ export class HomeEffects {
     this.actions$.pipe(
       ofType(HomeMenuActions.load),
       mergeMap(() =>
-        this.homeService.getHomeMenuRecipes().pipe(
-          map((data) => HomeMenuActions.loadSuccess({ data })),
-          catchError(({ error: { message }, ok, status }) => {
+        from(this.homeService.getHomeMenuRecipes()).pipe(
+          // 👈 wrap Promise in Observable
+          map((data: HomeRecipe) => HomeMenuActions.loadSuccess({ data })),
+          catchError(({ error: { message }, status }) => {
             if (status === 401) {
               message =
                 'You are not authorized to view the recipes. Please contact the support team!';

@@ -1,14 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, Observable } from 'rxjs';
+import { lastValueFrom, map, Observable } from 'rxjs';
 import {
-  HomeMenu,
-  HomeMenuSelector,
+  DummyHomeRecipeResponse,
+  DummyRecipe,
+  HomeRecipe,
   MealsShipped,
-  Recipe,
-  RecipeHit,
-  RecipeResponse,
   SelectorMap,
   Testimonial,
 } from 'src/store/home/_interfaces';
@@ -38,7 +36,7 @@ export class HomeService {
   testimonialsLoading$: Observable<boolean>;
   testimonialsError$: Observable<string | null>;
 
-  homeReciepesData$: Observable<HomeMenu | null>;
+  homeReciepesData$: Observable<HomeRecipe | null>;
   homeReciepesLoading$: Observable<boolean>;
   homeReciepesError$: Observable<string | null>;
 
@@ -53,7 +51,12 @@ export class HomeService {
     'Content-Profile': 'home',
   });
 
-  constructor(private http: HttpClient, private store: Store<HomeState>) {
+  private homeMenuUrl = `https://dummyjson.com/recipes`;
+
+  private http = inject(HttpClient);
+  private store = inject(Store<HomeState>);
+
+  constructor() {
     this.mealsShippedData$ = this.store.select(selectAllMealsShipped);
     this.mealsShippedLoading$ = this.store.select(selectMealsShippedLoading);
     this.mealsShippedError$ = this.store.select(selectMealsShippedError);
@@ -96,89 +99,40 @@ export class HomeService {
     );
   }
 
-  getHomeMenuRecipes(): Observable<HomeMenu> {
-    const fields = ['label', 'image', 'images'];
-    return combineLatest([
-      this.getHomeRecipe(
-        this.buildUrl({ fields, cuisineType: ['mediterranean'] })
-      ),
-      this.getHomeRecipe(this.buildUrl({ fields, mealType: ['breakfast'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, health: ['vegetarian'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, cuisineType: ['french'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, cuisineType: ['indian'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, dishType: ['starter'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, mealType: ['snack'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, cuisineType: ['mexican'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, dishType: ['pancake'] })),
-      this.getHomeRecipe(this.buildUrl({ fields, dishType: ['salad'] })),
-    ]).pipe(
-      map(
-        ([
-          mediterranean,
-          breakFast,
-          vegetarian,
-          french,
-          indian,
-          starter,
-          snack,
-          mexican,
-          pancake,
-          salad,
-        ]) => ({
-          mediterranean: {
-            recipe: mediterranean,
-            selector: HomeMenuSelector.cuisine,
-          },
-          breakFast: {
-            recipe: breakFast,
-            selector: HomeMenuSelector.meal,
-          },
-          vegetarian: {
-            recipe: vegetarian,
-            selector: HomeMenuSelector.health,
-          },
-          french: {
-            recipe: french,
-            selector: HomeMenuSelector.cuisine,
-          },
-          indian: {
-            recipe: indian,
-            selector: HomeMenuSelector.cuisine,
-          },
-          starter: {
-            recipe: starter,
-            selector: HomeMenuSelector.dish,
-          },
-          snack: {
-            recipe: snack,
-            selector: HomeMenuSelector.meal,
-          },
-          mexican: {
-            recipe: mexican,
-            selector: HomeMenuSelector.cuisine,
-          },
-          pancake: {
-            recipe: pancake,
-            selector: HomeMenuSelector.dish,
-          },
-          salad: {
-            recipe: salad,
-            selector: HomeMenuSelector.dish,
-          },
-        })
-      )
+  async getHomeMenuRecipes(): Promise<HomeRecipe> {
+    const categories: Record<keyof HomeRecipe, string> = {
+      vegetarian: 'tag/vegetarian',
+      mediterranean: 'tag/mediterranean',
+      salad: 'tag/salad',
+      indian: 'tag/indian',
+      mexican: 'tag/mexican',
+      thai: 'tag/thai',
+      breakfast: 'meal-type/breakfast',
+      snack: 'meal-type/snack',
+      lunch: 'meal-type/lunch',
+      dinner: 'meal-type/dinner',
+    };
+
+    const entries = await Promise.all(
+      Object.entries(categories).map(async ([key, path]) => {
+        const recipe = await lastValueFrom(
+          this.getHomeRecipe(`${this.homeMenuUrl}/${path}`)
+        );
+        return [key, recipe] as const;
+      })
     );
+
+    // Artificial delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    return Object.fromEntries(entries) as HomeRecipe;
   }
 
-  getHomeRecipe(url: string): Observable<Recipe> {
-    return this.http.get<RecipeResponse>(url).pipe(
-      map((response) => this.getHits(response)),
-      map(([{ recipe }]) => recipe)
+  getHomeRecipe(url: string): Observable<DummyRecipe> {
+    return this.http.get<DummyHomeRecipeResponse>(url).pipe(
+      map(({ recipes }) => recipes),
+      map(([recipe]) => recipe)
     );
-  }
-
-  private getHits(response: any): RecipeHit[] {
-    return response?.hits;
   }
 
   buildUrl(selectorMap: SelectorMap): string {

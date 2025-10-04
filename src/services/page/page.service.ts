@@ -21,6 +21,6 @@ export class PageService {
         headers: this.headers,
         params,
       })
-      .pipe(map(([item]) => item));
+      .pipe(map(([item]) => item)); 
   }
 }

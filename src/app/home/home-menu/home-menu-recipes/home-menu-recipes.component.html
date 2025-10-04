@@ -1,25 +1,42 @@
 <section class="py-8 px-4 xl:px-10">
-    <mat-spinner *ngIf="(homeMenuRecipesLoading$ | async)" diameter="40" strokeWidth="3"></mat-spinner>
-    <ul *ngIf="(homeMenuRecipes$ | async) as homeMenuRecipes"
+    @if (homeMenuRecipesLoading$ | async) {
+    <ul
         class="grid max-w-full grid-cols-custom-10 gap-x-4 gap-y-10 overflow-x-auto lg:grid-cols-5 lg:gap-x-6 xl:gap-x-8">
-        <li *ngFor="let item of homeMenuRecipes | keyvalue; trackBy: trackByKey"
-            class="flex shrink-0 flex-col gap-4">
+        @for (_ of skeletonArray; track $index) {
+        <li class="flex flex-col gap-2 animate-pulse">
+            <div class="h-48 w-full rounded-md bg-gray-200 dark:bg-gray-700"></div>
+            <div class="space-y-2 text-center">
+                <div class="h-4 w-20 mx-auto bg-gray-200 rounded dark:bg-gray-700"></div>
+                <div class="h-3 w-32 mx-auto bg-gray-200 rounded dark:bg-gray-700"></div>
+            </div>
+        </li>
+        }
+        </ul>
+        }
+        
+        @if (homeMenuRecipes$ | async; as homeMenuRecipes) {
+        <ul class="grid max-w-full grid-cols-custom-10 gap-x-4 gap-y-10 overflow-x-auto lg:grid-cols-5 lg:gap-x-6 xl:gap-x-8">
+            @for (recipe of homeMenuRecipes | keyvalue; track $index) {
+            <li>
             <article class="flex flex-col items-center gap-2">
-                <a routerLink='/on-the-menu' [queryParams]="generateQueryParam(item.value.selector, item.key)" aria-label="View menu">
-                    <img [src]="item.value.recipe?.image" [attr.srcset]="generateSrcSet(item.value.recipe?.images)"
-                        [alt]="item.value.recipe?.label" class="h-48 w-full rounded-md xl:h-auto" />
+                <a routerLink="/on-the-menu" [attr.aria-label]="'View menu for ' + recipe.key" class="block w-full">
+                    <img [src]="recipe.value.image" [alt]="recipe.value.name" class="h-48 w-full rounded-md object-cover xl:h-auto" />
                 </a>
-
                 <div class="space-y-2 text-center">
-                    <span class="text-[13px] font-bold uppercase tracking-[1.3px] text-blue70 lg:text-sm">
-                        {{ item.key }}
-                    </span>
+                    <h3 class="text-[13px] font-bold uppercase tracking-[1.3px] text-blue70 lg:text-sm">
+                        {{ recipe.key }}
+                    </h3>
                     <p class="text-sm font-medium leading-tight text-primary-info lg:text-base">
-                        {{ item.value.recipe?.label }}
+                        {{ recipe.value.name }}
                     </p>
                 </div>
             </article>
         </li>
+        }
     </ul>
-    <p *ngIf="(homeMenuRecipesError$ | async) as homeMenuRecipesError">{{homeMenuRecipesError}}</p>
+    }
+    
+    @if (homeMenuRecipesError$ | async; as error) {
+    <p role="alert" class="text-red-600">{{ error }}</p>
+    }
 </section>
