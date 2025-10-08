@@ -1,5 +1,4 @@
 import {
-  createAction,
   createActionGroup,
   emptyProps,
   props,

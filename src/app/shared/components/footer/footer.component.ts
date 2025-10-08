@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { FooterService } from 'src/services/footer/footer.service';
@@ -19,10 +19,10 @@ export class FooterComponent {
   footerLinksLoading$: Observable<boolean>;
   footerLinksError$: Observable<string | null>;
 
-  constructor(
-    private store: Store<FooterState>,
-    private footerService: FooterService
-  ) {
+  private store = inject(Store<FooterState>);
+  private footerService = inject(FooterService);
+
+  constructor() {
     this.store.dispatch(FooterActions.load());
 
     this.footerLinks$ = this.footerService.footerLinks$;

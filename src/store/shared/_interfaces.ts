@@ -1,13 +1,13 @@
 import { Loader } from '../home/_interfaces';
 
-export interface SharedState {
+export type SharedState = {
   blog: FeatureState<BlogRecipe>;
   emailSignup: FeatureState<boolean>;
 }
 
-export interface FeatureState<T> extends Loader {
+export type FeatureState<T> = {
   data: T | null;
-}
+} & Loader
 
 export type BlogResponse = {
   recipes: BlogRecipe[];

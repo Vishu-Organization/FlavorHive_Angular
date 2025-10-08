@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FooterActions } from './actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
@@ -9,10 +9,8 @@ import { AuthActions } from '../auth/actions';
   providedIn: 'root',
 })
 export class FooterEffects {
-  constructor(
-    private actions$: Actions,
-    private footerService: FooterService
-  ) {}
+  private actions$ = inject(Actions);
+  private footerService = inject(FooterService);
 
   loadFooterLinks$ = createEffect(() =>
     this.actions$.pipe(

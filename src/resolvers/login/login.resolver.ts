@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { SignupDataState } from 'src/store/auth/_interfaces';
 import { AuthDataActions } from 'src/store/auth/actions';
 
-export const loginResolver: ResolveFn<void> = (route, state) => {
+export const loginResolver: ResolveFn<void> = () => {
   const store = inject<Store<SignupDataState>>(Store);
   store.dispatch(AuthDataActions.load());
 };

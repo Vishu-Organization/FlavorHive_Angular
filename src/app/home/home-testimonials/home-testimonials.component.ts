@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
@@ -21,12 +21,12 @@ export class HomeTestimonialsComponent implements OnDestroy {
   subs = new Subscription();
 
   currentIndex = 0;
-  intervalId: any = null;
+  intervalId!: NodeJS.Timeout;
 
-  constructor(
-    private homeService: HomeService,
-    private store: Store<HomeState>
-  ) {
+  private homeService = inject(HomeService);
+  private store = inject(Store<HomeState>);
+
+  constructor() {
     this.store.dispatch(TestimonialsActions.load());
     this.subs.add(
       this.homeService.testimonialsData$.subscribe((testimonials) => {

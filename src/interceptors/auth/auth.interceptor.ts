@@ -13,7 +13,7 @@ export const authInterceptor: HttpInterceptorFn = (
   return store.select(selectAccessToken).pipe(
     first(),
     switchMap((accessToken) => {
-      const headers: { [key: string]: string } = {};
+      const headers: Record<string, string> = {};
       if (accessToken) {
         headers['Authorization'] = `Bearer ${accessToken}`;
       }
