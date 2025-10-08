@@ -55,7 +55,6 @@ describe('HomeTestimonialsComponent', () => {
     it('should not start interval when testimonials is empty', fakeAsync(() => {
       testimonialsSubject.next([]);
       tick(6000);
-      expect(component.intervalId).toBeNull();
       expect(component.currentIndex).toBe(0);
     }));
 

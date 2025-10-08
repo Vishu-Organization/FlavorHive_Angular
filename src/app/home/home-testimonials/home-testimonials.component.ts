@@ -21,7 +21,7 @@ export class HomeTestimonialsComponent implements OnDestroy {
   subs = new Subscription();
 
   currentIndex = 0;
-  intervalId!: NodeJS.Timeout;
+  intervalId!: ReturnType<typeof setInterval>;
 
   private homeService = inject(HomeService);
   private store = inject(Store<HomeState>);
