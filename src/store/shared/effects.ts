@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { SharedService } from 'src/services/shared/shared.service';
 import { BlogActions, EmailSignupActions } from './actions';
@@ -8,6 +8,10 @@ import { ToastService } from 'src/services/toast/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class SharedEffects {
+  private sharedService = inject(SharedService);
+  private actions$ = inject(Actions);
+  private toastService = inject(ToastService);
+
   loadBlog$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BlogActions.load),
@@ -47,10 +51,4 @@ export class SharedEffects {
       )
     )
   );
-
-  constructor(
-    private sharedService: SharedService,
-    private actions$: Actions,
-    private toastService: ToastService
-  ) {}
 }

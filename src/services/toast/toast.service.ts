@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 type MsgType = 'success' | 'error';
@@ -7,7 +7,7 @@ type MsgType = 'success' | 'error';
   providedIn: 'root',
 })
 export class ToastService {
-  constructor(private snackBar: MatSnackBar) {}
+  private snackBar = inject(MatSnackBar);
 
   show(
     message: string,

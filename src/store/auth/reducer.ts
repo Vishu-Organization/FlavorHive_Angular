@@ -2,7 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import { AuthActions, AuthDataActions } from './actions';
 import {
   AuthState,
-  ISignupDataItem,
   ISignupDataItemState,
   signupDataAdapter,
   SignupDataState,

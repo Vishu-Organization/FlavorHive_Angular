@@ -6,7 +6,7 @@ export const apikeyInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) => {
-  const headers: { [key: string]: string } = { apikey: VITE_SUPABASE_KEY };
+  const headers: Record<string, string> = { apikey: VITE_SUPABASE_KEY };
 
   let clonedRequest;
 

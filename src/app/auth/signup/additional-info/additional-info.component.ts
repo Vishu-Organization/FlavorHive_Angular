@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ISignupDataItem, SignupDataState } from 'src/store/auth/_interfaces';
 import { selectSignupAdditionalInfoData } from 'src/store/auth/selectors';
@@ -12,6 +12,7 @@ import { selectSignupAdditionalInfoData } from 'src/store/auth/selectors';
   imports: [NgClass, NgFor, NgIf, AsyncPipe],
 })
 export class AdditionalInfoComponent {
+  private store = inject(Store<SignupDataState>);
   additionalInfo$ = this.store.select(selectSignupAdditionalInfoData);
 
   svgs = [
@@ -28,8 +29,6 @@ export class AdditionalInfoComponent {
       alt: 'personalized-menus',
     },
   ];
-
-  constructor(private store: Store<SignupDataState>) {}
 
   trackById(index: number, item: ISignupDataItem) {
     return item.id;

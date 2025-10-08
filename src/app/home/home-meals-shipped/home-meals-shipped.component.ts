@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { HomeService } from 'src/services/home/home.service';
@@ -19,10 +19,10 @@ export class HomeMealsShippedComponent {
   mealsShippedLoading$: Observable<boolean>;
   mealsShippedError$: Observable<string | null>;
 
-  constructor(
-    private homeService: HomeService,
-    private store: Store<HomeState>
-  ) {
+  private homeService = inject(HomeService);
+  private store = inject(Store<HomeState>);
+
+  constructor() {
     this.store.dispatch(MealsShippedActions.load());
     this.mealsShippedData$ = this.homeService.mealsShippedData$;
     this.mealsShippedLoading$ = this.homeService.mealsShippedLoading$;

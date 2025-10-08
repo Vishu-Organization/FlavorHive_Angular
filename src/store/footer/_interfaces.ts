@@ -1,14 +1,14 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Loader } from '../home/_interfaces';
 
-export interface FooterState {
+export type FooterState = {
   links: FooterLinkState;
 }
 
-export interface FooterLinkState extends EntityState<FooterLinkItem>, Loader {}
+export type FooterLinkState = {} & EntityState<FooterLinkItem> & Loader
 export const footerLinkAdapter: EntityAdapter<FooterLinkItem> =
   createEntityAdapter<FooterLinkItem>();
-export interface FooterLink {
+export type FooterLink = {
   id: number;
   name: string;
   type: number;
@@ -16,7 +16,7 @@ export interface FooterLink {
   test_id: string;
 }
 
-export interface FooterLinkItem {
+export type FooterLinkItem = {
   links: FooterLink[];
   title: string;
   id: number;

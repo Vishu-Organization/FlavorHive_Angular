@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   BlogRecipe,
   BlogResponse,
@@ -27,7 +27,10 @@ export class SharedService {
   blogError$: Observable<string | null>;
   isEmailAdded$: Observable<boolean | null>;
 
-  constructor(private http: HttpClient, private store: Store<SharedState>) {
+  private http = inject(HttpClient);
+  private store = inject(Store<SharedState>);
+
+  constructor() {
     this.blog$ = this.store.select(selectBlog);
     this.blogLoading$ = this.store.select(selectBlogLoading);
     this.blogError$ = this.store.select(selectBlogError);

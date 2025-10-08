@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import {
   CanDeactivateGuard,
   CanComponentDeactivate,
@@ -24,22 +23,16 @@ describe('CanDeactivateGuard', () => {
     const component: CanComponentDeactivate = {
       canDeactivate: jasmine.createSpy().and.returnValue(true),
     };
-    const route = {} as ActivatedRouteSnapshot;
-    const state = {} as RouterStateSnapshot;
-    const nextState = {} as RouterStateSnapshot;
 
-    const result = guard.canDeactivate(component, route, state, nextState);
+    const result = guard.canDeactivate(component);
     expect(component.canDeactivate).toHaveBeenCalled();
     expect(result).toBe(true);
   });
 
   it('should return true if canDeactivate is not defined', () => {
     const component = {} as CanComponentDeactivate;
-    const route = {} as ActivatedRouteSnapshot;
-    const state = {} as RouterStateSnapshot;
-    const nextState = {} as RouterStateSnapshot;
 
-    const result = guard.canDeactivate(component, route, state, nextState);
+    const result = guard.canDeactivate(component);
     expect(result).toBe(true);
   });
 
@@ -47,11 +40,8 @@ describe('CanDeactivateGuard', () => {
     const component: CanComponentDeactivate = {
       canDeactivate: () => of(true),
     };
-    const route = {} as ActivatedRouteSnapshot;
-    const state = {} as RouterStateSnapshot;
-    const nextState = {} as RouterStateSnapshot;
 
-    const result = guard.canDeactivate(component, route, state, nextState);
+    const result = guard.canDeactivate(component);
     if (result instanceof Observable) {
       result.subscribe((value) => {
         expect(value).toBe(true);

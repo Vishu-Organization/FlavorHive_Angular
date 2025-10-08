@@ -6,6 +6,7 @@ const unusedImports = require("eslint-plugin-unused-imports");
 
 module.exports = tseslint.config(
   {
+    ignores: ["coverage/**", "dist/**", "node_modules/**"],
     files: ["**/*.ts"],
     extends: [
       eslint.configs.recommended,

@@ -1,4 +1,4 @@
-import { createAction, createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
 import { BlogRecipe } from './_interfaces';
 
 export const BlogActions = createActionGroup({
