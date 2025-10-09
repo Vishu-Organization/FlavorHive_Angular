@@ -1,4 +1,4 @@
-import {  Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AuthGuard } from '../_guards/auth/auth.guard';
 
 export const APP_ROUTES: Routes = [
@@ -19,6 +19,11 @@ export const APP_ROUTES: Routes = [
   {
     path: 'pages',
     loadChildren: () => import('./page.routes').then((r) => r.PAGE_ROUTES),
+  },
+  {
+    path: 'on-the-menu',
+    loadChildren: () =>
+      import('./on-the-menu.routes').then((r) => r.onTheMenuRoutes),
   },
   {
     path: '**',

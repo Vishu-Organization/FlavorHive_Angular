@@ -5,7 +5,11 @@ import { Store } from '@ngrx/store';
 import { HomeService } from 'src/services/home/home.service';
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -17,24 +21,25 @@ describe('HomeComponent', () => {
     storeSpy.select.and.returnValue(of(null));
 
     await TestBed.configureTestingModule({
-    imports: [HomeComponent, NoopAnimationsModule],
-    providers: [
+      imports: [HomeComponent, NoopAnimationsModule],
+      providers: [
         {
-            provide: Store,
-            useValue: storeSpy,
+          provide: Store,
+          useValue: storeSpy,
         },
         {
-            provide: HomeService,
-            useValue: {
-                testimonialsData$: of([]),
-                testimonialsLoading$: of(false),
-                testimonialsError$: of(null),
-            },
+          provide: HomeService,
+          useValue: {
+            testimonialsData$: of([]),
+            testimonialsLoading$: of(false),
+            testimonialsError$: of(null),
+          },
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-    ]
-}).compileComponents();
+        provideRouter([]),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
