@@ -99,16 +99,16 @@ export type RecipeResponse = {
 };
 
 export type HomeRecipe = {
-  vegetarian: DummyRecipe;
+  greek: DummyRecipe;
   mediterranean: DummyRecipe;
   salad: DummyRecipe;
   indian: DummyRecipe;
   mexican: DummyRecipe;
-  thai: DummyRecipe;
+  pasta: DummyRecipe;
   breakfast: DummyRecipe;
   snack: DummyRecipe;
   lunch: DummyRecipe;
-  dinner: DummyRecipe;
+  dessert: DummyRecipe;
 };
 
 export type DummyHomeRecipeResponse = {
