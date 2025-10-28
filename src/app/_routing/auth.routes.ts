@@ -6,11 +6,13 @@ import { CanDeactivateGuard } from '../_guards/can-signup-deactivate.guard';
 export const AUTH_ROUTES: Routes = [
   {
     path: 'login',
+    title: 'FlavorHive - Login',
     loadComponent: () =>
       import('../auth/login/login.component').then((m) => m.LoginComponent),
   },
   {
     path: 'sign-up',
+    title: 'FlavorHive - Sign up',
     loadComponent: () =>
       import('../auth/signup/signup.component').then((m) => m.SignupComponent),
     resolve: { data: loginResolver },

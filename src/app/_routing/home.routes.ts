@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 export const HOME_ROUTES: Routes = [
   {
     path: '',
+    title: 'FlavorHive - Home',
     loadComponent: () =>
       import('../home/home/home.component').then((c) => c.HomeComponent),
   },

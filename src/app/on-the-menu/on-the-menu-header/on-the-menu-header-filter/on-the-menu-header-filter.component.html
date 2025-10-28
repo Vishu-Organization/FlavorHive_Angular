@@ -1,1 +1,73 @@
-<p>on-the-menu-header-filter works!</p>
+<div #dialogRef role="dialog"
+    class="absolute left-1/2 top-10 z-10 w-[630px] min-w-96 -translate-x-1/2 transform space-y-2 bg-white py-4 pb-0 shadow-lg">
+    <div class="flex min-h-56 px-4">
+        <!-- Left Navigation -->
+        <nav class="w-1/5 border-r border-slate-100 text-sm">
+            <ul>
+                @for (filterType of filterKeys; track filterType) {
+                <li class="p-2 flex items-center justify-between">
+                    <a role="button" tabindex="0"
+                        class="cursor-pointer rounded-md p-2 capitalize text-primary transition-all hover:bg-slate-100 hover:no-underline flex-1"
+                        [class.bg-slate-100]="filterType === selectedFilterType()"
+                        (click)="handleFilterTypeSelect(filterType)"
+                        (keydown.enter)="handleFilterTypeSelect(filterType)"
+                        (keydown.space)="handleFilterTypeSelect(filterType)">
+                        {{ filterType }}
+                    </a>
+
+                    @if (filters() && filters()[filterType].length) {
+                    <span class="ml-2 rounded-full bg-primary px-2 text-[10px] text-white"
+                        [ngClass]="filters()[filterType].length > 9 ? 'py-1':''">
+                        {{ filters()[filterType].length }}
+                    </span>
+                    }
+                </li>
+                }
+            </ul>
+        </nav>
+
+        <!-- Right Filter Panel -->
+        <section class="flex-1 relative overflow-hidden">
+            @let options = filtersData[selectedFilterType()];
+            @if (options) {
+            <ul [@slideFadeDirection]="selectedIndex()"
+                class="absolute inset-0 mx-5 my-2 grid auto-rows-min grid-cols-3 gap-4 text-xs bg-white">
+                @for (item of options; track item.value) {
+                <li class="flex items-center gap-2 hover:text-primary">
+                    <input type="checkbox" [id]="'input-checkbox-' + item.value" class="custom-checkbox cursor-pointer"
+                        [checked]="isChecked(selectedFilterType(), item.value)"
+                        (change)="handleOptionChange(item.value)" />
+                    <label [for]="'input-checkbox-' + item.value" class="cursor-pointer capitalize"
+                        [class.font-semibold]="isChecked(selectedFilterType(), item.value)">
+                        {{ item.label || item.value }}
+                    </label>
+                </li>
+                }
+            </ul>
+            }
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="flex items-center justify-between bg-gray-50 px-8 py-4">
+        <button data-testid="btn-filter-clear-all" class="px-2 text-xs capitalize text-gray-400 hover:text-gray-600"
+            (click)="handleClearAll()">
+            Clear all
+        </button>
+
+        <span class="text-xs tracking-widest">
+            Total filter(s): {{ totalFilters }}
+        </span>
+
+        <div class="flex space-x-6">
+            <button data-testid="btn-filter-clear" class="px-2 text-xs capitalize text-gray-400 hover:text-gray-600"
+                (click)="handleClear()">
+                Clear
+            </button>
+            <button data-testid="btn-filter-done" class="font-medium capitalize bg-primary text-white px-3 py-1 rounded-md"
+                (click)="handleDone()">
+                Done
+            </button>
+        </div>
+        </footer>
+        </div>
