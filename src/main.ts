@@ -24,6 +24,7 @@ import { authInterceptor } from './interceptors/auth/auth.interceptor';
 import { provideRouterStore } from '@ngrx/router-store';
 import { MatDialogModule } from '@angular/material/dialog';
 import { GlobalErrorHandler } from './core/error-handler';
+import { OnTheMenuEffects } from './store/on-the-menu/effects';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -35,7 +36,13 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([apikeyInterceptor, authInterceptor])),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
     provideStore(reducers),
-    provideEffects([AuthEffects, HomeEffects, FooterEffects, SharedEffects]),
+    provideEffects([
+      AuthEffects,
+      HomeEffects,
+      FooterEffects,
+      SharedEffects,
+      OnTheMenuEffects,
+    ]),
     provideRouterStore(),
     provideStoreDevtools({
       maxAge: 25,

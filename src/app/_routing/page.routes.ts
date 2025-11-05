@@ -4,7 +4,8 @@ import { pageResolver } from "src/resolvers/page/page.resolver";
 export const PAGE_ROUTES: Routes = [
   {
     path: '',
-    loadComponent:()=> import('../page/page.component').then(c => c.PageComponent),
+    loadComponent: () =>
+      import('../page/page.component').then((c) => c.PageComponent),
     children: [
       {
         path: '',
@@ -13,11 +14,12 @@ export const PAGE_ROUTES: Routes = [
       },
       {
         path: 'vision',
+        title: 'FlavorHive - Our Vision',
         loadComponent: () =>
           import('../page/our-vision/our-vision.component').then(
             (c) => c.OurVisionComponent
           ),
-        resolve: {vision: pageResolver}
+        resolve: { vision: pageResolver },
       },
     ],
   },

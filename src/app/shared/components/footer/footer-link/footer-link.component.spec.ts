@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterLinkComponent } from './footer-link.component';
 import { LinkType } from 'src/store/footer/_interfaces';
+import { provideRouter } from '@angular/router';
 
 describe('FooterLinkComponent', () => {
   let component: FooterLinkComponent;
@@ -9,6 +10,7 @@ describe('FooterLinkComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FooterLinkComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterLinkComponent);

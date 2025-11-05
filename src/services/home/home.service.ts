@@ -101,16 +101,16 @@ export class HomeService {
 
   async getHomeMenuRecipes(): Promise<HomeRecipe> {
     const categories: Record<keyof HomeRecipe, string> = {
-      vegetarian: 'tag/vegetarian',
+      greek: 'tag/greek',
       mediterranean: 'tag/mediterranean',
       salad: 'tag/salad',
       indian: 'tag/indian',
       mexican: 'tag/mexican',
-      thai: 'tag/thai',
+      pasta: 'tag/pasta',
       breakfast: 'meal-type/breakfast',
       snack: 'meal-type/snack',
       lunch: 'meal-type/lunch',
-      dinner: 'meal-type/dinner',
+      dessert: 'meal-type/dessert',
     };
 
     const entries = await Promise.all(
