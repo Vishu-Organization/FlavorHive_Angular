@@ -118,16 +118,16 @@ describe('HomeService', () => {
       const promise = service.getHomeMenuRecipes();
 
       const expectedUrls = [
-        'https://dummyjson.com/recipes/tag/vegetarian',
+        'https://dummyjson.com/recipes/tag/greek',
         'https://dummyjson.com/recipes/tag/mediterranean',
         'https://dummyjson.com/recipes/tag/salad',
         'https://dummyjson.com/recipes/tag/indian',
         'https://dummyjson.com/recipes/tag/mexican',
-        'https://dummyjson.com/recipes/tag/thai',
+        'https://dummyjson.com/recipes/tag/pasta',
         'https://dummyjson.com/recipes/meal-type/breakfast',
         'https://dummyjson.com/recipes/meal-type/snack',
         'https://dummyjson.com/recipes/meal-type/lunch',
-        'https://dummyjson.com/recipes/meal-type/dinner',
+        'https://dummyjson.com/recipes/meal-type/dessert',
       ];
 
       expectedUrls.forEach((url) => {

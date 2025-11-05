@@ -16,16 +16,16 @@ describe('HomeMenuRecipesComponent', () => {
   const initialState = {};
 
   const mockRecipe: HomeRecipe = {
-    vegetarian: { name: 'Veggie Delight' } as DummyRecipe,
+    greek: { name: 'Veggie Delight' } as DummyRecipe,
     mediterranean: { name: 'Mediterranean Salad' } as DummyRecipe,
     salad: { name: 'Caesar Salad' } as DummyRecipe,
     indian: { name: 'Butter Chicken' } as DummyRecipe,
     mexican: { name: 'Tacos' } as DummyRecipe,
-    thai: { name: 'Pad Thai' } as DummyRecipe,
+    pasta: { name: 'Pad Thai' } as DummyRecipe,
     breakfast: { name: 'Pancakes' } as DummyRecipe,
     snack: { name: 'Nachos' } as DummyRecipe,
     lunch: { name: 'Burger' } as DummyRecipe,
-    dinner: { name: 'Spaghetti' } as DummyRecipe,
+    dessert: { name: 'Spaghetti' } as DummyRecipe,
   };
 
   beforeEach(async () => {

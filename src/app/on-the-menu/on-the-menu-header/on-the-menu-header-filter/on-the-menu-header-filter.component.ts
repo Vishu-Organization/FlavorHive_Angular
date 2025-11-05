@@ -4,21 +4,29 @@ import {
   Component,
   ElementRef,
   inject,
-  output,
   signal,
   ViewChild,
   computed,
 } from '@angular/core';
-import { OnTheMenuFilterService } from 'src/services/on-the-menu/on-the-menu-filter/on-the-menu-filter.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Store } from '@ngrx/store';
+import { Observable, take } from 'rxjs';
 import {
+  initialFilters,
   MenuHeaderFilters,
   OnTheMenuFilterOptionType,
 } from 'src/store/on-the-menu/_types';
+import { OnTheMenuFilterActions } from 'src/store/on-the-menu/actions';
+import {
+  selectFilterData,
+  selectFilterError,
+  selectFilterLoading,
+} from 'src/store/on-the-menu/selectors';
 
 @Component({
   selector: 'app-on-the-menu-header-filter',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
   templateUrl: './on-the-menu-header-filter.component.html',
   styleUrl: './on-the-menu-header-filter.component.scss',
   animations: [
@@ -41,22 +49,13 @@ import {
   ],
 })
 export class OnTheMenuHeaderFilterComponent {
-  readonly initialFilters = {
-    cuisine: [],
-    diet: [],
-    dish: [],
-    health: [],
-    meal: [],
-    ingredients: [],
-  };
-
   filtersData: MenuHeaderFilters = {} as MenuHeaderFilters;
 
   filters = signal<Record<OnTheMenuFilterOptionType, string[]>>(
     this.loadFiltersFromStorage()
   );
 
-  filterKeys = Object.keys(this.initialFilters) as OnTheMenuFilterOptionType[];
+  filterKeys = Object.keys(initialFilters) as OnTheMenuFilterOptionType[];
   selectedFilterType = signal<OnTheMenuFilterOptionType>('cuisine');
 
   // Track selected filter index for animation direction
@@ -64,19 +63,22 @@ export class OnTheMenuHeaderFilterComponent {
     this.filterKeys.indexOf(this.selectedFilterType())
   );
 
-  // ✅ Modern signal-based outputs
-  filterTypeSelect = output<string>();
-  optionChange = output<string>();
-  clearAll = output<void>();
-  clear = output<void>();
-  done = output<void>();
+  private store = inject(Store);
 
-  private service = inject(OnTheMenuFilterService);
+  filtersData$: Observable<MenuHeaderFilters | null> =
+    this.store.select(selectFilterData);
+  loading$ = this.store.select(selectFilterLoading);
+  error$ = this.store.select(selectFilterError);
 
   constructor() {
-    this.service
-      .getMenuHeaderFilters()
-      .subscribe((data) => (this.filtersData = data));
+    this.store
+      .select(selectFilterData)
+      .pipe(take(1)) // take(1) completes the observable after first emission.
+      .subscribe((data) => {
+        if (!data) {
+          this.store.dispatch(OnTheMenuFilterActions.load());
+        }
+      });
   }
 
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDivElement>;
@@ -94,7 +96,7 @@ export class OnTheMenuHeaderFilterComponent {
         console.warn('Invalid filters in localStorage, resetting.');
       }
     }
-    return this.initialFilters;
+    return initialFilters;
   }
 
   handleOptionChange(option: string) {
@@ -115,7 +117,7 @@ export class OnTheMenuHeaderFilterComponent {
   }
 
   handleClearAll() {
-    this.filters.set(this.initialFilters);
+    this.filters.set(initialFilters);
   }
 
   handleClear() {

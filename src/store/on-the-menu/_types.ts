@@ -1,4 +1,5 @@
-// Angular equivalent of your React types
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Loader } from '../home/_interfaces';
 
 export const OnTheMenuFilterOption = {
   cuisineType: 'cuisine',
@@ -26,3 +27,30 @@ export type MenuHeaderFilters = Record<
   OnTheMenuFilterOptionType,
   Filter[] | null
 >;
+
+export const initialFilters = {
+  cuisine: [],
+  diet: [],
+  dish: [],
+  health: [],
+  meal: [],
+  ingredients: [],
+};
+
+/**
+ * NgRx Entity setup — allows normalized access to all filters if needed
+ */
+
+export type OnTheMenuFilterEntityState = EntityState<Filter> & Loader;
+export const filterAdapter: EntityAdapter<Filter> =
+  createEntityAdapter<Filter>();
+
+export type OnTheMenuFilterState = {
+  data: MenuHeaderFilters | null;
+} & Loader;
+
+export const initialOnTheMenuFilterState: OnTheMenuFilterState = {
+  data: null,
+  loading: false,
+  error: null,
+};

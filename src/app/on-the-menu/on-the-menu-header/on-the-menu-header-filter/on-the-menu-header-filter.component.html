@@ -26,10 +26,12 @@
             </ul>
         </nav>
 
+        @let loading = loading$ | async;
         <!-- Right Filter Panel -->
-        <section class="flex-1 relative overflow-hidden">
-            @let options = filtersData[selectedFilterType()];
-            @if (options) {
+        <section class="flex-1 relative overflow-hidden" [ngClass]="{'items-center flex justify-center':loading}">
+            @let data = filtersData$ | async;
+            @let options = data ? data[selectedFilterType()]: [];
+            @if (data) {
             <ul [@slideFadeDirection]="selectedIndex()"
                 class="absolute inset-0 mx-5 my-2 grid auto-rows-min grid-cols-3 gap-4 text-xs bg-white">
                 @for (item of options; track item.value) {
@@ -44,6 +46,9 @@
                 </li>
                 }
             </ul>
+            }
+            @if(loading) {
+            <mat-spinner color="accent" diameter="20" strokeWidth="2"></mat-spinner>
             }
         </section>
     </div>
@@ -64,10 +69,10 @@
                 (click)="handleClear()">
                 Clear
             </button>
-            <button data-testid="btn-filter-done" class="font-medium capitalize bg-primary text-white px-3 py-1 rounded-md"
-                (click)="handleDone()">
+            <button data-testid="btn-filter-done"
+                class="font-medium capitalize bg-primary text-white px-3 py-1 rounded-md" (click)="handleDone()">
                 Done
             </button>
         </div>
-        </footer>
-        </div>
+    </footer>
+</div>
