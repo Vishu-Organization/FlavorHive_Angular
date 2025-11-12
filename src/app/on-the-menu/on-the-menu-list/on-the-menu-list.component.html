@@ -1,0 +1,6 @@
+@for(recipe of recipes(); track recipe.recipe.url) {
+{{recipe.recipe.label}}
+}
+
+
+<button type="button" (click)="loadMore.emit()">Load More</button>

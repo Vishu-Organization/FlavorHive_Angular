@@ -30,33 +30,6 @@ export type HomeRecipesState = Loader & {
   data: null | HomeRecipe;
 };
 
-export type Recipe = {
-  label: string;
-  image: string;
-  images: RecipeImages;
-  source: string;
-  url: string;
-  healthLabels: string[];
-  ingredientLines: string[];
-  calories: number;
-  totalTime: number;
-  dietLabels: string[];
-  yield: number;
-};
-
-export type RecipeImages = {
-  LARGE?: ImageContent;
-  REGULAR: ImageContent;
-  SMALL: ImageContent;
-  THUMBNAIL: ImageContent;
-};
-
-export type ImageContent = {
-  height: number;
-  url: string;
-  width: number;
-};
-
 export type HomeMenuSelector = 'cuisine' | 'meal' | 'health' | 'dish';
 
 export const HomeMenuSelector = {
@@ -73,29 +46,6 @@ export type SelectorMap = {
   health?: string[];
   dishType?: string[];
   diet?: string[];
-};
-
-export type RecipeHit = {
-  recipe: Recipe;
-  _links: SelfNextLinks;
-};
-
-type SelfNextLinks = {
-  self: Link;
-  next: Link;
-};
-
-type Link = {
-  href: string;
-  title: string;
-};
-
-export type RecipeResponse = {
-  from: number;
-  to: number;
-  count: number;
-  _links: SelfNextLinks;
-  hits: RecipeHit[];
 };
 
 export type HomeRecipe = {

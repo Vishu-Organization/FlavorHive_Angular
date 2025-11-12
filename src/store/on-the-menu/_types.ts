@@ -54,3 +54,54 @@ export const initialOnTheMenuFilterState: OnTheMenuFilterState = {
   loading: false,
   error: null,
 };
+
+export type RecipesResponse = {
+  from: number;
+  to: number;
+  count: number;
+  _links: SelfNextLinks;
+  hits: RecipeHit[];
+};
+
+type SelfNextLinks = {
+  self: Link;
+  next: Link;
+};
+
+type Link = {
+  href: string;
+  title: string;
+};
+
+export type RecipeHit = {
+  recipe: Recipe;
+  _links: SelfNextLinks;
+};
+
+export type Recipe = {
+  label: string;
+  image: string;
+  images: RecipeImages;
+  source: string;
+  url: string;
+  healthLabels: string[];
+  ingredientLines: string[];
+  calories: number;
+  totalTime: number;
+  dietLabels: string[];
+  yield: number;
+};
+
+export type RecipeImages = {
+  LARGE?: ImageContent;
+  REGULAR: ImageContent;
+  SMALL: ImageContent;
+  THUMBNAIL: ImageContent;
+};
+
+type ImageContent = {
+  height: number;
+  url: string;
+  width: number;
+};
+

@@ -1,5 +1,5 @@
-<div id="search-filters" class="sticky top-12 z-10 bg-slate-50 lg:top-[4.5rem]">
-    <div class="relative flex h-10 justify-center py-2">
+<header id="search-filters" class="sticky top-12 z-10 bg-slate-50 lg:top-[4.5rem]">
+    <section class="relative flex h-10 justify-center py-2">
         <p rel="search-filters" class="flex items-center">
             <span data-testid="text-filter-header-text"
                 class="text-[10px] uppercase tracking-wider text-black20 lg:text-xs">
@@ -16,8 +16,8 @@
         @if (isModalOpen) {
         <app-on-the-menu-header-filter #modalRef (closeModal)="toggleModal()"></app-on-the-menu-header-filter>
         }
-    </div>
-</div>
+    </section>
+    </header>
 
 <article class="flex flex-col items-center gap-2 pt-10">
     <h2 class="font-chronicle text-2xl font-bold tracking-[0.32px] text-primary md:text-3xl">
