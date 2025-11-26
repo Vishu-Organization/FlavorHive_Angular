@@ -1,6 +1,24 @@
-@for(recipe of recipes(); track recipe.recipe.url) {
-{{recipe.recipe.label}}
+@let tempRecipes = recipes();
+
+<section class="container mx-auto p-4">
+
+    @if(tempRecipes?.length !== 0){
+
+    <ul aria-label="Recipe results"
+        class="grid grid-cols-2 justify-items-center gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-4 xl:grid-cols-4">
+        @for(recipe of tempRecipes; track recipe.recipe.url) {
+        <li>
+            <app-menu-recipe-card [recipe]="recipe.recipe"></app-menu-recipe-card>
+        </li>
+        }
+    </ul>
+
+    }@else {
+    <p class="my-10 text-center" aria-live="polite">
+        Your search didn't return any results. Please apply a different filter.
+    </p>
 }
+</section>
 
 
 <button type="button" (click)="loadMore.emit()">Load More</button>

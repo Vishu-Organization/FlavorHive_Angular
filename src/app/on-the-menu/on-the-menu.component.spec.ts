@@ -1,22 +1,70 @@
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OnTheMenuComponent } from './on-the-menu.component';
 import { OnTheMenuService } from 'src/services/on-the-menu/on-the-menu.service';
 import { of } from 'rxjs';
-import { RecipesResponse } from 'src/store/on-the-menu/_types';
+import { Recipe, RecipesResponse } from 'src/store/on-the-menu/_types';
 
-describe('OnTheMenuComponent', () => {
-  let fixture: ComponentFixture<OnTheMenuComponent>;
-  let component: OnTheMenuComponent;
-  let mockService: jasmine.SpyObj<OnTheMenuService>;
+// ──────────────────────────────
+// Stubs for child components
+// ──────────────────────────────
+@Component({
+  selector: 'app-on-the-menu-header',
+  template: '<div data-testid="header-stub">Header Stub</div>',
+  standalone: true,
+})
+class OnTheMenuHeaderStub {}
 
-  const mockRecipesResponse: RecipesResponse = {
-    hits: [
-      { recipe: { label: 'Pasta', calories: 200, url: 'https://example.com' } },
-    ],
-    _links: {
-      next: { href: 'https://next-page', title: 'Next page' },
+@Component({
+  selector: 'app-on-the-menu-list',
+  template: '<div data-testid="list-stub">List Stub</div>',
+  standalone: true,
+})
+class OnTheMenuListStub {
+  @Input() recipes?: Recipe[];
+}
+
+// ──────────────────────────────
+// Mock service data
+// ──────────────────────────────
+const mockRecipesResponse: RecipesResponse = {
+  hits: [
+    {
+      recipe: {
+        label: 'Pasta',
+        calories: 200,
+        url: 'https://example.com',
+        dietLabels: ['Low Carb'],
+        healthLabels: ['Vegan'],
+        cuisineType: ['Italian'],
+        mealType: ['Lunch'],
+      },
     },
-  } as any;
+  ],
+  _links: {
+    next: { href: 'https://next-page', title: 'Next page' },
+  },
+} as any;
+
+// ──────────────────────────────
+// Test-only component (replace real imports with stubs)
+// ──────────────────────────────
+@Component({
+  selector: 'app-on-the-menu',
+  standalone: true,
+  templateUrl: './on-the-menu.component.html',
+  styleUrls: ['./on-the-menu.component.scss'],
+  imports: [OnTheMenuHeaderStub, OnTheMenuListStub], // ✅ use stubs
+})
+class OnTheMenuComponentTestVersion extends OnTheMenuComponent {}
+
+// ──────────────────────────────
+// Tests
+// ──────────────────────────────
+describe('OnTheMenuComponent', () => {
+  let fixture: ComponentFixture<OnTheMenuComponentTestVersion>;
+  let component: OnTheMenuComponentTestVersion;
+  let mockService: jasmine.SpyObj<OnTheMenuService>;
 
   beforeEach(async () => {
     mockService = jasmine.createSpyObj('OnTheMenuService', [
@@ -24,61 +72,62 @@ describe('OnTheMenuComponent', () => {
       'loadMoreOnTheMenuRecipes',
     ]);
 
+    mockService.loadOnTheMenuRecipes.and.returnValue(of(mockRecipesResponse));
+
     await TestBed.configureTestingModule({
-      imports: [OnTheMenuComponent],
+      imports: [OnTheMenuComponentTestVersion],
       providers: [{ provide: OnTheMenuService, useValue: mockService }],
     }).compileComponents();
 
-    mockService.loadOnTheMenuRecipes.and.returnValue(of(mockRecipesResponse));
-
-    fixture = TestBed.createComponent(OnTheMenuComponent);
+    fixture = TestBed.createComponent(OnTheMenuComponentTestVersion);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   // ───────────────────────────────
   describe('Component Creation', () => {
-    it('should create the component', () => {
+    it('should create component', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should initialize recipes signal with data from service', () => {
-      const recipes = component.recipes();
-      expect(recipes).toEqual(mockRecipesResponse);
+    it('should initialize recipes signal with service data', () => {
+      expect(component.recipes()).toEqual(mockRecipesResponse);
       expect(mockService.loadOnTheMenuRecipes).toHaveBeenCalledTimes(1);
     });
   });
 
   // ───────────────────────────────
   describe('Template Rendering', () => {
-    it('should render header and list components', () => {
-      const header = fixture.nativeElement.querySelector(
-        'app-on-the-menu-header'
+    it('should render header stub', () => {
+      const el = fixture.nativeElement.querySelector(
+        '[data-testid="header-stub"]'
       );
-      const list = fixture.nativeElement.querySelector('app-on-the-menu-list');
-      expect(header).not.toBeNull();
-      expect(list).not.toBeNull();
+      expect(el).not.toBeNull();
+    });
+
+    it('should render list stub', () => {
+      const el = fixture.nativeElement.querySelector(
+        '[data-testid="list-stub"]'
+      );
+      expect(el).not.toBeNull();
     });
   });
 
   // ───────────────────────────────
   describe('loadMoreRecipes()', () => {
-    it('should do nothing if next link is missing', () => {
+    it('should not call service when next link missing', () => {
       spyOn(component, 'recipes').and.returnValue({
         hits: [],
         _links: {},
       } as any);
-      const spy = mockService.loadMoreOnTheMenuRecipes;
 
       component.loadMoreRecipes();
 
-      expect(spy).not.toHaveBeenCalled();
+      expect(mockService.loadMoreOnTheMenuRecipes).not.toHaveBeenCalled();
     });
 
-    it('should eventually call service when implemented', () => {
-      // This test will be updated when implementation is added
-      const url = mockRecipesResponse._links.next.href;
-      expect(url).toContain('https://next-page');
+    it('should confirm next URL exists', () => {
+      expect(mockRecipesResponse._links.next.href).toBe('https://next-page');
     });
   });
 });
