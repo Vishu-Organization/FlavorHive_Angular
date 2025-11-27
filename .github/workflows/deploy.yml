@@ -18,11 +18,13 @@ jobs:
 
     permissions:
       id-token: write
-      contents: read
+      contents: write   # REQUIRED for git tags & GitHub releases
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # REQUIRED to read git tags
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -36,16 +38,84 @@ jobs:
       - name: Build Angular App
         run: npm run build -- --configuration production
 
-      # 🔑 Assume your new IAM Role with OIDC
+
+      # ✅ BRANCH-BASED SEMANTIC VERSIONING
+      - name: Generate Semantic Version (Branch Based)
+        id: version
+        run: |
+          git fetch --tags
+
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          echo "Latest tag: $LATEST_TAG"
+
+          VERSION=${LATEST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Branch = main → PATCH bump"
+            PATCH=$((PATCH + 1))
+          elif [[ "${{ github.ref }}" == refs/heads/release/* ]]; then
+            echo "Branch = release/* → MINOR bump"
+            MINOR=$((MINOR + 1))
+            PATCH=0
+          else
+            echo "Unsupported branch for semantic versioning"
+            exit 1
+          fi
+
+          NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "New version: $NEW_VERSION"
+
+
+      - name: Create Git Tag
+        run: |
+          git tag $NEW_VERSION
+          git push origin $NEW_VERSION
+
+
+      # ✅ CREATE GITHUB RELEASE
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.NEW_VERSION }}
+          name: "Release ${{ env.NEW_VERSION }}"
+          body: |
+            ✅ Angular Deployment Release
+
+            • Version: ${{ env.NEW_VERSION }}
+            • Branch: ${{ github.ref }}
+            • Commit: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      # ✅ ZIP ANGULAR BUILD
+      - name: Zip Angular Build
+        run: |
+          cd dist/flavor-hive-angular/browser
+          zip -r ../../../angular-build.zip .
+
+
+      # ✅ UPLOAD BUILD TO RELEASE
+      - name: Upload Build to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: angular-build.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      # 🔑 Assume IAM Role (UNCHANGED)
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/FlavorHive_Angular_Dev_Deploy_Role  
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/FlavorHive_Angular_Dev_Deploy_Role
           aws-region: ${{ secrets.AWS_REGION }}
+
 
       - name: Deploy to S3 + Invalidate CloudFront
         run: |
-          # Detect from push or manual trigger
           if [[ "${{ github.event_name }}" == "push" ]]; then
             if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
               BUCKET="flavorhive-dev"
@@ -65,7 +135,7 @@ jobs:
               BUCKET="flavorhive-qa"
               DIST_ID="${{ secrets.CLOUDFRONT_QA_DIST_ID }}"
             else
-              echo "Invalid environment: ${{ github.event.inputs.environment }}"
+              echo "Invalid environment"
               exit 1
             fi
           fi
