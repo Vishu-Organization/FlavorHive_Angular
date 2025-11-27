@@ -38,15 +38,19 @@ jobs:
       - name: Build Angular App
         run: npm run build -- --configuration production
 
-
-      # ✅ BRANCH-BASED SEMANTIC VERSIONING
-      - name: Generate Semantic Version (Branch Based)
+      - name: Generate Semantic Version (Branch Based - SAFE)
         id: version
         run: |
           git fetch --tags
 
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
-          echo "Latest tag: $LATEST_TAG"
+          # ✅ Get ONLY valid semantic tags: vX.Y.Z
+          LATEST_TAG=$(git tag -l "v[0-9]*.[0-9]*.[0-9]*" --sort=-v:refname | head -n 1)
+
+          if [[ -z "$LATEST_TAG" ]]; then
+            LATEST_TAG="v1.0.0"
+          fi
+
+          echo "Latest valid semantic tag: $LATEST_TAG"
 
           VERSION=${LATEST_TAG#v}
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
@@ -66,7 +70,6 @@ jobs:
           NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           echo "New version: $NEW_VERSION"
-
 
       - name: Create Git Tag
         run: |
