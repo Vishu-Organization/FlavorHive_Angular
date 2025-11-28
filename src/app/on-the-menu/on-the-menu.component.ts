@@ -4,7 +4,6 @@ import { OnTheMenuService } from 'src/services/on-the-menu/on-the-menu.service';
 import { defaultRequiredTimeFilter, fields } from 'src/store/types/urls';
 import { OnTheMenuListComponent } from './on-the-menu-list/on-the-menu-list.component';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-on-the-menu',
@@ -21,20 +20,7 @@ export class OnTheMenuComponent {
     ...defaultRequiredTimeFilter,
   });
 
-  recipes = toSignal(
-    this.recipes$.pipe(
-      map((value) => ({
-        ...value,
-        hits: value.hits.map((hit) => ({
-          ...hit,
-          recipe: {
-            ...hit.recipe,
-            calories: Math.round(hit.recipe.calories),
-          },
-        })),
-      }))
-    )
-  );
+  recipes = toSignal(this.recipes$);
 
   loadMoreRecipes() {
     // TODO: Future implementation

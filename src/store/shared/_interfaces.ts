@@ -18,3 +18,5 @@ export type BlogRecipe = {
   sourceUrl: string;
   title: string;
 };
+
+export type MathOperation = 'round' | 'ceil' | 'floor';
