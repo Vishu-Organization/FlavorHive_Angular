@@ -1,11 +1,12 @@
 import { NgClass } from '@angular/common';
 import { Component, input } from '@angular/core';
+import { MathPipe } from 'src/pipes/math/math.pipe';
 import { Recipe } from 'src/store/on-the-menu/_types';
 
 @Component({
   selector: 'app-menu-recipe-card',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, MathPipe],
   templateUrl: './menu-recipe-card.component.html',
   styleUrl: './menu-recipe-card.component.scss',
 })
