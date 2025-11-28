@@ -2,26 +2,26 @@
     class="fixed top-0 left-0 w-full bg-slate-100 text-white p-4 shadow-md z-50 text-[10px] md:text-xs lg:p-4 lg:text-sm">
     <nav class="container mx-auto flex justify-between items-center">
         <a routerLink="/" data-testid="header-home">
-            <img src="../../assets/android-chrome-192x192.png" height="40" width="40" title="FlavorHive"
-                alt="FlavourHive icon" class="rounded-full" />
+            <img src="../../assets/android-chrome-192x192.png" height="40" width="40" i18n-title title="FlavorHive"
+                alt="FlavourHive icon" i18n-alt class="rounded-full" />
         </a>
         <section
             class="mx-8 grid w-full auto-cols-auto grid-cols-3 items-center font-normal uppercase tracking-widest text-header-primary md:grid-cols-2">
             <ul class="flex">
                 <li>
-                    <a routerLinkActive="text-primary" routerLink="/on-the-menu" data-testid="header-on-the-menu"
+                    <a i18n routerLinkActive="text-primary" routerLink="/on-the-menu" data-testid="header-on-the-menu"
                         class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
                         on the menu
                     </a>
                 </li>
                 <li>
-                    <a routerLinkActive="text-primary" routerLink="/pages/vision" data-testid="header-our-vision"
+                    <a i18n routerLinkActive="text-primary" routerLink="/pages/vision" data-testid="header-our-vision"
                         class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
                         our vision
                     </a>
                 </li>
                 <li>
-                    <a routerLinkActive="text-primary" routerLink="/blog" class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
+                    <a i18n routerLinkActive="text-primary" routerLink="/blog" class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
                         blog
                     </a>
                 </li>
@@ -29,22 +29,24 @@
             <ul class="col-span-1 flex items-center justify-self-end md:col-auto">
                 <ng-container *ngIf="(isAuthenticated$ | async) === false; else loggedIn">
                     <li>
-                        <a data-testid="link-header-login" routerLink="auth/login" routerLinkActive="text-primary"
+                        <a i18n data-testid="link-header-login" routerLink="auth/login" routerLinkActive="text-primary"
                             class="px-3 py-2 hover:text-primary lg:px-3 lg:py-3">
                             Login
                         </a>
                     </li>
                     <li>
-                        <a data-testid="link-header-sign-up" routerLink="auth/sign-up"
+                        <a i18n data-testid="link-header-sign-up" routerLink="auth/sign-up"
                             class="rounded-md border border-orange-600 bg-header-login-link px-2 py-2 font-bold text-white hover:border-orange-500 hover:bg-header-login-link-hover hover:text-white hover:no-underline active:bg-header-login-link-active lg:px-3 lg:py-3">
                             Sign up
                         </a>
                     </li>
                 </ng-container>
                 <ng-template #loggedIn>
-                    <span *ngIf="(user$|async) as user" [ngClass]="user.name ? 'capitalize': 'normal-case'">Welcome {{user.name ||
+                    <span *ngIf="(user$|async) as user" [ngClass]="user.name ? 'capitalize': 'normal-case'" i18n="@@headerWelcome">Welcome
+                        {{user.name ||
                         user.email }}!</span>
-                    <button mat-button data-testid="btn-logout" class="ml-4 !text-red-400" (click)="onLogout()">
+                    <button mat-button data-testid="btn-logout" class="ml-4 !text-red-400" (click)="onLogout()" aria-label="Logout"
+                        i18n-aria-label>
                         <mat-icon>logout</mat-icon>
                     </button>
                 

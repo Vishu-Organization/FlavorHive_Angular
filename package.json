@@ -4,12 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:spanish": "ng serve --configuration=es",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
     "lint:changed:local": "FILES=$(git diff --name-only HEAD -- '*.ts' '*.html') && [ -n \"$FILES\" ] && npx eslint $FILES --max-warnings=0 || echo '✅ No changed files to lint'",
-    "lint:changed:ci": "FILES=$(git diff --name-only origin/main...HEAD -- '*.ts' '*.html') && [ -n \"$FILES\" ] && npx eslint $FILES --max-warnings=0 || echo '✅ No changed files to lint'"
+    "lint:changed:ci": "FILES=$(git diff --name-only origin/main...HEAD -- '*.ts' '*.html') && [ -n \"$FILES\" ] && npx eslint $FILES --max-warnings=0 || echo '✅ No changed files to lint'",
+    "extract:i18n": "ng extract-i18n --output-path src/i18n"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +43,7 @@
     "@angular-devkit/build-angular": "^18.2.21",
     "@angular/cli": "~18.2.21",
     "@angular/compiler-cli": "^18.2.14",
+    "@angular/localize": "^18.2.14",
     "@types/jasmine": "~4.3.0",
     "angular-eslint": "20.2.0",
     "autoprefixer": "^10.4.20",
